@@ -1,0 +1,84 @@
+﻿
+@{
+    ViewBag.Title = "UserList";
+    Layout = null;
+}
+<link href="~/layuiadmin/layui/css/layui.css" rel="stylesheet" />
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>用户列表</title>
+    <link rel="stylesheet" href="/layui/css/layui.css" media="all">
+</head>
+<body>
+    <div class="demoTable" style="margin-top:10px;margin-left:20px;">
+        搜索收货人姓名：
+        <div class="layui-inline">
+            <input class="layui-input" name="ReceiveName" id="inputReload" autocomplete="off">
+        </div>
+        <button class="layui-btn" data-type="reload">搜索</button>
+    </div>
+    <table class="layui-table" id="demo" lay-data="{id: 'idTest'}" lay-filter="test"></table>
+
+    <script src="~/layuiadmin/layui/layui.js"></script>
+    <script>
+        layui.use('table', function () {
+            var table = layui.table;
+            var tableIns = table.render({
+                elem: '#demo'
+                , toolbar: '#toolbarDemo'
+                ,height: 'full-200' //高度最大化减去差值
+                , url: '/User/GetUserList'//数据接口
+                , done: function (res, curr, count) {
+                }
+                , parseData: function (res) {
+                    return {
+                        "code": res.status,//解析接口状态
+                        "msg": res.message,//解析提示文本
+                        "count": res.total,//解析数据长度
+                        "data": res.data//解析数据列表
+                    };
+                }
+                , page: true
+                , cellMinWidth: 80
+                , cols: [[
+                    { type: 'checkbox', fixed: 'left'}
+                    , { field: 'Email', title: '邮箱', align: 'center' }
+                    , { field: 'Image', title: '头像',align:'center', templet: '#img'}
+                    , { field: 'Account', title: '账户', align: 'center' }
+                    , { field: 'ReceiveName', title: '收货人姓名', align: 'center', sort: true,  }
+                    , { field: 'ReceiveAddress', title: '收货人地址', align: 'center' }
+                    , { field: 'ReceivePhone', title: '收货人电话', sort: true, align: 'center' }
+                    , { field: 'CreateTime', title: '添加时间', sort: true, align: 'center' }
+                ]]
+                , id: 'idTest'
+            });
+            var $ = layui.$, active = {
+                reload: function () {
+                    var inputReload = $('#inputReload');
+                    console.log(inputReload.val());
+                    //执行重载
+                    tableIns.reload({
+                        page: {
+                            curr: 1 //重新从第 1 页开始
+                        }
+                        , where: {
+                            key: inputReload.val()
+                        }
+                    });
+                }
+            };
+
+            $('.demoTable .layui-btn').on('click', function () {
+                var type = $(this).data('type');
+                active[type] ? active[type].call(this) : '';
+            });
+        });
+
+    </script>
+    <script type="text/html" id="img">
+        <img src="{{ d.Image }}" class="pic"style="display: inline-block; width: 30px; height: 100%;border-radius:30px" />
+    </script>
+</body>
+</html>

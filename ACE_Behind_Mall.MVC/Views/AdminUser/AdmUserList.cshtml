@@ -1,0 +1,102 @@
+﻿
+@{
+    ViewBag.Title = "AdmUserList";
+    Layout = null;
+}
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>layuiAdmin 后台管理员</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link href="~/layuiadmin/layui/css/layui.css" rel="stylesheet" />
+    <link href="~/layuiadmin/style/admin.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="demoTable" style="margin-top:10px;margin-left:20px;">
+        搜索姓名,电话：
+        <div class="layui-inline">
+            <input class="layui-input" name="Account" id="inputReload" autocomplete="off">
+        </div>
+        <button class="layui-btn" data-type="reload">搜索</button>
+    </div>
+    <table class="layui-table" id="tableList" lay-data="{page:true, id:'mainList',even:true}" lay-filter="list">
+        <thead>
+            <tr>
+                <th lay-data="{field:'PositionID',align: 'center', sort: true}">角色</th>
+                <th lay-data="{field:'ReallyName',align: 'center'}">真实姓名</th>
+                <th lay-data="{field:'Account',align: 'center', sort: true}">账号</th>
+                <th lay-data="{field:'Phone',align: 'center'}">电话</th>
+                <th lay-data="{field:'Email',align: 'center'}">邮箱</th>
+                <th lay-data="{field:'Birthday',align: 'center', sort: true}">出生日期</th>
+                <th lay-data="{field:'Sex',align: 'center', sort: true}">性别</th>
+                <th lay-data="{field:'CreateTime',align: 'center'}">添加时间</th>
+            </tr>
+        </thead>
+    </table>
+    <script type="text/html" id="barList">
+        <a class="layui-btn layui-btn-primary layui-btn-xs layui-bg-green" lay-event="detail">查看</a>
+        <a class="layui-btn layui-btn-primary layui-btn-xs layui-bg-orange" lay-event="audit">审核</a>
+    </script>
+</body>
+</html>
+<script src="~/layuiadmin/layui/layui.js"></script>
+<script>
+    layui.use('table', function () {
+        var table = layui.table;
+        table.reload('mainList', {
+            url: '/AdminUser/GetAdmUserList'
+            , parseData: function (res) {
+                return {
+                    "code": res.status,//解析接口状态
+                    "msg": res.message,//解析提示文本
+                    "count": res.total,//解析数据长度
+                    "data": res.data//解析数据列表
+                };
+            }
+        });
+        //table.render('mainList',{
+        //    elem: '#tableList'
+        //    , toolbar: '#toolbarDemo'
+        //    , height: 'full-200' //高度最大化减去差值
+        //    , url: '/AdminUser/GetAdmUserList'//数据接口
+        //    , parseData: function (res) {
+        //        return {
+        //            "code": res.status,//解析接口状态
+        //            "msg": res.message,//解析提示文本
+        //            "count": res.total,//解析数据长度
+        //            "data": res.data//解析数据列表
+        //        };
+        //        console.log(data);
+        //    }
+        //    , page: true
+        //    , cellMinWidth: 80
+        //});
+        //var $ = layui.$, active = {
+        //    reload: function () {
+        //        var inputReload = $('#inputReload');
+        //        console.log(inputReload.val());
+        //        //执行重载
+        //        tableIns.reload({
+        //            page: {
+        //                curr: 1 //重新从第 1 页开始
+        //            }
+        //            , where: {
+        //                key: inputReload.val()
+        //            }
+        //        });
+        //    }
+        //};
+
+        //$('.demoTable .layui-btn').on('click', function () {
+        //    var type = $(this).data('type');
+        //    active[type] ? active[type].call(this) : '';
+        //});
+    });
+
+</script>
+

@@ -1,0 +1,175 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="ACE_MallModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityContainer Name="ACE_MallEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Adm_Log" EntityType="ACE_MallModel.Adm_Log" />
+    <EntitySet Name="Adm_User" EntityType="ACE_MallModel.Adm_User" />
+    <EntitySet Name="Adm_User_Position" EntityType="ACE_MallModel.Adm_User_Position" />
+    <EntitySet Name="Mall_Answer" EntityType="ACE_MallModel.Mall_Answer" />
+    <EntitySet Name="Mall_Category" EntityType="ACE_MallModel.Mall_Category" />
+    <EntitySet Name="Mall_Good" EntityType="ACE_MallModel.Mall_Good" />
+    <EntitySet Name="Mall_Good_Evaluation" EntityType="ACE_MallModel.Mall_Good_Evaluation" />
+    <EntitySet Name="Mall_Good_Specification" EntityType="ACE_MallModel.Mall_Good_Specification" />
+    <EntitySet Name="Mall_Question" EntityType="ACE_MallModel.Mall_Question" />
+    <EntitySet Name="My_Data" EntityType="ACE_MallModel.My_Data" />
+    <EntitySet Name="My_Order" EntityType="ACE_MallModel.My_Order" />
+    <EntitySet Name="My_Order_Good" EntityType="ACE_MallModel.My_Order_Good" />
+    <EntitySet Name="My_Shopcart" EntityType="ACE_MallModel.My_Shopcart" />
+  </EntityContainer>
+  <EntityType Name="Adm_Log">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UserID" Type="Int32" Nullable="false" />
+    <Property Name="UserName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Account" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="OpType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="OpContent" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
+  </EntityType>
+  <EntityType Name="Adm_User">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="PositionID" Type="Int32" Nullable="false" />
+    <Property Name="ReallyName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Account" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Phone" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="Email" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="Password" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="Image" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="Birthday" Type="DateTime" Precision="0" />
+    <Property Name="Sex" Type="String" Nullable="false" MaxLength="2" FixedLength="false" Unicode="false" />
+    <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="IsDelete" Type="Int32" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Adm_User_Position">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Describe" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="IsDelete" Type="Int32" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Mall_Answer">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UserID" Type="Int32" />
+    <Property Name="QuestionID" Type="Int32" />
+    <Property Name="Answer" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+    <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="IsDelete" Type="Int32" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Mall_Category">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="IsDelete" Type="Int32" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Mall_Good">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="CategoryID" Type="Int32" />
+    <Property Name="CoverImage" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="DetailImage" Type="String" MaxLength="2000" FixedLength="false" Unicode="false" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="OriginalPrice" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="IsDelete" Type="Int32" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Mall_Good_Evaluation">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UserID" Type="Int32" />
+    <Property Name="GoodID" Type="Int32" />
+    <Property Name="Star" Type="Int32" />
+    <Property Name="Evaluation" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+    <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="IsDelete" Type="Int32" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Mall_Good_Specification">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Price" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="IsDelete" Type="Int32" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Mall_Question">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UserID" Type="Int32" />
+    <Property Name="Question" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+    <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="IsDelete" Type="Int32" Nullable="false" />
+  </EntityType>
+  <EntityType Name="My_Data">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Image" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="Account" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="ReceiveName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="ReceiveAddress" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+    <Property Name="ReceivePhone" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="IsDelete" Type="Int32" Nullable="false" />
+  </EntityType>
+  <EntityType Name="My_Order">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UserID" Type="Int32" Nullable="false" />
+    <Property Name="Orderno" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="OrderState" Type="Int32" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Address" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+    <Property Name="Phone" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="Note" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="DeliveryTime" Type="DateTime" Precision="3" />
+    <Property Name="IsDelete" Type="Int32" Nullable="false" />
+  </EntityType>
+  <EntityType Name="My_Order_Good">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="OrderNo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Good_Specification_ID" Type="Int32" />
+    <Property Name="Good_Number" Type="Int32" />
+    <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="IsDelete" Type="Int32" Nullable="false" />
+  </EntityType>
+  <EntityType Name="My_Shopcart">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UserID" Type="Int32" />
+    <Property Name="SpecificationID" Type="Int32" />
+    <Property Name="Number" Type="Int32" />
+    <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="IsDelete" Type="Int32" Nullable="false" />
+  </EntityType>
+</Schema>

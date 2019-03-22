@@ -1,0 +1,14 @@
+E:\毕业设计\ACE_Mall\ACE_Mall.Model\bin\Debug\ACE_Mall.Model.dll.config
+E:\毕业设计\ACE_Mall\ACE_Mall.Model\bin\Debug\ACE_Mall.Model.dll
+E:\毕业设计\ACE_Mall\ACE_Mall.Model\bin\Debug\ACE_Mall.Model.pdb
+E:\毕业设计\ACE_Mall\ACE_Mall.Model\bin\Debug\EntityFramework.dll
+E:\毕业设计\ACE_Mall\ACE_Mall.Model\bin\Debug\EntityFramework.SqlServer.dll
+E:\毕业设计\ACE_Mall\ACE_Mall.Model\bin\Debug\EntityFramework.xml
+E:\毕业设计\ACE_Mall\ACE_Mall.Model\bin\Debug\EntityFramework.SqlServer.xml
+E:\毕业设计\ACE_Mall\ACE_Mall.Model\bin\Debug\zh-Hans\EntityFramework.resources.dll
+E:\毕业设计\ACE_Mall\ACE_Mall.Model\bin\Debug\zh-Hans\EntityFramework.SqlServer.resources.dll
+E:\毕业设计\ACE_Mall\ACE_Mall.Model\obj\Debug\ACE_Mall.Model.csprojAssemblyReference.cache
+E:\毕业设计\ACE_Mall\ACE_Mall.Model\obj\Debug\ACE_Mall.Model.csproj.CoreCompileInputs.cache
+E:\毕业设计\ACE_Mall\ACE_Mall.Model\obj\Debug\ACE_Mall.Model.csproj.CopyComplete
+E:\毕业设计\ACE_Mall\ACE_Mall.Model\obj\Debug\ACE_Mall.Model.dll
+E:\毕业设计\ACE_Mall\ACE_Mall.Model\obj\Debug\ACE_Mall.Model.pdb

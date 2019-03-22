@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="7cd0af65444d440ca9b296c93bde2372" Name="Diagram1">
+        <EntityTypeShape EntityType="ACE_MallModel.Adm_Log" Width="1.5" PointX="0.75" PointY="0.75" />
+        <EntityTypeShape EntityType="ACE_MallModel.Adm_User" Width="1.5" PointX="2.75" PointY="0.75" />
+        <EntityTypeShape EntityType="ACE_MallModel.Adm_User_Position" Width="1.5" PointX="4.75" PointY="0.75" />
+        <EntityTypeShape EntityType="ACE_MallModel.Mall_Answer" Width="1.5" PointX="0.75" PointY="4.75" />
+        <EntityTypeShape EntityType="ACE_MallModel.Mall_Category" Width="1.5" PointX="2.75" PointY="4.75" />
+        <EntityTypeShape EntityType="ACE_MallModel.Mall_Good" Width="1.5" PointX="4.75" PointY="3.75" />
+        <EntityTypeShape EntityType="ACE_MallModel.Mall_Good_Evaluation" Width="1.5" PointX="6.75" PointY="0.75" />
+        <EntityTypeShape EntityType="ACE_MallModel.Mall_Good_Specification" Width="1.5" PointX="6.75" PointY="4.75" />
+        <EntityTypeShape EntityType="ACE_MallModel.Mall_Question" Width="1.5" PointX="0.75" PointY="7.75" />
+        <EntityTypeShape EntityType="ACE_MallModel.My_Data" Width="1.5" PointX="2.75" PointY="7.75" />
+        <EntityTypeShape EntityType="ACE_MallModel.My_Order" Width="1.5" PointX="4.75" PointY="7.75" />
+        <EntityTypeShape EntityType="ACE_MallModel.My_Order_Good" Width="1.5" PointX="6.75" PointY="7.75" />
+        <EntityTypeShape EntityType="ACE_MallModel.My_Shopcart" Width="1.5" PointX="8.75" PointY="0.75" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
