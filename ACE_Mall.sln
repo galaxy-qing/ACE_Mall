@@ -36,6 +36,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ACE_Mall.Common", "ACE_Mall
 		{E297EA42-948E-4E55-AFED-E3FD88287A28} = {E297EA42-948E-4E55-AFED-E3FD88287A28}
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ACE_Behind_Mall.WebApi", "ACE_Behind_Mall.WebApi\ACE_Behind_Mall.WebApi.csproj", "{F33B3D04-4AAB-4F58-B43C-D87718262797}"
+	ProjectSection(ProjectDependencies) = postProject
+		{3096C762-7FC0-4069-8845-C70F9BAA4292} = {3096C762-7FC0-4069-8845-C70F9BAA4292}
+		{E8F6D5BF-E1BB-40F2-9D5F-B7D61FFC336C} = {E8F6D5BF-E1BB-40F2-9D5F-B7D61FFC336C}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -66,6 +72,10 @@ Global
 		{E8F6D5BF-E1BB-40F2-9D5F-B7D61FFC336C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E8F6D5BF-E1BB-40F2-9D5F-B7D61FFC336C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E8F6D5BF-E1BB-40F2-9D5F-B7D61FFC336C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F33B3D04-4AAB-4F58-B43C-D87718262797}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F33B3D04-4AAB-4F58-B43C-D87718262797}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F33B3D04-4AAB-4F58-B43C-D87718262797}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F33B3D04-4AAB-4F58-B43C-D87718262797}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

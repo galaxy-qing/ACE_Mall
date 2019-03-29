@@ -38,12 +38,9 @@ namespace ACE_Behind_Mall.MVC.Controllers
                 {
                     item = item.Where(x=>x.ReceiveName.Contains(request.key.Trim())).ToList();
                 }
-                if (item.Count > 0)//如果数据不为空
-                {
                     mr.status = 0;
                     mr.total = item.Count;
-                    mr.data= item.OrderByDescending(x=>x.CreateTime).Skip(request.limit*(request.page-1)).Take(request.limit);
-                }
+                    mr.data = item.OrderByDescending(x => x.CreateTime).Skip(request.limit * (request.page - 1)).Take(request.limit);
             }
             catch (Exception e)
             {

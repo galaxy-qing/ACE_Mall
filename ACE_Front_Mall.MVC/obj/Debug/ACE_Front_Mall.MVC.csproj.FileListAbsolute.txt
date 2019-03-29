@@ -68,6 +68,7 @@ E:\毕业设计\ACE_Mall\ACE_Front_Mall.MVC\bin\zh-Hans\System.Web.Webpages.Depl
 E:\毕业设计\ACE_Mall\ACE_Front_Mall.MVC\bin\zh-Hans\System.Web.Webpages.Razor.resources.dll
 E:\毕业设计\ACE_Mall\ACE_Front_Mall.MVC\bin\zh-Hans\System.Web.Helpers.resources.dll
 E:\毕业设计\ACE_Mall\ACE_Front_Mall.MVC\bin\zh-Hans\System.Web.Mvc.resources.dll
+E:\毕业设计\ACE_Mall\ACE_Front_Mall.MVC\obj\Debug\ACE_Front_Mall.MVC.csprojAssemblyReference.cache
 E:\毕业设计\ACE_Mall\ACE_Front_Mall.MVC\obj\Debug\ACE_Front_Mall.MVC.csproj.CoreCompileInputs.cache
 E:\毕业设计\ACE_Mall\ACE_Front_Mall.MVC\obj\Debug\ACE_Front_Mall.MVC.csproj.CopyComplete
 E:\毕业设计\ACE_Mall\ACE_Front_Mall.MVC\obj\Debug\ACE_Front_Mall.MVC.dll

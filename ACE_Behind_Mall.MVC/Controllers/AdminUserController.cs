@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -6,6 +7,7 @@ using System.Web.Http;
 using System.Web.Mvc;
 using ACE_Mall.BLL;
 using ACE_Mall.Common;
+using ACE_Mall.Model;
 using NLog.Fluent;
 
 namespace ACE_Behind_Mall.MVC.Controllers
@@ -17,9 +19,13 @@ namespace ACE_Behind_Mall.MVC.Controllers
         // GET: AdminUser
         public ActionResult AdmUserList()
         {
-
             return View();
         }
+        /// <summary>
+        /// 得到员工列表
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         public string GetAdmUserList([FromUri]PageReq request)
         {
             try
@@ -29,12 +35,9 @@ namespace ACE_Behind_Mall.MVC.Controllers
                 {
                     item = item.Where(x => x.Account.Contains(request.key.Trim())).ToList();
                 }
-                if (item.Count>0)
-                { 
                     mr.status = 0;
                     mr.total = item.Count;
                     mr.data = item.OrderByDescending(x => x.CreateTime).Skip(request.limit * (request.page - 1)).Take(request.limit);
-                }
             }
             catch (Exception e)
             {
@@ -43,6 +46,43 @@ namespace ACE_Behind_Mall.MVC.Controllers
                 Log.Error(e.Message);
             }
             return JsonHelper.Instance.Serialize(mr);
+        }
+        /// <summary>
+        /// 修改员工信息
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public ActionResult Update(Adm_User model)
+        {
+            Adm_User r = admuserbll.GetUpdateModel<Adm_User>(model, "ID");
+            bool flag = admuserbll.Update(r);
+            Hashtable ht = HashTableHelp.GetHash(flag);
+            return Json(ht, JsonRequestBehavior.AllowGet);
+        }
+        /// <summary>
+        /// 删除员工
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public ActionResult Delete(Adm_User model)
+        {
+            Adm_User r = admuserbll.GetUpdateModel<Adm_User>(model, "ID");
+            r.IsDelete = 1;
+            bool flag = admuserbll.Update(r);
+            Hashtable ht = HashTableHelp.GetHash(flag);
+            return Json(ht, JsonRequestBehavior.AllowGet);
+        }
+        /// <summary>
+        /// 添加员工
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public ActionResult Add(Adm_User model)
+        {
+            model.CreateTime = DateTime.Now;
+            bool flag = admuserbll.Add(model);
+            Hashtable ht = HashTableHelp.GetHash(flag);
+            return Json(ht, JsonRequestBehavior.AllowGet);
         }
     }
 }

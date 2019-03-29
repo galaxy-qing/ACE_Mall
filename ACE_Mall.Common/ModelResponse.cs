@@ -17,7 +17,7 @@ namespace ACE_Mall.Common
         public int status { get; set; }
         public string message { get; set; }
         public int total { get; set; }
-        public T rows { get; set; }
+        //public T rows { get; set; }
         public T data { get; set; }
     }
     public class ModelRequest<T>
