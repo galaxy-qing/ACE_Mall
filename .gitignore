@@ -3,3 +3,5 @@
 *.ide-wal
 *.ide
 *.ide-shm
+.vs/
+*.pdb
