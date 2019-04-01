@@ -5,5 +5,3 @@
 *.ide-shm
 .vs/
 *.pdb
-*.lock
-*.lock
