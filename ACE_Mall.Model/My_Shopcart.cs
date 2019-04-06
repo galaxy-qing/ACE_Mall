@@ -16,6 +16,7 @@ namespace ACE_Mall.Model
     {
         public int ID { get; set; }
         public Nullable<int> UserID { get; set; }
+        public Nullable<int> GoodID { get; set; }
         public Nullable<int> SpecificationID { get; set; }
         public Nullable<int> Number { get; set; }
         public System.DateTime CreateTime { get; set; }

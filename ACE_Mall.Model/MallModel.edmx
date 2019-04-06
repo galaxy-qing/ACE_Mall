@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="ACE_MallModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Adm_Log">
           <Key>
             <PropertyRef Name="ID" />
@@ -22,7 +22,7 @@
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="PositionID" Type="int" Nullable="false" />
+          <Property Name="RoleID" Type="int" />
           <Property Name="ReallyName" Type="varchar" MaxLength="50" />
           <Property Name="Account" Type="varchar" MaxLength="50" />
           <Property Name="Phone" Type="varchar" MaxLength="20" />
@@ -34,7 +34,7 @@
           <Property Name="CreateTime" Type="datetime" Nullable="false" />
           <Property Name="IsDelete" Type="int" Nullable="false" />
         </EntityType>
-        <EntityType Name="Adm_User_Position">
+        <EntityType Name="Adm_User_Role">
           <Key>
             <PropertyRef Name="ID" />
           </Key>
@@ -70,10 +70,14 @@
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="CategoryID" Type="int" />
-          <Property Name="CoverImage" Type="varchar" MaxLength="200" />
+          <Property Name="CoverImage" Type="varchar" MaxLength="500" />
           <Property Name="DetailImage" Type="varchar" MaxLength="2000" />
+          <Property Name="InfoImage" Type="varchar" MaxLength="2000" />
           <Property Name="Name" Type="varchar" MaxLength="50" />
+          <Property Name="PresentPrice" Type="decimal" Precision="18" Scale="2" />
           <Property Name="OriginalPrice" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="SaleNumber" Type="int" Nullable="false" />
+          <Property Name="Stock" Type="int" Nullable="false" />
           <Property Name="CreateTime" Type="datetime" Nullable="false" />
           <Property Name="IsDelete" Type="int" Nullable="false" />
         </EntityType>
@@ -94,6 +98,7 @@
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="GoodID" Type="int" Nullable="false" />
           <Property Name="Name" Type="varchar" MaxLength="50" />
           <Property Name="Price" Type="decimal" Precision="18" Scale="2" />
           <Property Name="CreateTime" Type="datetime" Nullable="false" />
@@ -157,15 +162,16 @@
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="UserID" Type="int" />
+          <Property Name="GoodID" Type="int" />
           <Property Name="SpecificationID" Type="int" />
           <Property Name="Number" Type="int" />
           <Property Name="CreateTime" Type="datetime" Nullable="false" />
           <Property Name="IsDelete" Type="int" Nullable="false" />
         </EntityType>
-        <EntityContainer Name="ACE_MallModelStoreContainer">
+        <EntityContainer Name="StoreContainer">
           <EntitySet Name="Adm_Log" EntityType="Self.Adm_Log" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Adm_User" EntityType="Self.Adm_User" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Adm_User_Position" EntityType="Self.Adm_User_Position" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Adm_User_Role" EntityType="Self.Adm_User_Role" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Mall_Answer" EntityType="Self.Mall_Answer" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Mall_Category" EntityType="Self.Mall_Category" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Mall_Good" EntityType="Self.Mall_Good" Schema="dbo" store:Type="Tables" />
@@ -184,7 +190,7 @@
         <EntityContainer Name="ACE_MallEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Adm_Log" EntityType="ACE_MallModel.Adm_Log" />
           <EntitySet Name="Adm_User" EntityType="ACE_MallModel.Adm_User" />
-          <EntitySet Name="Adm_User_Position" EntityType="ACE_MallModel.Adm_User_Position" />
+          <EntitySet Name="Adm_User_Role" EntityType="ACE_MallModel.Adm_User_Role" />
           <EntitySet Name="Mall_Answer" EntityType="ACE_MallModel.Mall_Answer" />
           <EntitySet Name="Mall_Category" EntityType="ACE_MallModel.Mall_Category" />
           <EntitySet Name="Mall_Good" EntityType="ACE_MallModel.Mall_Good" />
@@ -213,7 +219,7 @@
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="PositionID" Type="Int32" Nullable="false" />
+          <Property Name="RoleID" Type="Int32" />
           <Property Name="ReallyName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Account" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Phone" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
@@ -225,7 +231,7 @@
           <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="IsDelete" Type="Int32" Nullable="false" />
         </EntityType>
-        <EntityType Name="Adm_User_Position">
+        <EntityType Name="Adm_User_Role">
           <Key>
             <PropertyRef Name="ID" />
           </Key>
@@ -261,10 +267,14 @@
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="CategoryID" Type="Int32" />
-          <Property Name="CoverImage" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="CoverImage" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="DetailImage" Type="String" MaxLength="2000" FixedLength="false" Unicode="false" />
+          <Property Name="InfoImage" Type="String" MaxLength="2000" FixedLength="false" Unicode="false" />
           <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PresentPrice" Type="Decimal" Precision="18" Scale="2" />
           <Property Name="OriginalPrice" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="SaleNumber" Type="Int32" Nullable="false" />
+          <Property Name="Stock" Type="Int32" Nullable="false" />
           <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="IsDelete" Type="Int32" Nullable="false" />
         </EntityType>
@@ -285,6 +295,7 @@
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="GoodID" Type="Int32" Nullable="false" />
           <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Price" Type="Decimal" Precision="18" Scale="2" />
           <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
@@ -348,6 +359,7 @@
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="UserID" Type="Int32" />
+          <Property Name="GoodID" Type="Int32" />
           <Property Name="SpecificationID" Type="Int32" />
           <Property Name="Number" Type="Int32" />
           <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
@@ -358,7 +370,7 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
     <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-  <EntityContainerMapping StorageEntityContainer="ACE_MallModelStoreContainer" CdmEntityContainer="ACE_MallEntities">
+  <EntityContainerMapping StorageEntityContainer="StoreContainer" CdmEntityContainer="ACE_MallEntities" >
           <EntitySetMapping Name="Adm_Log">
             <EntityTypeMapping TypeName="ACE_MallModel.Adm_Log">
               <MappingFragment StoreEntitySet="Adm_Log">
@@ -385,14 +397,14 @@
                 <ScalarProperty Name="Phone" ColumnName="Phone" />
                 <ScalarProperty Name="Account" ColumnName="Account" />
                 <ScalarProperty Name="ReallyName" ColumnName="ReallyName" />
-                <ScalarProperty Name="PositionID" ColumnName="PositionID" />
+                <ScalarProperty Name="RoleID" ColumnName="RoleID" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Adm_User_Position">
-            <EntityTypeMapping TypeName="ACE_MallModel.Adm_User_Position">
-              <MappingFragment StoreEntitySet="Adm_User_Position">
+          <EntitySetMapping Name="Adm_User_Role">
+            <EntityTypeMapping TypeName="ACE_MallModel.Adm_User_Role">
+              <MappingFragment StoreEntitySet="Adm_User_Role">
                 <ScalarProperty Name="IsDelete" ColumnName="IsDelete" />
                 <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
                 <ScalarProperty Name="Describe" ColumnName="Describe" />
@@ -428,8 +440,12 @@
               <MappingFragment StoreEntitySet="Mall_Good">
                 <ScalarProperty Name="IsDelete" ColumnName="IsDelete" />
                 <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="Stock" ColumnName="Stock" />
+                <ScalarProperty Name="SaleNumber" ColumnName="SaleNumber" />
                 <ScalarProperty Name="OriginalPrice" ColumnName="OriginalPrice" />
+                <ScalarProperty Name="PresentPrice" ColumnName="PresentPrice" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="InfoImage" ColumnName="InfoImage" />
                 <ScalarProperty Name="DetailImage" ColumnName="DetailImage" />
                 <ScalarProperty Name="CoverImage" ColumnName="CoverImage" />
                 <ScalarProperty Name="CategoryID" ColumnName="CategoryID" />
@@ -457,6 +473,7 @@
                 <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
                 <ScalarProperty Name="Price" ColumnName="Price" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="GoodID" ColumnName="GoodID" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -524,6 +541,7 @@
                 <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
                 <ScalarProperty Name="Number" ColumnName="Number" />
                 <ScalarProperty Name="SpecificationID" ColumnName="SpecificationID" />
+                <ScalarProperty Name="GoodID" ColumnName="GoodID" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>

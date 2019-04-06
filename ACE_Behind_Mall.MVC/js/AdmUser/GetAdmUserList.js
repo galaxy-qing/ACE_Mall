@@ -17,11 +17,37 @@
 //        });
 //    }
 //})
+//layui.config({
+//    base: "/js/"
+//}).use(['form', 'upload'], function () {
+//    var $ = layui.jquery
+//        , upload = layui.upload
+//        , form = layui.form;
+//    $.get(AdminUser / GetRoleList, {}, function (data) {
+//        var $html = "";
+//        alert(data.data);
+//        if (data.data != null) {
+//            $.each(data.data, function (index, item) {
+//                if (item.proType) {
+//                    $html += "<option class='generate' value='" + item.id + "'>" + item.proType + "</option>";
+//                } else {
+//                    $html += "<option value='" + item.id + "'>" + item.name + "</option>";
+//                }
+//            });
+//            $("select[name='RoleID']").append($html);
+//            //反选
+//            $("select[name='RoleID']").val($("#PositionID").val());
+//            //append后必须从新渲染
+//            form.render('select');
+//        }
+//    })
+//});
 layui.config({
     base: "/js/"
-}).use(['form', 'table','laydate', 'vue','layer'], function () {
+}).use(['form', 'table', 'jquery', 'laydate', 'vue', 'layer', 'upload'], function () {
     var form = layui.form,
         layer = layui.layer,
+        upload = layui.upload,
         $ = layui.jquery;
     var laydate = layui.laydate;
     var table = layui.table;
@@ -59,93 +85,86 @@ layui.config({
     });
     //查看员工信息
     var detailDlg = function () {
-        var vm1 = new Vue({
+        var vm = new Vue({
             el: "#formDetail"
         });
+        var update = false;  //是否为更新
+        var look = false;//是否为查看
         var showDetail = function (data) {
-            var title = "查看详情";
+            var title = update ? "编辑信息" : "添加";
             layer.open({
                 title: title,
                 area: ["800px", "600px"],
                 type: 1,
-                btn: [ '取消'],
-                content: $('#divDetail'),
-                success: function () {
-                    //alert(JSON.stringify(data));
-                    vm1.$set('$data', data);
-                    $(":radio[name='Sex'][value='" + data.Sex + "']").prop("checked", "checked");
-                    $("#Birthday").val(data.Birthday);
-                    //$("#CreateTime").val(data.CreateTime);
-                    form.render();
-                    tableIns.reload();
-                },
-                end: tableIns
-            });
-        }
-        return {
-            detail: function (data) {
-                showDetail(data);
-            },
-        };
-    }();
-    //修改员工信息
-    var updateDlg = function () {
-        var vm= new Vue({
-            el: "#formDetail"
-        });
-        var showUpdate = function (data) {
-            var title ="编辑信息";
-            layer.open({
-                title: title,
-                area: ["800px", "600px"],
-                type: 1,
-                btn: ['确定', '取消'],
-                yes: function (index, layero) {
-                    var url = "/AdminUser/Update";
-                    //提交数据
-                    form.on('submit(formSubmit)',
-                        function (data) {
-                            $.post(url,
-                                data.field,
-                                function (data) {
-                                    layer.msg(data.message);
-                                },
-                                "json");
-                            return false;
-                        });
-                    $('#formSubmit').trigger('click');
-                    layer.close(index); //如果设定了yes回调，需进行手工关闭
-                    tableIns.reload();
-                },
+                btn: ['取消'],
                 content: $('#divDetail'),
                 success: function () {
                     //alert(JSON.stringify(data));
                     vm.$set('$data', data);
+                    $.ajax({
+                        url: '/AdminUser/GetRoleList',
+                        dataType: 'json',
+                        type: 'post',
+                        success: function (data) {
+                            $.each(data, function (index, item) {
+                                $('#RoleID').append(new Option(item.Name,item.ID));//往下拉菜单里添加元素
+                            })
+
+                            form.render();//菜单渲染 把内容加载进去
+                        }
+                    });
                     $(":radio[name='Sex'][value='" + data.Sex + "']").prop("checked", "checked");
+                    alert($("input[name='Sex']:checked").val());
                     $("#Birthday").val(data.Birthday);
                     //$("#CreateTime").val(data.CreateTime);
+                    $("#divSubmit").show();
+                    if (look == true) {
+                        $("#divSubmit").hide();
+                    }   
                     form.render();
-                    tableIns.reload();
+                    //tableIns.reload();
                 },
                 end: tableIns
             });
-            var url = "/RecRecruit/Detail";
+            var url = "/AdminUser/Add";
+            if (update) {
+                url = "/AdminUser/Update";
+            }
+            //var url = "/AdminUser/Update";
+            //alert(url);
             //提交数据
             form.on('submit(formSubmit)',
                 function (data) {
                     $.post(url,
                         data.field,
                         function (data) {
-                            layer.msg(data.Message);
+                            layer.msg(data.message);
+                            layer.closeAll();
+                            tableIns.reload();
                         },
                         "json");
                     return false;
                 });
+          
         }
         return {
-            update: function (data) {
-                showUpdate(data);
+            add: function () { //弹出添加
+                look = false;
+                update = false;
+                showDetail({
+                    ID: ''
+                });
             },
+            update: function (data) { //弹出编辑框
+                look = false;
+                update = true;
+                showDetail(data);
+            }
+            ,
+            detail: function (data) { //查看编辑框
+                look = true;
+                showDetail(data);
+            }
         };
     }();
     //自定义日期格式
@@ -154,7 +173,7 @@ layui.config({
         elem: '#Birthday'
         , format: 'yyyy-MM-dd'
         ,value:date  //可任意组合
-    });
+    });  
     //监听表格内部按钮
     table.on('tool(list)', function (obj) {
         var data = obj.data;
@@ -162,9 +181,17 @@ layui.config({
             detailDlg.detail(data);
         }
         if (obj.event === 'update') {
-            updateDlg.update(data);
+            detailDlg.update(data);
         }
     });
+    form.on('select(RoleID)', function (data) {
+        console.log(data.value); //得到被选中的值
+        $.post("AdminUser/GetRoleList" + data.value, function (res) {
+            if (res.success) {
+                layer.msg(res.message);
+            }
+        });
+    })
     //事件
     var active = {
         delete: function () {
@@ -177,8 +204,8 @@ layui.config({
             if (data.length >1) {
                 return layer.msg('一次只能删除一条数据');
             }
+            alert(JSON.stringify(checkData));
             layer.confirm('确定删除吗？', function (index) {
-                //alert(JSON.stringify(checkData));
                 var url = "/AdminUser/Delete";
                 $.post(url,data[0], function (data) {
                         layer.msg(data.message);
@@ -188,32 +215,36 @@ layui.config({
                     return false;
                 });
         }
-        , add: function () {
-            layer.open({
-                title: "添加员工",
-                area: ["800px", "600px"],
-                type: 1,
-                btn: ['确定', '取消'],
-                yes: function (index, layero) {
-                    var url = "/AdminUser/Add";
-                    //提交数据
-                    form.on('submit(formSubmit1)',
-                        function (data) {
-                            $.post(url,
-                                data.field,
-                                function (data) {
-                                    layer.msg(data.message);
-                                    layer.close(index); //如果设定了yes回调，需进行手工关闭
-                                    tableIns.reload(); 
-                                },
-                                "json");
-                            return false;
-                        });
-                    $('#formSubmit1').trigger('click');
-                    
-                },
-                content: $('#divAdd'),
-            });
+        , add: function () {  //添加
+            detailDlg.add();
         }
-    };
+        //, add: function () {
+        //    layer.open({
+        //        title: "添加员工",
+        //        area: ["800px", "600px"],
+        //        type: 1,
+        //        btn: ['确定', '取消'],
+        //        yes: function (index, layero) {
+        //            var url = "/AdminUser/Add";
+        //            //提交数据
+        //            form.on('submit(formSubmit1)',
+        //                function (data) {
+        //                    $.post(url,
+        //                        data.field,
+        //                        function (data) {
+        //                            layer.msg(data.message);
+        //                            layer.close(index); //如果设定了yes回调，需进行手工关闭
+        //                            tableIns.reload(); 
+        //                        },
+        //                        "json");
+        //                    return false;
+        //                });
+        //            $('#formSubmit1').trigger('click');
+                    
+        //        },
+        //        content: $('#divAdd'),
+        //    });
+        //}
+    };
+
 });

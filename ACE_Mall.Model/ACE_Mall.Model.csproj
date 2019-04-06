@@ -56,7 +56,7 @@
     <Compile Include="Adm_User.cs">
       <DependentUpon>MallModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Adm_User_Position.cs">
+    <Compile Include="Adm_User_Role.cs">
       <DependentUpon>MallModel.tt</DependentUpon>
     </Compile>
     <Compile Include="MallModel.Context.cs">

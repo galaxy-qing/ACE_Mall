@@ -6,23 +6,18 @@ using System.Threading.Tasks;
 using ACE_Mall.Model;
 namespace ACE_Mall.BLL
 {
-    public class UserBLL : BaseBLL<My_Data>
+    public class ShopCartBLL:BaseBLL<My_Shopcart>
     {
-        public List<My_Data> GetList(Func<My_Data, bool> exp)
+        public List<My_Shopcart> GetList(Func<My_Shopcart, bool> exp)
         {
             var list = Dao.GetEntities(exp).ToList();
             return list;
         }
-        /// <summary>
-        /// 添加用户模型
-        /// </summary>
-        /// <param  ="model">数据模型</param>
-        /// <returns></returns>
-        public bool Add(My_Data model)
+        public bool Add(My_Shopcart model)
         {
             return Dao.Insert(model);
         }
-        public new bool Update(My_Data model)
+        public new bool Update(My_Shopcart model)
         {
             return Dao.Update(model);
         }

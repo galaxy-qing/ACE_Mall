@@ -12,18 +12,11 @@ namespace ACE_Mall.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class Adm_User
+    public partial class Adm_User_Role
     {
         public int ID { get; set; }
-        public Nullable<int> RoleID { get; set; }
-        public string ReallyName { get; set; }
-        public string Account { get; set; }
-        public string Phone { get; set; }
-        public string Email { get; set; }
-        public string Password { get; set; }
-        public string Image { get; set; }
-        public Nullable<System.DateTime> Birthday { get; set; }
-        public string Sex { get; set; }
+        public string Name { get; set; }
+        public string Describe { get; set; }
         public System.DateTime CreateTime { get; set; }
         public int IsDelete { get; set; }
     }

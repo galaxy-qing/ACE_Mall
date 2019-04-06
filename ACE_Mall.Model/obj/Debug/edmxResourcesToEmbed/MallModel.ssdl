@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Schema Namespace="ACE_MallModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+<Schema Namespace="Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
   <EntityType Name="Adm_Log">
     <Key>
       <PropertyRef Name="ID" />
@@ -17,7 +17,7 @@
       <PropertyRef Name="ID" />
     </Key>
     <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="PositionID" Type="int" Nullable="false" />
+    <Property Name="RoleID" Type="int" />
     <Property Name="ReallyName" Type="varchar" MaxLength="50" />
     <Property Name="Account" Type="varchar" MaxLength="50" />
     <Property Name="Phone" Type="varchar" MaxLength="20" />
@@ -29,7 +29,7 @@
     <Property Name="CreateTime" Type="datetime" Nullable="false" />
     <Property Name="IsDelete" Type="int" Nullable="false" />
   </EntityType>
-  <EntityType Name="Adm_User_Position">
+  <EntityType Name="Adm_User_Role">
     <Key>
       <PropertyRef Name="ID" />
     </Key>
@@ -65,10 +65,14 @@
     </Key>
     <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="CategoryID" Type="int" />
-    <Property Name="CoverImage" Type="varchar" MaxLength="200" />
+    <Property Name="CoverImage" Type="varchar" MaxLength="500" />
     <Property Name="DetailImage" Type="varchar" MaxLength="2000" />
+    <Property Name="InfoImage" Type="varchar" MaxLength="2000" />
     <Property Name="Name" Type="varchar" MaxLength="50" />
+    <Property Name="PresentPrice" Type="decimal" Precision="18" Scale="2" />
     <Property Name="OriginalPrice" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="SaleNumber" Type="int" Nullable="false" />
+    <Property Name="Stock" Type="int" Nullable="false" />
     <Property Name="CreateTime" Type="datetime" Nullable="false" />
     <Property Name="IsDelete" Type="int" Nullable="false" />
   </EntityType>
@@ -89,6 +93,7 @@
       <PropertyRef Name="ID" />
     </Key>
     <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="GoodID" Type="int" Nullable="false" />
     <Property Name="Name" Type="varchar" MaxLength="50" />
     <Property Name="Price" Type="decimal" Precision="18" Scale="2" />
     <Property Name="CreateTime" Type="datetime" Nullable="false" />
@@ -152,15 +157,16 @@
     </Key>
     <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="UserID" Type="int" />
+    <Property Name="GoodID" Type="int" />
     <Property Name="SpecificationID" Type="int" />
     <Property Name="Number" Type="int" />
     <Property Name="CreateTime" Type="datetime" Nullable="false" />
     <Property Name="IsDelete" Type="int" Nullable="false" />
   </EntityType>
-  <EntityContainer Name="ACE_MallModelStoreContainer">
+  <EntityContainer Name="StoreContainer">
     <EntitySet Name="Adm_Log" EntityType="Self.Adm_Log" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Adm_User" EntityType="Self.Adm_User" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="Adm_User_Position" EntityType="Self.Adm_User_Position" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Adm_User_Role" EntityType="Self.Adm_User_Role" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Mall_Answer" EntityType="Self.Mall_Answer" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Mall_Category" EntityType="Self.Mall_Category" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Mall_Good" EntityType="Self.Mall_Good" Schema="dbo" store:Type="Tables" />

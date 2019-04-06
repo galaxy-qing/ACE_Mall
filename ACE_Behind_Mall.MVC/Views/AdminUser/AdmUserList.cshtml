@@ -28,7 +28,7 @@
         <thead>
             <tr>
                 <th lay-data="{checkbox:true, fixed: true}"></th>
-                <th lay-data="{field:'PositionID',align: 'center', sort: true}">角色</th>
+                <th lay-data="{field:'RoleName',align: 'center', sort: true}">角色</th>
                 @*<th lay-data="{field:'Image',align: 'center'}">头像</th>*@
                 <th lay-data="{field:'ReallyName',align: 'center'}">真实姓名</th>
                 <th lay-data="{field:'Account',align: 'center', sort: true}">账号</th>
@@ -51,6 +51,17 @@
 <div id="divDetail" lay-filter="layuiadmin-form-admin" style="display: none">
     <div class="layui-form layui-form-pane" id="formDetail" style="padding: 20px 30px 0 50px;">
         <input type="hidden" name="ID" v-model="ID" />
+        <div class="layui-form-item">
+            <label class="layui-form-label">选择角色</label>
+            <div class="layui-input-block">
+                <select name="RoleID" lay-verify="required" id="RoleID">
+                    <option value="">请选择角色</option>
+                    <option value="2">管理员</option>
+                    <option value="3">上货员</option>
+                    <option value="4">普通员工</option>
+                </select>
+            </div>
+        </div>
         <div class="layui-form-item">
             <label class="layui-form-label">真实姓名</label>
             <div class="layui-input-block">
@@ -88,7 +99,7 @@
                 </div>
                 <button style="float: left;" type="button" class="layui-btn" id="layuiadmin-upload-useradmin">上传图片</button>
             </div>*@
-        <div class="layui-form-item" lay-filter="sex">
+        <div class="layui-form-item" pane>
             <label class="layui-form-label">性别</label>
             <div class="layui-input-block">
                 <input type="radio" name="Sex" value="男" title="男" checked>
@@ -102,9 +113,15 @@
                        placeholder="加入时间" autocomplete="off" class="layui-input">
             </div>
         </div>
-        <div class="layui-form-item layui-hide">
-            <input type="button" lay-submit lay-filter="formSubmit" id="formSubmit" value="确认">
+        <div class="layui-form-item" id="divSubmit">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit lay-filter="formSubmit">立即提交</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
         </div>
+        @*<div class="layui-form-item layui-hide">
+                <input type="button" lay-submit lay-filter="formSubmit" id="formSubmit" value="确认">
+            </div>*@
     </div>
 </div>
 <!--添加窗口-->
@@ -114,11 +131,16 @@
         <div class="layui-form-item">
             <label class="layui-form-label">选择角色</label>
             <div class="layui-input-block">
-                <select name="PositionID" lay-verify="required" id="PositionID">
+                <select name="RoleID" lay-verify="required" id="RoleID">
                     <option value="">请选择角色</option>
-                    <option value="2">管理员</option>
-                    <option value="3">上货员</option>
-                    <option value="4">普通员工</option>
+                    <#if roles>
+                        <#list roles as item>
+                            <option value="${item.ID}">${item.Name}</option>
+                        </#list>
+                    </#if>
+                    @*<option value="2">管理员</option>
+                        <option value="3">上货员</option>
+                        <option value="4">普通员工</option>*@
                 </select>
             </div>
         </div>
@@ -153,12 +175,12 @@
             </div>
         </div>
         @*<div class="layui-form-item">
-            <label class="layui-form-label">头像</label>
-            <div class="layui-input-block">
-                <input type="text" name="Image" v-model="Image" lay-verify="required" placeholder="请上传图片" autocomplete="off" class="layui-input">
-            </div>
-            <button style="float: left;" type="button" class="layui-btn" id="layuiadmin-upload-useradmin">上传图片</button>
-        </div>*@
+                <label class="layui-form-label">头像</label>
+                <div class="layui-input-block">
+                    <input type="text" name="Image" v-model="Image" lay-verify="required" placeholder="请上传图片" autocomplete="off" class="layui-input">
+                </div>
+                <button style="float: left;" type="button" class="layui-btn" id="layuiadmin-upload-useradmin">上传图片</button>
+            </div>*@
         <div class="layui-form-item" lay-filter="sex">
             <label class="layui-form-label">性别</label>
             <div class="layui-input-block">
@@ -170,6 +192,6 @@
             <input type="button" lay-submit lay-filter="formSubmit1" id="formSubmit1" value="确认">
         </div>
     </div>
-    </div>
+</div>
 <script src="~/layuiadmin/layui/layui.js"></script>
 <script src="~/js/AdmUser/GetAdmUserList.js"></script>

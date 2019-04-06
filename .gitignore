@@ -5,3 +5,15 @@
 *.ide-shm
 .vs/
 *.pdb
+*.ide
+*.ide-shm
+*.ide-wal
+*.dll
+*.pdb
+*.pdb
+*.txt
+*.cache
+*.cache
+*.nupkg
+*.p7s
+*.XML

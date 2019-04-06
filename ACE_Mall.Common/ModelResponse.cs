@@ -10,7 +10,7 @@ namespace ACE_Mall.Common
     {
         public ModelResponse()
         {
-            status = 200;
+            status = 0;
             message = "";
             total = 0;
         }

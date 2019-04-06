@@ -45,7 +45,7 @@ namespace ACE_Behind_Mall.MVC.Controllers
             Hashtable ht = new Hashtable();
             try
             {
-                var userList = admuserbll.GetList(x => (x.Account == username) & x.Password == password).Count;
+                var userList = admuserbll.GetList(x => x.Account == username & x.Password == password&x.IsDelete==0).Count;
                
                 if (userList == 0)
                 {

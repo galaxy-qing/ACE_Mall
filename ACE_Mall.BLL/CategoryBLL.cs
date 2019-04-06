@@ -6,25 +6,26 @@ using System.Threading.Tasks;
 using ACE_Mall.Model;
 namespace ACE_Mall.BLL
 {
-    public class UserBLL : BaseBLL<My_Data>
+    public class CategoryBLL : BaseBLL<Mall_Category>
     {
-        public List<My_Data> GetList(Func<My_Data, bool> exp)
+        /// <summary>
+        /// 获取商品类别列表
+        /// </summary>
+        /// <param name="exp"></param>
+        /// <returns></returns>
+        public List<Mall_Category> GetList(Func<Mall_Category, bool> exp)
         {
             var list = Dao.GetEntities(exp).ToList();
             return list;
         }
         /// <summary>
-        /// 添加用户模型
+        /// 添加商品类别
         /// </summary>
         /// <param  ="model">数据模型</param>
         /// <returns></returns>
-        public bool Add(My_Data model)
+        public bool Add(Mall_Category model)
         {
             return Dao.Insert(model);
-        }
-        public new bool Update(My_Data model)
-        {
-            return Dao.Update(model);
         }
     }
 }

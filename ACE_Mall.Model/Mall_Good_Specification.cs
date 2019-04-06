@@ -15,6 +15,7 @@ namespace ACE_Mall.Model
     public partial class Mall_Good_Specification
     {
         public int ID { get; set; }
+        public int GoodID { get; set; }
         public string Name { get; set; }
         public Nullable<decimal> Price { get; set; }
         public System.DateTime CreateTime { get; set; }

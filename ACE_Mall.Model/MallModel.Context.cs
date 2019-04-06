@@ -27,7 +27,7 @@ namespace ACE_Mall.Model
     
         public virtual DbSet<Adm_Log> Adm_Log { get; set; }
         public virtual DbSet<Adm_User> Adm_User { get; set; }
-        public virtual DbSet<Adm_User_Position> Adm_User_Position { get; set; }
+        public virtual DbSet<Adm_User_Role> Adm_User_Role { get; set; }
         public virtual DbSet<Mall_Answer> Mall_Answer { get; set; }
         public virtual DbSet<Mall_Category> Mall_Category { get; set; }
         public virtual DbSet<Mall_Good> Mall_Good { get; set; }

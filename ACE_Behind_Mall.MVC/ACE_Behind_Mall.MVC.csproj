@@ -168,6 +168,7 @@
     <Content Include="js\flow\GooFlow.print.js" />
     <Content Include="js\flow\GooFunc.js" />
     <Content Include="js\flow\img\gooflow_icon.png" />
+    <Content Include="js\GoodCategory\GoodCategory.js" />
     <Content Include="js\leftNav.js" />
     <Content Include="js\Login\login.js" />
     <Content Include="js\openauth.js" />
@@ -768,6 +769,7 @@
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AdminUserController.cs" />
+    <Compile Include="Controllers\CategoryController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\RoleController.cs" />
     <Compile Include="Controllers\UserController.cs" />
@@ -793,6 +795,7 @@
     <Content Include="Views\AdminUser\AdmUserList.cshtml" />
     <Content Include="Views\User\UserList.cshtml" />
     <Content Include="Views\Role\RoleList.cshtml" />
+    <Content Include="Views\Category\CategoryList.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

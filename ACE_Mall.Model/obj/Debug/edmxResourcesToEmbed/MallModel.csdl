@@ -3,7 +3,7 @@
   <EntityContainer Name="ACE_MallEntities" annotation:LazyLoadingEnabled="true">
     <EntitySet Name="Adm_Log" EntityType="ACE_MallModel.Adm_Log" />
     <EntitySet Name="Adm_User" EntityType="ACE_MallModel.Adm_User" />
-    <EntitySet Name="Adm_User_Position" EntityType="ACE_MallModel.Adm_User_Position" />
+    <EntitySet Name="Adm_User_Role" EntityType="ACE_MallModel.Adm_User_Role" />
     <EntitySet Name="Mall_Answer" EntityType="ACE_MallModel.Mall_Answer" />
     <EntitySet Name="Mall_Category" EntityType="ACE_MallModel.Mall_Category" />
     <EntitySet Name="Mall_Good" EntityType="ACE_MallModel.Mall_Good" />
@@ -32,7 +32,7 @@
       <PropertyRef Name="ID" />
     </Key>
     <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="PositionID" Type="Int32" Nullable="false" />
+    <Property Name="RoleID" Type="Int32" />
     <Property Name="ReallyName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
     <Property Name="Account" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
     <Property Name="Phone" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
@@ -44,7 +44,7 @@
     <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
     <Property Name="IsDelete" Type="Int32" Nullable="false" />
   </EntityType>
-  <EntityType Name="Adm_User_Position">
+  <EntityType Name="Adm_User_Role">
     <Key>
       <PropertyRef Name="ID" />
     </Key>
@@ -80,10 +80,14 @@
     </Key>
     <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="CategoryID" Type="Int32" />
-    <Property Name="CoverImage" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="CoverImage" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
     <Property Name="DetailImage" Type="String" MaxLength="2000" FixedLength="false" Unicode="false" />
+    <Property Name="InfoImage" Type="String" MaxLength="2000" FixedLength="false" Unicode="false" />
     <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="PresentPrice" Type="Decimal" Precision="18" Scale="2" />
     <Property Name="OriginalPrice" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="SaleNumber" Type="Int32" Nullable="false" />
+    <Property Name="Stock" Type="Int32" Nullable="false" />
     <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
     <Property Name="IsDelete" Type="Int32" Nullable="false" />
   </EntityType>
@@ -104,6 +108,7 @@
       <PropertyRef Name="ID" />
     </Key>
     <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="GoodID" Type="Int32" Nullable="false" />
     <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
     <Property Name="Price" Type="Decimal" Precision="18" Scale="2" />
     <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
@@ -167,6 +172,7 @@
     </Key>
     <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="UserID" Type="Int32" />
+    <Property Name="GoodID" Type="Int32" />
     <Property Name="SpecificationID" Type="Int32" />
     <Property Name="Number" Type="Int32" />
     <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />

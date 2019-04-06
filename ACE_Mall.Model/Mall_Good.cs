@@ -18,8 +18,12 @@ namespace ACE_Mall.Model
         public Nullable<int> CategoryID { get; set; }
         public string CoverImage { get; set; }
         public string DetailImage { get; set; }
+        public string InfoImage { get; set; }
         public string Name { get; set; }
+        public Nullable<decimal> PresentPrice { get; set; }
         public Nullable<decimal> OriginalPrice { get; set; }
+        public int SaleNumber { get; set; }
+        public int Stock { get; set; }
         public System.DateTime CreateTime { get; set; }
         public int IsDelete { get; set; }
     }
