@@ -17,3 +17,6 @@
 *.nupkg
 *.p7s
 *.XML
+*.ssdl
+*.msl
+*.csdl
