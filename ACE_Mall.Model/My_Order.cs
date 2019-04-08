@@ -16,14 +16,20 @@ namespace ACE_Mall.Model
     {
         public int ID { get; set; }
         public int UserID { get; set; }
-        public string Orderno { get; set; }
-        public Nullable<int> OrderState { get; set; }
+        public string OrderNo { get; set; }
+        public int OrderState { get; set; }
         public string Name { get; set; }
         public string Address { get; set; }
         public string Phone { get; set; }
+        public Nullable<decimal> PayMoney { get; set; }
+        public Nullable<int> PayWay { get; set; }
         public string Note { get; set; }
-        public System.DateTime CreateTime { get; set; }
+        public string CourierName { get; set; }
+        public string CourierNo { get; set; }
+        public Nullable<System.DateTime> PayTime { get; set; }
         public Nullable<System.DateTime> DeliveryTime { get; set; }
+        public Nullable<System.DateTime> CompleteTime { get; set; }
+        public System.DateTime CreateTime { get; set; }
         public int IsDelete { get; set; }
     }
 }

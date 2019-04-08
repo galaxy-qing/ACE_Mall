@@ -16,8 +16,9 @@ namespace ACE_Mall.Model
     {
         public int ID { get; set; }
         public string OrderNo { get; set; }
-        public Nullable<int> Good_Specification_ID { get; set; }
-        public Nullable<int> Good_Number { get; set; }
+        public int GoodID { get; set; }
+        public Nullable<int> GoodSpecificationID { get; set; }
+        public Nullable<int> GoodNumber { get; set; }
         public System.DateTime CreateTime { get; set; }
         public int IsDelete { get; set; }
     }
