@@ -15,10 +15,11 @@ namespace ACE_Mall.Model
     public partial class My_Shopcart
     {
         public int ID { get; set; }
-        public Nullable<int> UserID { get; set; }
-        public Nullable<int> GoodID { get; set; }
+        public int UserID { get; set; }
+        public int GoodID { get; set; }
         public Nullable<int> SpecificationID { get; set; }
         public Nullable<int> Number { get; set; }
+        public bool IsChecked { get; set; }
         public System.DateTime CreateTime { get; set; }
         public int IsDelete { get; set; }
     }

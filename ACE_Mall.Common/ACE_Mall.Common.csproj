@@ -64,6 +64,7 @@
   <ItemGroup>
     <Compile Include="CacheHelper.cs" />
     <Compile Include="ConvertHelper.cs" />
+    <Compile Include="GetEnum.cs" />
     <Compile Include="GetModelHelper.cs" />
     <Compile Include="HashTableHelp.cs" />
     <Compile Include="JsonHelper.cs" />

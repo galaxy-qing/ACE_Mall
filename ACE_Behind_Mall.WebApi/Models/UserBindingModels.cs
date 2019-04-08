@@ -77,5 +77,57 @@ namespace ACE_Behind_Mall.WebApi.Models
             [Display(Name = "商品ID")]
             public int goodId { get; set; }
         }
+        /// <summary>
+        /// 是否选中购物车商品
+        /// </summary>
+        public class GetGoodsChecked
+        {
+
+            [Required]
+            [Display(Name = "用户ID")]
+            public int userId { get; set; }
+            [Required]
+            [Display(Name = "商品ID")]
+            public int goodId { get; set; }
+            [Required]
+            [Display(Name = "是否选中")]
+            public bool isChecked { get; set; }
+        }
+        /// <summary>
+        /// 是否全选购物车商品
+        /// </summary>
+        public class GetGoodsAllChecked
+        {
+            [Required]
+            [Display(Name = "用户ID")]
+            public int userId { get; set; }
+            [Required]
+            [Display(Name = "是否选中")]
+            public bool isChecked { get; set; }
+        }
+        public class PostOrderShow
+        {
+            [Required]
+            [Display(Name = "用户ID")]
+            public int userId { get; set; }
+        }
+        public class SubmitOrder
+        {
+            [Required]
+            [Display(Name = "用户ID")]
+            public int userId { get; set; }
+            [Required]
+            [Display(Name = "用户留言")]
+            public string note { get; set; }
+            [Required]
+            [Display(Name = "支付金额")]
+            public decimal payMoney { get; set; }
+        }
+        public class PayOrder
+        {
+            [Required]
+            [Display(Name = "订单号")]
+            public string orderNo { get; set; }
+        }
     }
 }
