@@ -27,24 +27,9 @@ namespace ACE_Behind_Mall.WebApi.Controllers
         UserBLL userbll = new UserBLL();
         ShopCartBLL shopcartbll = new ShopCartBLL();
         GoodBLL goodbll = new GoodBLL();
+        OrderBLL orderbll = new OrderBLL();
+        OrderGoodBLL ordergoodbll = new OrderGoodBLL();
         SpecificationBLL specificationbll = new SpecificationBLL();
-        [HttpPost]
-        public HttpResponseMessage Get(UserLoginBindingModel model)
-        {
-            var userList = userbll.GetList(x => (x.Account == model.account || x.Email == model.account) & x.Password == model.password & x.IsDelete == 0);
-            // HttpCookie cookie = new HttpCookie("userid");
-            // cookie.Value = userList.FirstOrDefault().ID.ToString();
-            HttpContext.Current.Response.AddHeader("Access-Control-Allow-Credentials", "true");
-            var resp = new HttpResponseMessage();
-            var cookie = new CookieHeaderValue("userid", userList.FirstOrDefault().ID.ToString());
-            cookie.Domain = "192.168.0.183";
-            cookie.Domain = Request.RequestUri.Host;
-            cookie.Domain = ".shit.com";
-            cookie.Path = "/";
-            resp.Headers.AddCookies(new CookieHeaderValue[] { cookie });
-            return resp;
-
-        }
         /// <summary>
         /// 用户登录
         /// </summary>
@@ -163,18 +148,7 @@ namespace ACE_Behind_Mall.WebApi.Controllers
                 }
                 if (userId != 0)
                 {
-                    var model = shopcartbll.GetList(x => x.IsDelete == 0 & x.UserID == userId).Select(x => new
-                    {
-                        goodId=x.GoodID,
-                        goodStock= goodbll.GetList(y => y.IsDelete == 0 & y.ID == x.GoodID).FirstOrDefault().Stock,
-                        goodImage = goodbll.GetList(y => y.IsDelete == 0 & y.ID == x.GoodID).FirstOrDefault().CoverImage,
-                        goodName = goodbll.GetList(y => y.IsDelete == 0 & y.ID == x.GoodID).FirstOrDefault().Name,
-                        goodPrice = goodbll.GetList(y => y.IsDelete == 0 & y.ID == x.GoodID).FirstOrDefault().PresentPrice,
-                        number = x.Number,
-                        subTotal = goodbll.GetList(y => y.IsDelete == 0 & y.ID == x.GoodID).FirstOrDefault().PresentPrice * x.Number,
-                    });
-                    mr.data = model;
-                    mr.total = model.Count();
+                    getModel(userId, 1);
                 }
             }
             catch (Exception e)
@@ -198,7 +172,7 @@ namespace ACE_Behind_Mall.WebApi.Controllers
                 mr.message = "请先登录";
             }
             var usermodel = userbll.GetList(x => x.ID == model.userId).Count();
-            if (model.userId != 0&&usermodel>0)
+            if (model.userId != 0 && usermodel > 0)
             {
                 try
                 {
@@ -236,15 +210,10 @@ namespace ACE_Behind_Mall.WebApi.Controllers
                                 shopcartmodel.Number += model.number;
                                 My_Shopcart m = shopcartbll.GetUpdateModel<My_Shopcart>(shopcartmodel, "ID");
                                 flag = shopcartbll.Update(m);
-                            }            
+                            }
                         }
                         if (flag == true)
                         {
-                            var goodmodel = goodbll.GetList(x => x.IsDelete == 0 && x.ID == model.goodId).FirstOrDefault();
-                            //goodmodel.SaleNumber += model.number;
-                            //goodmodel.Stock -= model.number;
-                            Mall_Good m = goodbll.GetUpdateModel<Mall_Good>(goodmodel, "ID");
-                            goodbll.Update(m);
                             mr.message = "添加成功";
                             mr.total = 1;
                         }
@@ -282,23 +251,9 @@ namespace ACE_Behind_Mall.WebApi.Controllers
                     bool flag = shopcartbll.Update(m);
                     if (flag == true)
                     {
-
-                        var myshopcartmodel = shopcartbll.GetList(x => x.IsDelete == 0 & x.UserID == model.userId).Select(x => new
-                        {
-                            goodId = x.GoodID,
-                            goodStock = goodbll.GetList(y => y.IsDelete == 0 & y.ID == x.GoodID).FirstOrDefault().Stock,
-                            goodImage = goodbll.GetList(y => y.IsDelete == 0 & y.ID == x.GoodID).FirstOrDefault().CoverImage,
-                            goodName = goodbll.GetList(y => y.IsDelete == 0 & y.ID == x.GoodID).FirstOrDefault().Name,
-                            goodPrice = goodbll.GetList(y => y.IsDelete == 0 & y.ID == x.GoodID).FirstOrDefault().PresentPrice,
-                            number = x.Number,
-                            subTotal = goodbll.GetList(y => y.IsDelete == 0 & y.ID == x.GoodID).FirstOrDefault().PresentPrice * x.Number,
-                        });
-                        mr.data = myshopcartmodel;
-                        mr.message = "修改成功";
-                        mr.total = 1;
-                        
+                        getModel(model.userId, 1);
                     }
-                }      
+                }
             }
             catch (Exception e)
             {
@@ -323,7 +278,160 @@ namespace ACE_Behind_Mall.WebApi.Controllers
                 bool flag = shopcartbll.Update(m);
                 if (flag == true)
                 {
-                    mr.message = "删除成功";
+                    getModel(model.userId, 1);
+                    //var mymodel = shopcartbll.GetList(x => x.IsDelete == 0 & x.UserID == model.userId).Select(x => new
+                    //{
+                    //    goodId = x.GoodID,
+                    //    goodStock = goodbll.GetList(y => y.IsDelete == 0 & y.ID == x.GoodID).FirstOrDefault().Stock,
+                    //    goodImage = goodbll.GetList(y => y.IsDelete == 0 & y.ID == x.GoodID).FirstOrDefault().CoverImage,
+                    //    goodName = goodbll.GetList(y => y.IsDelete == 0 & y.ID == x.GoodID).FirstOrDefault().Name,
+                    //    goodPrice = goodbll.GetList(y => y.IsDelete == 0 & y.ID == x.GoodID).FirstOrDefault().PresentPrice,
+                    //    number = x.Number,
+                    //    isChecked = x.IsChecked,
+                    //    subTotal = goodbll.GetList(y => y.IsDelete == 0 & y.ID == x.GoodID).FirstOrDefault().PresentPrice * x.Number,
+                    //});
+                    //decimal totalPrice = 0;
+                    //int totalNumber = mymodel.Count();
+                    //foreach (var item in mymodel.Where(x => x.isChecked == true))
+                    //{
+                    //    totalPrice += Convert.ToDecimal(item.subTotal);
+                    //}
+                    //int checkNumber = shopcartbll.GetList(x => x.IsDelete == 0 && x.UserID == model.userId && x.IsChecked == true).Count();
+                    //mr.data = new { totalNumber = totalNumber, totalPrice = totalPrice, mymodel };
+                    //mr.message = "删除成功";
+                    //mr.total = 1;
+                }
+            }
+            catch (Exception e)
+            {
+                mr.status = 1;
+                Log.Error(e.Message);
+            }
+            return mr;
+        }
+        /// <summary>
+        /// 获取商品选中状态
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ModelResponse<dynamic> SetGoodsChecked(GetGoodsChecked model)
+        {
+            try
+            {
+                var shopcartmodel = shopcartbll.GetList(x => x.IsDelete == 0 && x.UserID == model.userId && x.GoodID == model.goodId).FirstOrDefault();
+                shopcartmodel.IsChecked = model.isChecked;
+                My_Shopcart m = shopcartbll.GetUpdateModel<My_Shopcart>(shopcartmodel, "ID");
+                bool flag = shopcartbll.Update(m);
+                if (flag == true)
+                {
+                    getModel(model.userId, 1);
+                    //var mymodel = shopcartbll.GetList(x => x.IsDelete == 0 && x.UserID == model.userId).Select(x => new
+                    //{
+                    //    goodId = x.GoodID,
+                    //    goodStock = goodbll.GetList(y => y.IsDelete == 0 & y.ID == x.GoodID).FirstOrDefault().Stock,
+                    //    goodImage = goodbll.GetList(y => y.IsDelete == 0 & y.ID == x.GoodID).FirstOrDefault().CoverImage,
+                    //    goodName = goodbll.GetList(y => y.IsDelete == 0 & y.ID == x.GoodID).FirstOrDefault().Name,
+                    //    goodPrice = goodbll.GetList(y => y.IsDelete == 0 & y.ID == x.GoodID).FirstOrDefault().PresentPrice,
+                    //    number = x.Number,
+                    //    isChecked = x.IsChecked,
+                    //    subTotal = goodbll.GetList(y => y.IsDelete == 0 & y.ID == x.GoodID).FirstOrDefault().PresentPrice * x.Number,
+                    //});
+                    //decimal totalPrice = 0;
+                    //int totalNumber = 0;
+                    //foreach (var item2 in mymodel)
+                    //{
+                    //    totalNumber += Convert.ToInt32(item2.number);
+                    //}
+                    //int checkNumber = 0;
+                    //foreach (var item1 in mymodel.Where(x => x.isChecked == true))
+                    //{
+                    //    totalPrice += Convert.ToDecimal(item1.subTotal);
+                    //    checkNumber += Convert.ToInt32(item1.number);
+                    //}
+                    //bool isAllChecked = shopcartbll.GetList(y => y.IsDelete == 0 && y.UserID == model.goodId && y.IsChecked == false).Count == 0 ? true : false;
+                    //mr.data = new { isAllChecked = isAllChecked, totalNumber = totalNumber, checkNumber = checkNumber, totalPrice = totalPrice, mymodel };
+                    //mr.message = "修改成功";
+                    //mr.total = 1;
+
+                }
+            }
+            catch (Exception e)
+            {
+                mr.status = 1;
+                Log.Error(e.Message);
+            }
+            return mr;
+        }
+        /// <summary>
+        /// 获取商品是否全选
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ModelResponse<dynamic> SetGoodsAllChecked(GetGoodsAllChecked model)
+        {
+            try
+            {
+                var shopcartmodel = shopcartbll.GetList(x => x.IsDelete == 0 && x.UserID == model.userId);
+                foreach (var item in shopcartmodel)
+                {
+                    item.IsChecked = model.isChecked;
+                    My_Shopcart m = shopcartbll.GetUpdateModel<My_Shopcart>(item, "ID");
+                    bool flag = shopcartbll.Update(m);
+                    if (flag == true)
+                    {
+                        getModel(model.userId, 1);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                mr.status = 1;
+                Log.Error(e.Message);
+            }
+            return mr;
+        }
+        /// <summary>
+        /// 去结算
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public ModelResponse<dynamic> GetShopCartShow(int userId)
+        {
+            try
+            {
+                var shopcartmodel = shopcartbll.GetList(x => x.IsDelete == 0 && x.UserID == userId);
+                foreach (var item in shopcartmodel)
+                {
+                    //getModel(userId, 2);
+                    var  model = shopcartbll.GetList(x => x.IsDelete == 0 && x.UserID == userId && x.IsChecked == true);
+                    var usermodel = userbll.GetList(y => y.ID == userId).FirstOrDefault();
+                    var mymodel = model.Select(x => new
+                    {
+                        receiveName = usermodel.ReceiveName==null?"": usermodel.ReceiveName,
+                        receivePhone = usermodel.ReceivePhone == null ? "" : usermodel.ReceivePhone,
+                        receiveAddress = usermodel.ReceiveAddress == null ? "" : usermodel.ReceiveAddress,
+                        goodId = x.GoodID == 0 ? 0 : x.GoodID,
+                        goodStock = goodbll.GetList(y => y.IsDelete == 0 & y.ID == x.GoodID).FirstOrDefault().Stock == 0 ? 0 : goodbll.GetList(y => y.IsDelete == 0 & y.ID == x.GoodID).FirstOrDefault().Stock,
+                        goodImage = goodbll.GetList(y => y.IsDelete == 0 & y.ID == x.GoodID).FirstOrDefault().CoverImage == null ? "" : goodbll.GetList(y => y.IsDelete == 0 & y.ID == x.GoodID).FirstOrDefault().CoverImage,
+                        goodName = goodbll.GetList(y => y.IsDelete == 0 & y.ID == x.GoodID).FirstOrDefault().Name == null ? "" : goodbll.GetList(y => y.IsDelete == 0 & y.ID == x.GoodID).FirstOrDefault().Name,
+                        goodPrice = goodbll.GetList(y => y.IsDelete == 0 & y.ID == x.GoodID).FirstOrDefault().PresentPrice == null ? 0 : goodbll.GetList(y => y.IsDelete == 0 & y.ID == x.GoodID).FirstOrDefault().PresentPrice,
+                        number = x.Number == 0 ? 0 : x.Number,
+                        isChecked = x.IsChecked,
+                        subTotal = goodbll.GetList(y => y.IsDelete == 0 & y.ID == x.GoodID).FirstOrDefault().PresentPrice * x.Number == 0 ? 0 : goodbll.GetList(y => y.IsDelete == 0 & y.ID == x.GoodID).FirstOrDefault().PresentPrice * x.Number,
+                    });
+                    int totalNumber = 0;
+                    decimal totalPrice = 0;
+                    int checkNumber = mymodel.Where(x => x.isChecked == true).Count();
+                    foreach (var item1 in mymodel.Where(x => x.isChecked == true))
+                    {
+                        totalPrice += Convert.ToDecimal(item1.subTotal);
+                        totalNumber += Convert.ToInt32(item1.number);
+                    }
+                    mr.data = new {totalNumber = totalNumber, checkNumber = checkNumber, totalPrice = totalPrice, mymodel };
+                    mr.message = "数据加载成功";
                     mr.total = 1;
                 }
             }
@@ -333,6 +441,45 @@ namespace ACE_Behind_Mall.WebApi.Controllers
                 Log.Error(e.Message);
             }
             return mr;
+        }
+        /// <summary>
+        /// 获取购物车
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="type"></param>
+        public void getModel(int userId,int type)
+        {
+            var model = shopcartbll.GetList(x => x.IsDelete == 0 && x.UserID == userId);
+            if (type == 2)
+            {
+                 model = shopcartbll.GetList(x => x.IsDelete == 0 && x.UserID == userId&&x.IsChecked==true);
+            }
+            var usermodel = userbll.GetList(y => y.ID == userId).FirstOrDefault();
+            var mymodel = model.Select(x => new
+            {
+                //receiveName = usermodel.ReceiveName==null?"": usermodel.ReceiveName,
+                //receivePhone = usermodel.ReceivePhone == null ? "" : usermodel.ReceivePhone,
+                // receiveAddress = usermodel.ReceiveAddress == null ? "" : usermodel.ReceiveAddress,
+                goodId = x.GoodID == 0 ? 0 : x.GoodID,
+                goodStock = goodbll.GetList(y => y.IsDelete == 0 & y.ID == x.GoodID).FirstOrDefault().Stock==0?0: goodbll.GetList(y => y.IsDelete == 0 & y.ID == x.GoodID).FirstOrDefault().Stock,
+                goodImage = goodbll.GetList(y => y.IsDelete == 0 & y.ID == x.GoodID).FirstOrDefault().CoverImage==null?"": goodbll.GetList(y => y.IsDelete == 0 & y.ID == x.GoodID).FirstOrDefault().CoverImage,
+                goodName = goodbll.GetList(y => y.IsDelete == 0 & y.ID == x.GoodID).FirstOrDefault().Name==null?"": goodbll.GetList(y => y.IsDelete == 0 & y.ID == x.GoodID).FirstOrDefault().Name,
+                goodPrice = goodbll.GetList(y => y.IsDelete == 0 & y.ID == x.GoodID).FirstOrDefault().PresentPrice==null?0: goodbll.GetList(y => y.IsDelete == 0 & y.ID == x.GoodID).FirstOrDefault().PresentPrice,
+                number = x.Number==0?0:x.Number,
+                isChecked = x.IsChecked,
+                subTotal = goodbll.GetList(y => y.IsDelete == 0 & y.ID == x.GoodID).FirstOrDefault().PresentPrice * x.Number==0?0: goodbll.GetList(y => y.IsDelete == 0 & y.ID == x.GoodID).FirstOrDefault().PresentPrice * x.Number,
+            });
+            decimal totalPrice = 0;
+            int totalNumber = mymodel.Count();
+            int checkNumber = mymodel.Where(x => x.isChecked == true).Count();
+            foreach (var item1 in mymodel.Where(x => x.isChecked == true))
+            {
+                totalPrice += Convert.ToDecimal(item1.subTotal);
+            }
+            bool isAllChecked = shopcartbll.GetList(y => y.IsDelete == 0 && y.UserID == userId && y.IsChecked == false).Count == 0 ? true : false;
+            mr.data = new { isAllChecked = isAllChecked, totalNumber = totalNumber, checkNumber = checkNumber, totalPrice = totalPrice, mymodel};
+            mr.message = "数据加载成功";
+            mr.total = 1;
         }
     }
 }
