@@ -1,5 +1,5 @@
 ﻿layui.config({
-    base: "/js/"
+    base: "/layuiadmin/layui/lay/modules/"
 }).use(['form', 'table', 'jquery', 'laydate', 'vue', 'layer', 'upload'], function () {
     var form = layui.form,
         layer = layui.layer,

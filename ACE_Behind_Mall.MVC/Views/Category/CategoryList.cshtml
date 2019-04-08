@@ -9,18 +9,19 @@
     <meta charset="utf-8">
     <title>商品分类列表</title>
     <link href="~/layuiadmin/layui/css/layui.css" rel="stylesheet" />
-    <link rel="stylesheet" href="/layui/css/layui.css" media="all">
+    <link href="~/layuiadmin/style/admin.css" rel="stylesheet" />
+    @*<link rel="stylesheet" href="/layui/css/layui.css" media="all">*@
 </head>
 <body>
     <div class="demoTable" style="margin-top:10px;margin-left:20px;">
         <button class="layui-btn layuiadmin-btn-admin" data-type="add">添加商品分类</button>
     </div>
     @*<div class="layui-table-tool">
-        <div class="layui-table-tool-temp">
-            <button class="layui-btn layuiadmin-btn-admin" data-type="add">添加商品分类</button>
-        </div>        
-    </div>*@
-    <table class="layui-table" id="demo" lay-data="{id: 'idTest'}" lay-filter="test"></table>
+            <div class="layui-table-tool-temp">
+                <button class="layui-btn layuiadmin-btn-admin" data-type="add">添加商品分类</button>
+            </div>
+        </div>*@
+    <table class="layui-table" id="demo" lay-data="{id: 'idTest',skin:'line'}" lay-filter="test"></table>
     <!--添加窗口-->
     <div id="divAdd" style="display: none">
         <div class="layui-form layui-form-pane" id="formAdd" style="padding: 20px 30px 0 50px;">
@@ -44,7 +45,8 @@
         </div>
     </div>
     <script src="~/layuiadmin/layui/layui.js"></script>
-    <script src="~/js/GoodCategory/GoodCategory.js"></script>    
+    @*<script src="~/layui/layui.js"></script>*@
+    <script src="~/js/GoodCategory/GoodCategory.js"></script>
     <script type="text/html" id="IsDelete">
         {{#  if( d.IsDelete ==0){ }}
         <input type="checkbox" data-id="{{d.ID}}" lay-event="IsDelete" checked="" name="open" lay-skin="switch" lay-filter="switchTest" lay-text="显示|不显示">
