@@ -139,14 +139,20 @@
       <EntityTypeMapping TypeName="ACE_MallModel.My_Order">
         <MappingFragment StoreEntitySet="My_Order">
           <ScalarProperty Name="IsDelete" ColumnName="IsDelete" />
-          <ScalarProperty Name="DeliveryTime" ColumnName="DeliveryTime" />
           <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+          <ScalarProperty Name="CompleteTime" ColumnName="CompleteTime" />
+          <ScalarProperty Name="DeliveryTime" ColumnName="DeliveryTime" />
+          <ScalarProperty Name="PayTime" ColumnName="PayTime" />
+          <ScalarProperty Name="CourierNo" ColumnName="CourierNo" />
+          <ScalarProperty Name="CourierName" ColumnName="CourierName" />
           <ScalarProperty Name="Note" ColumnName="Note" />
+          <ScalarProperty Name="PayWay" ColumnName="PayWay" />
+          <ScalarProperty Name="PayMoney" ColumnName="PayMoney" />
           <ScalarProperty Name="Phone" ColumnName="Phone" />
           <ScalarProperty Name="Address" ColumnName="Address" />
           <ScalarProperty Name="Name" ColumnName="Name" />
           <ScalarProperty Name="OrderState" ColumnName="OrderState" />
-          <ScalarProperty Name="Orderno" ColumnName="Orderno" />
+          <ScalarProperty Name="OrderNo" ColumnName="OrderNo" />
           <ScalarProperty Name="UserID" ColumnName="UserID" />
           <ScalarProperty Name="ID" ColumnName="ID" />
         </MappingFragment>
@@ -157,8 +163,9 @@
         <MappingFragment StoreEntitySet="My_Order_Good">
           <ScalarProperty Name="IsDelete" ColumnName="IsDelete" />
           <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
-          <ScalarProperty Name="Good_Number" ColumnName="Good_Number" />
-          <ScalarProperty Name="Good_Specification_ID" ColumnName="Good_Specification_ID" />
+          <ScalarProperty Name="GoodNumber" ColumnName="GoodNumber" />
+          <ScalarProperty Name="GoodSpecificationID" ColumnName="GoodSpecificationID" />
+          <ScalarProperty Name="GoodID" ColumnName="GoodID" />
           <ScalarProperty Name="OrderNo" ColumnName="OrderNo" />
           <ScalarProperty Name="ID" ColumnName="ID" />
         </MappingFragment>
@@ -169,6 +176,7 @@
         <MappingFragment StoreEntitySet="My_Shopcart">
           <ScalarProperty Name="IsDelete" ColumnName="IsDelete" />
           <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+          <ScalarProperty Name="IsChecked" ColumnName="IsChecked" />
           <ScalarProperty Name="Number" ColumnName="Number" />
           <ScalarProperty Name="SpecificationID" ColumnName="SpecificationID" />
           <ScalarProperty Name="GoodID" ColumnName="GoodID" />

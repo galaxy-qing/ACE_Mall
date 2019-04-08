@@ -145,14 +145,20 @@
     </Key>
     <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="UserID" Type="Int32" Nullable="false" />
-    <Property Name="Orderno" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-    <Property Name="OrderState" Type="Int32" />
+    <Property Name="OrderNo" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="OrderState" Type="Int32" Nullable="false" />
     <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
     <Property Name="Address" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
     <Property Name="Phone" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="PayMoney" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="PayWay" Type="Int32" />
     <Property Name="Note" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
-    <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="CourierName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="CourierNo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="PayTime" Type="DateTime" Precision="3" />
     <Property Name="DeliveryTime" Type="DateTime" Precision="3" />
+    <Property Name="CompleteTime" Type="DateTime" Precision="3" />
+    <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
     <Property Name="IsDelete" Type="Int32" Nullable="false" />
   </EntityType>
   <EntityType Name="My_Order_Good">
@@ -160,9 +166,10 @@
       <PropertyRef Name="ID" />
     </Key>
     <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="OrderNo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-    <Property Name="Good_Specification_ID" Type="Int32" />
-    <Property Name="Good_Number" Type="Int32" />
+    <Property Name="OrderNo" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="GoodID" Type="Int32" Nullable="false" />
+    <Property Name="GoodSpecificationID" Type="Int32" />
+    <Property Name="GoodNumber" Type="Int32" />
     <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
     <Property Name="IsDelete" Type="Int32" Nullable="false" />
   </EntityType>
@@ -171,10 +178,11 @@
       <PropertyRef Name="ID" />
     </Key>
     <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="UserID" Type="Int32" />
-    <Property Name="GoodID" Type="Int32" />
+    <Property Name="UserID" Type="Int32" Nullable="false" />
+    <Property Name="GoodID" Type="Int32" Nullable="false" />
     <Property Name="SpecificationID" Type="Int32" />
     <Property Name="Number" Type="Int32" />
+    <Property Name="IsChecked" Type="Boolean" Nullable="false" />
     <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
     <Property Name="IsDelete" Type="Int32" Nullable="false" />
   </EntityType>

@@ -130,14 +130,20 @@
     </Key>
     <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="UserID" Type="int" Nullable="false" />
-    <Property Name="Orderno" Type="varchar" MaxLength="50" Nullable="false" />
-    <Property Name="OrderState" Type="int" />
+    <Property Name="OrderNo" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="OrderState" Type="int" Nullable="false" />
     <Property Name="Name" Type="varchar" MaxLength="50" />
     <Property Name="Address" Type="varchar" MaxLength="500" />
     <Property Name="Phone" Type="varchar" MaxLength="20" />
+    <Property Name="PayMoney" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="PayWay" Type="int" />
     <Property Name="Note" Type="varchar" MaxLength="200" />
-    <Property Name="CreateTime" Type="datetime" Nullable="false" />
+    <Property Name="CourierName" Type="varchar" MaxLength="50" />
+    <Property Name="CourierNo" Type="varchar" MaxLength="50" />
+    <Property Name="PayTime" Type="datetime" />
     <Property Name="DeliveryTime" Type="datetime" />
+    <Property Name="CompleteTime" Type="datetime" />
+    <Property Name="CreateTime" Type="datetime" Nullable="false" />
     <Property Name="IsDelete" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="My_Order_Good">
@@ -145,9 +151,10 @@
       <PropertyRef Name="ID" />
     </Key>
     <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="OrderNo" Type="varchar" MaxLength="50" />
-    <Property Name="Good_Specification_ID" Type="int" />
-    <Property Name="Good_Number" Type="int" />
+    <Property Name="OrderNo" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="GoodID" Type="int" Nullable="false" />
+    <Property Name="GoodSpecificationID" Type="int" />
+    <Property Name="GoodNumber" Type="int" />
     <Property Name="CreateTime" Type="datetime" Nullable="false" />
     <Property Name="IsDelete" Type="int" Nullable="false" />
   </EntityType>
@@ -156,10 +163,11 @@
       <PropertyRef Name="ID" />
     </Key>
     <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="UserID" Type="int" />
-    <Property Name="GoodID" Type="int" />
+    <Property Name="UserID" Type="int" Nullable="false" />
+    <Property Name="GoodID" Type="int" Nullable="false" />
     <Property Name="SpecificationID" Type="int" />
     <Property Name="Number" Type="int" />
+    <Property Name="IsChecked" Type="bit" Nullable="false" />
     <Property Name="CreateTime" Type="datetime" Nullable="false" />
     <Property Name="IsDelete" Type="int" Nullable="false" />
   </EntityType>
