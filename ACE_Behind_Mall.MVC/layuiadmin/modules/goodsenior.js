@@ -7,6 +7,20 @@
     
  */
 layui.define(function (exports) {
+    layui.use(['index', 'laydate'], function () {
+        var laydate = layui.laydate;
+        //年选择器
+        laydate.render({
+            elem: '#test-laydate-type-year'
+            , type: 'year'
+        });
+
+        //年月选择器
+        laydate.render({
+            elem: '#test-laydate-type-month'
+            , type: 'month'
+        });
+    })
     //区块轮播切换
     layui.use(['admin', 'carousel'], function () {
         var $ = layui.$

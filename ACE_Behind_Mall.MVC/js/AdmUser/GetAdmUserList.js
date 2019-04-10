@@ -1,48 +1,4 @@
-﻿//layui.config({
-//    base: "/layuiadmin/layui/modules/"
-//}).use(['layer', 'jquery', 'table'], function () {
-///*    var*/ /*form = layui.form(),*/
-//        var layer = layui.layer,
-//        $ = layui.jquery;
-//    var table = layui.table;
-//    var toplayer = (top == undefined || top.layer === undefined) ? layer : top.layer;  //顶层的LAYER  
-//    var config = {};  //table的参数，如搜索key，点击tree的id
-//    var mainList = function (options) {
-//        if (options != undefined) {
-//            $.extend(config, options);
-//        }
-//        table.reload('mainList', {
-//            url: '/AdminUser/GetAdmUserList',
-//            where: config
-//        });
-//    }
-//})
-//layui.config({
-//    base: "/js/"
-//}).use(['form', 'upload'], function () {
-//    var $ = layui.jquery
-//        , upload = layui.upload
-//        , form = layui.form;
-//    $.get(AdminUser / GetRoleList, {}, function (data) {
-//        var $html = "";
-//        alert(data.data);
-//        if (data.data != null) {
-//            $.each(data.data, function (index, item) {
-//                if (item.proType) {
-//                    $html += "<option class='generate' value='" + item.id + "'>" + item.proType + "</option>";
-//                } else {
-//                    $html += "<option value='" + item.id + "'>" + item.name + "</option>";
-//                }
-//            });
-//            $("select[name='RoleID']").append($html);
-//            //反选
-//            $("select[name='RoleID']").val($("#PositionID").val());
-//            //append后必须从新渲染
-//            form.render('select');
-//        }
-//    })
-//});
-layui.config({
+﻿layui.config({
     base: "/js/"
 }).use(['form', 'table', 'jquery', 'laydate', 'vue', 'layer', 'upload'], function () {
     var form = layui.form,

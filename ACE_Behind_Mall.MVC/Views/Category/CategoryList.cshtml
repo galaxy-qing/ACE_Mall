@@ -10,17 +10,11 @@
     <title>商品分类列表</title>
     <link href="~/layuiadmin/layui/css/layui.css" rel="stylesheet" />
     <link href="~/layuiadmin/style/admin.css" rel="stylesheet" />
-    @*<link rel="stylesheet" href="/layui/css/layui.css" media="all">*@
 </head>
 <body>
     <div class="demoTable" style="margin-top:10px;margin-left:20px;">
         <button class="layui-btn layuiadmin-btn-admin" data-type="add">添加商品分类</button>
     </div>
-    @*<div class="layui-table-tool">
-            <div class="layui-table-tool-temp">
-                <button class="layui-btn layuiadmin-btn-admin" data-type="add">添加商品分类</button>
-            </div>
-        </div>*@
     <table class="layui-table" id="demo" lay-data="{id: 'idTest',skin:'line'}" lay-filter="test"></table>
     <!--添加窗口-->
     <div id="divAdd" style="display: none">
@@ -39,13 +33,15 @@
                     <input type="radio" name="IsDelete" value="1" title="否">
                 </div>
             </div>
-            <div class="layui-form-item layui-hide">
-                <input type="button" lay-submit lay-filter="formSubmit" id="formSubmit" value="确认">
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn" lay-submit lay-filter="formSubmit">立即提交</button>
+                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                </div>
             </div>
         </div>
     </div>
     <script src="~/layuiadmin/layui/layui.js"></script>
-    @*<script src="~/layui/layui.js"></script>*@
     <script src="~/js/GoodCategory/GoodCategory.js"></script>
     <script type="text/html" id="IsDelete">
         {{#  if( d.IsDelete ==0){ }}

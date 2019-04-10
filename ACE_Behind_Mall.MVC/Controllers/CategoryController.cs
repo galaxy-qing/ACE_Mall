@@ -21,6 +21,23 @@ namespace ACE_Behind_Mall.MVC.Controllers
         {
             return View();
         }
+        public string Add(Mall_Category obj)
+        {
+            try
+            {
+                Mall_Category model = new Mall_Category();
+                model.Name = obj.Name;
+                model.IsDelete = 0;
+                model.CreateTime = DateTime.Now;
+                categorybll.Add(model);
+                mr.message = "添加成功";
+            }
+            catch (Exception e)
+            {
+                Log.Error(e.Message);
+            }
+            return JsonHelper.Instance.Serialize(mr);
+        }
         /// <summary>
         /// 商品类别列表
         /// </summary>
@@ -69,6 +86,11 @@ namespace ACE_Behind_Mall.MVC.Controllers
                 return Json(mr, JsonRequestBehavior.AllowGet);
             }          
         }
+        /// <summary>
+        /// 修改商品分类名称
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
         [System.Web.Mvc.HttpPost]
         public ActionResult UpdateCategoryName(Mall_Category obj)
         {

@@ -17,17 +17,27 @@
     <link rel="stylesheet" href="../../layuiadmin/style/template.css" media="all">
 </head>
 <body>
+    <div class="demoTable" style="margin-top:10px;margin-left:20px;">
+        商品名称：
+        <div class="layui-inline">
+            <input class="layui-input" name="Name" id="inputReload" autocomplete="off">
+        </div>
+        <button class="layui-btn" data-type="reload">搜索</button>
+        <button class="layui-btn layuiadmin-btn-admin" data-type="onShelves">上架</button>
+        <button class="layui-btn layuiadmin-btn-admin" data-type="offShelves">下架</button>
+    </div>
     <div class="layui-fluid layadmin-cmdlist-fluid">
         <div class="layui-row layui-col-space30">
             <!--商品模块-->
             @{
+                //string aaa = Request["field"];
                 GoodBLL goodbll = new GoodBLL();
-                var goodlist = goodbll.GetList(x => true).ToList();
+                var goodlist = goodbll.GetList(x =>true).ToList();
                 foreach (var item in goodlist)
                 {
                     <div class="layui-col-md2 layui-col-sm4">
                         <div class="cmdlist-container">
-                            <input type="hidden" name="ID" value=@item.ID/>
+                            <input type="hidden" name="ID" value=@item.ID />
                             <a href="javascript:;">
                                 <img src=@item.CoverImage>
                             </a>

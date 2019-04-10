@@ -48,6 +48,44 @@
         var type = $(this).data('type');
         active[type] ? active[type].call(this) : '';
     });
+    //添加商品分类
+    var addlDlg = function () {
+        var showDetail = function (data) {
+            var title = "添加商品分类";
+            var addlayer=layer.open({
+                title: title,
+                area: ["500px", "300px"],
+                type: 1,
+                btn: ['取消'],
+                content: $('#divAdd'),
+                success: function () {
+                },
+                end: tableIns
+            });
+            var url = "/Category/Add";
+            //提交数据
+            form.on('submit(formSubmit)',
+                function (data) {
+                    $.post(url,
+                        data.field,
+                        function (data) {
+                            layer.msg(data.message);
+                            layer.close(addlayer);
+                            tableIns.reload();
+                        },
+                        "json");
+                    return false;
+                });
+
+        }
+        return {
+            add: function () { //弹出添加
+                showDetail({
+                    ID: ''
+                });
+            }
+        };
+    }();
     //监听单元格编辑
     table.on('edit(test)', function (obj) {
         var value = obj.value //得到修改后的值
@@ -129,35 +167,8 @@
             });
         }
         , add: function () {  //添加
-            detailDlg.add();
+            addlDlg.add();
         }
-        //, add: function () {
-        //    layer.open({
-        //        title: "添加员工",
-        //        area: ["800px", "600px"],
-        //        type: 1,
-        //        btn: ['确定', '取消'],
-        //        yes: function (index, layero) {
-        //            var url = "/AdminUser/Add";
-        //            //提交数据
-        //            form.on('submit(formSubmit1)',
-        //                function (data) {
-        //                    $.post(url,
-        //                        data.field,
-        //                        function (data) {
-        //                            layer.msg(data.message);
-        //                            layer.close(index); //如果设定了yes回调，需进行手工关闭
-        //                            tableIns.reload(); 
-        //                        },
-        //                        "json");
-        //                    return false;
-        //                });
-        //            $('#formSubmit1').trigger('click');
-
-        //        },
-        //        content: $('#divAdd'),
-        //    });
-        //}
     };
 
 });
