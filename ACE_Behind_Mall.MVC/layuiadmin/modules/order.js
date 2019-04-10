@@ -1,6 +1,6 @@
 ﻿/**
 
- @Name：layuiAdmin 工单系统
+ @Name：layuiAdmin 订单系统
  @Author：star1029
  @Site：http://www.layui.com/admin/
  @License：GPL-2
@@ -33,7 +33,7 @@ layui.define(['table', 'form','vue', 'element', 'jquery'], function (exports) {
             , { field: 'Address', title: '收件人地址', align: 'center' }
             , { field: 'Phone', title: '收件人电话', align: 'center' }
             , { field: 'PayTime', title: '支付时间', align: 'center' }
-            , { title: '操作', align: 'center', minWidth: 280, fixed: 'right', toolbar: '#table-system-order', align: 'center' }
+            , { title: '操作', align: 'left', minWidth: 280, fixed: 'right', toolbar: '#table-system-order'}
         ]]
         , page: true
         , limit: 10
@@ -71,6 +71,49 @@ layui.define(['table', 'form','vue', 'element', 'jquery'], function (exports) {
             }
         };
     }();
+    //快递信息编辑窗口
+    var courierDlg = function () {
+        var vm1 = new Vue({
+            el: "#formCourierDetail"
+        });
+        var showDetail = function (data) {
+            var title = "编辑快递信息";
+            var courierLayer=layer.open({
+                title: title,
+                area: ["500px", "300px"],
+                type: 1,
+                btn: ['取消'],
+                content: $('#divCourierDetail'),
+                success: function () {
+                //将myform表单中input元素type为button、submit、reset、hidden排除 .val('')
+                    $(':input', '#formCourierDetail').not(':button,:submit,:reset,:hidden').val('');
+                    vm1.$set('$data', data);
+                    form.render();
+                    //tableIns.reload();
+                },
+                end: table.render
+            });
+            var url = "/Order/UpdateCourier";
+            //提交数据
+            form.on('submit(formSubmit)',
+                function (data) {
+                    $.post(url,
+                        data.field,
+                        function (data) {
+                            layer.msg(data.message);
+                            layer.close(courierLayer);
+                        },
+                        "json");
+                    return false;
+                });
+        }
+        return {
+            detail: function (data) { //查看编辑框
+                look = true;
+                showDetail(data);
+            }
+        };
+    }();
     //监听表格内部按钮
     table.on('tool(orderList)', function (obj) {
         var data = obj.data;
@@ -78,7 +121,7 @@ layui.define(['table', 'form','vue', 'element', 'jquery'], function (exports) {
             detailDlg.detail(data);
         }
         if (obj.event === 'edit') {
-            detailDlg.update(data);
+            courierDlg.detail(data);
         }
     });
     //监听工具条
