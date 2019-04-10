@@ -29,7 +29,7 @@ namespace ACE_Mall.Model
         public Nullable<System.DateTime> PayTime { get; set; }
         public Nullable<System.DateTime> DeliveryTime { get; set; }
         public Nullable<System.DateTime> CompleteTime { get; set; }
-        public System.DateTime CreateTime { get; set; }
+        public Nullable<System.DateTime> CreateTime { get; set; }
         public int IsDelete { get; set; }
     }
 }

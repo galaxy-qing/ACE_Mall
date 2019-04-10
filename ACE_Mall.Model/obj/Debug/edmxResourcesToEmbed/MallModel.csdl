@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Schema Namespace="ACE_MallModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
   <EntityContainer Name="ACE_MallEntities" annotation:LazyLoadingEnabled="true">
+    <FunctionImport Name="AutoCancelOrder" />
     <EntitySet Name="Adm_Log" EntityType="ACE_MallModel.Adm_Log" />
     <EntitySet Name="Adm_User" EntityType="ACE_MallModel.Adm_User" />
     <EntitySet Name="Adm_User_Role" EntityType="ACE_MallModel.Adm_User_Role" />
@@ -158,7 +159,7 @@
     <Property Name="PayTime" Type="DateTime" Precision="3" />
     <Property Name="DeliveryTime" Type="DateTime" Precision="3" />
     <Property Name="CompleteTime" Type="DateTime" Precision="3" />
-    <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="CreateTime" Type="DateTime" Precision="3" />
     <Property Name="IsDelete" Type="Int32" Nullable="false" />
   </EntityType>
   <EntityType Name="My_Order_Good">

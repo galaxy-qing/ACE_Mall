@@ -12,6 +12,8 @@ namespace ACE_Mall.Model
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
+    using System.Data.Entity.Core.Objects;
+    using System.Linq;
     
     public partial class ACE_MallEntities : DbContext
     {
@@ -38,5 +40,10 @@ namespace ACE_Mall.Model
         public virtual DbSet<My_Order> My_Order { get; set; }
         public virtual DbSet<My_Order_Good> My_Order_Good { get; set; }
         public virtual DbSet<My_Shopcart> My_Shopcart { get; set; }
+    
+        public virtual int AutoCancelOrder()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("AutoCancelOrder");
+        }
     }
 }

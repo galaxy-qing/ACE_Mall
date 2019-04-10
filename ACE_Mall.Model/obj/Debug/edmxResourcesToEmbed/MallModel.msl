@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
   <EntityContainerMapping StorageEntityContainer="StoreContainer" CdmEntityContainer="ACE_MallEntities">
+    <FunctionImportMapping FunctionImportName="AutoCancelOrder" FunctionName="Store.AutoCancelOrder" />
     <EntitySetMapping Name="Adm_Log">
       <EntityTypeMapping TypeName="ACE_MallModel.Adm_Log">
         <MappingFragment StoreEntitySet="Adm_Log">

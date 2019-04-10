@@ -148,7 +148,7 @@
           <Property Name="PayTime" Type="datetime" />
           <Property Name="DeliveryTime" Type="datetime" />
           <Property Name="CompleteTime" Type="datetime" />
-          <Property Name="CreateTime" Type="datetime" Nullable="false" />
+          <Property Name="CreateTime" Type="datetime" />
           <Property Name="IsDelete" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="My_Order_Good">
@@ -176,6 +176,7 @@
           <Property Name="CreateTime" Type="datetime" Nullable="false" />
           <Property Name="IsDelete" Type="int" Nullable="false" />
         </EntityType>
+        <Function Name="AutoCancelOrder" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <EntityContainer Name="StoreContainer">
           <EntitySet Name="Adm_Log" EntityType="Self.Adm_Log" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Adm_User" EntityType="Self.Adm_User" Schema="dbo" store:Type="Tables" />
@@ -196,6 +197,7 @@
     <edmx:ConceptualModels>
       <Schema Namespace="ACE_MallModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="ACE_MallEntities" annotation:LazyLoadingEnabled="true">
+          <FunctionImport Name="AutoCancelOrder" />
           <EntitySet Name="Adm_Log" EntityType="ACE_MallModel.Adm_Log" />
           <EntitySet Name="Adm_User" EntityType="ACE_MallModel.Adm_User" />
           <EntitySet Name="Adm_User_Role" EntityType="ACE_MallModel.Adm_User_Role" />
@@ -353,7 +355,7 @@
           <Property Name="PayTime" Type="DateTime" Precision="3" />
           <Property Name="DeliveryTime" Type="DateTime" Precision="3" />
           <Property Name="CompleteTime" Type="DateTime" Precision="3" />
-          <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CreateTime" Type="DateTime" Precision="3" />
           <Property Name="IsDelete" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="My_Order_Good">
@@ -387,6 +389,7 @@
     <edmx:Mappings>
     <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
   <EntityContainerMapping StorageEntityContainer="StoreContainer" CdmEntityContainer="ACE_MallEntities" >
+          <FunctionImportMapping FunctionImportName="AutoCancelOrder" FunctionName="Store.AutoCancelOrder" />
           <EntitySetMapping Name="Adm_Log">
             <EntityTypeMapping TypeName="ACE_MallModel.Adm_Log">
               <MappingFragment StoreEntitySet="Adm_Log">

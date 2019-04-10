@@ -143,7 +143,7 @@
     <Property Name="PayTime" Type="datetime" />
     <Property Name="DeliveryTime" Type="datetime" />
     <Property Name="CompleteTime" Type="datetime" />
-    <Property Name="CreateTime" Type="datetime" Nullable="false" />
+    <Property Name="CreateTime" Type="datetime" />
     <Property Name="IsDelete" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="My_Order_Good">
@@ -171,6 +171,7 @@
     <Property Name="CreateTime" Type="datetime" Nullable="false" />
     <Property Name="IsDelete" Type="int" Nullable="false" />
   </EntityType>
+  <Function Name="AutoCancelOrder" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
   <EntityContainer Name="StoreContainer">
     <EntitySet Name="Adm_Log" EntityType="Self.Adm_Log" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Adm_User" EntityType="Self.Adm_User" Schema="dbo" store:Type="Tables" />
