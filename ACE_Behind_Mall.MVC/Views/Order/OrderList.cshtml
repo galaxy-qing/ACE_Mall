@@ -66,7 +66,9 @@
                 <script type="text/html" id="table-system-order">
                     <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="orderDetail"><i class="layui-icon layui-icon-form"></i>订单详情</a>
                     <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="goodDetail"><i class="layui-icon layui-icon-form"></i>商品详情</a>
+                    {{# if (d.OrderState==2){}}
                     <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit"><i class="layui-icon layui-icon-edit"></i>发货</a>
+                    {{#  } }}
                 </script>
             </div>
         </div>
@@ -144,9 +146,21 @@
             </div>
         </div>
         <div class="layui-form-item">
-            <label class="layui-form-label">订单创建时间</label>
+            <label class="layui-form-label">买家留言</label>
             <div class="layui-input-block">
-                <input type="text" name="CreateTime" v-model="CreateTime" class="layui-input">
+                <input type="text" name="Note" v-model="Note" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">快递名称</label>
+            <div class="layui-input-block">
+                <input type="text" name="CourierName" v-model="CourierName" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">快递编号</label>
+            <div class="layui-input-block">
+                <input type="text" name="CourierNo" v-model="CourierNo" class="layui-input">
             </div>
         </div>
         <div class="layui-form-item">
@@ -169,6 +183,27 @@
         </div>
     </div>
 </div>
-<!--查看订单商品列表-->
-
-<table id="goodList" lay-filter="goodList" hidden></table>
+<!--快递信息编辑窗口-->
+<div id="divCourierDetail" lay-filter="layuiadmin-form-admin" style="display: none">
+    <div class="layui-form layui-form-pane" id="formCourierDetail" style="padding: 20px 30px 0 50px;">
+        <input type="hidden" name="ID" v-model="ID" />
+        <div class="layui-form-item">
+            <label class="layui-form-label">快递名称</label>
+            <div class="layui-input-block">
+                <input type="text" name="CourierName" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">快递编号</label>
+            <div class="layui-input-block">
+                <input type="text" name="CourierNo"  autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit lay-filter="formSubmit">立即提交</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
+    </div>
+</div>
