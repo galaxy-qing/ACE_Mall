@@ -114,11 +114,29 @@ namespace ACE_Behind_Mall.WebApi.Controllers
                 int waitPay = ordermodel.Where(x => x.OrderState == 1).Count();
                 int waitDelivery = ordermodel.Where(x => x.OrderState == 2).Count();
                 int waitReceive = ordermodel.Where(x => x.OrderState == 3).Count();
-                int waitComment = ordermodel.Where(x => x.OrderState == 4).Count();
-                int waitEvaluate = ordermodel.Where(x => x.OrderState == 5).Count();
+                int waitEvaluate = ordermodel.Where(x => x.OrderState == 4).Count();
+                int isComplete = ordermodel.Where(x => x.OrderState == 5).Count();
                 int isCancel = ordermodel.Where(x => x.OrderState == 6).Count();
                 mr.message = "获取成功";
-                mr.data = new { all = all, waitPay = waitPay, waitDelivery = waitDelivery, waitReceive = waitReceive, waitComment = waitComment, waitEvaluate = waitEvaluate, isCancel = isCancel };
+                List<int> models = new List<int>();
+                models.Add(all);
+                models.Add(waitPay);
+                models.Add(waitDelivery);
+                models.Add(waitReceive);
+                models.Add(waitEvaluate);
+                models.Add(isComplete);
+                models.Add(isCancel);
+                //Dictionary<string, object> models = new Dictionary<string, object>();
+                //models.Add("all",all);
+                //models.Add("waitPay",waitPay);
+                //models.Add("waitDelivery",waitDelivery);
+                //models.Add("waitReceive",waitReceive);
+                //models.Add("waitEvaluate",waitEvaluate);
+                //models.Add("isComplete",isComplete);
+                //models.Add("isCancel",isCancel);
+                mr.data = models;
+                // mr.data = new { all = all, waitPay = waitPay, waitDelivery = waitDelivery, waitReceive = waitReceive,waitEvaluate = waitEvaluate, DoneComplete= DoneComplete, isCancel = isCancel };
+
             }
             catch (Exception e)
             {
@@ -138,17 +156,20 @@ namespace ACE_Behind_Mall.WebApi.Controllers
         {
             try
             {
-                var List = orderbll.GetList(x => x.IsDelete == 0 && x.UserID == userId).ToList();
+                var List = orderbll.GetList(x => x.IsDelete == 0 && x.UserID == userId).OrderBy(x => x.OrderState).ToList();
                 if (orderStatus != 0)
                 {
-                    List.Where(x => x.OrderState == orderStatus);
+                    List=List.Where(x => x.OrderState == orderStatus).ToList();
                 }
                 var orderList = List.Select(x => new
                 {
                     orderNo = x.OrderNo,
-                    payTime = x.PayTime,
+                    submitTime = Convert.ToDateTime(x.CreateTime).ToString("yyyy-MM-dd HH:mm:ss"),
                     goodNumber = ordergoodbll.GetList(y => y.IsDelete == 0 && y.OrderNo == x.OrderNo).Count(),
                     totalMoney = x.PayMoney,
+                    receiveName=x.Name,
+                    payWay=x.PayWay,
+                    orderState=x.OrderState,
                     goodList = ordergoodbll.GetList(y => y.IsDelete == 0 && y.OrderNo == x.OrderNo).Select(y => new
                     {
                         goodName = goodbll.GetList(z => z.IsDelete == 0 && z.ID == y.GoodID).FirstOrDefault().Name,
@@ -178,30 +199,32 @@ namespace ACE_Behind_Mall.WebApi.Controllers
         {
             try
             {
+                var ordermodel = orderbll.GetList(x => x.IsDelete == 0 && x.UserID == userId && x.OrderNo == orderNo).FirstOrDefault();
+                List<string> times = new List<string>();
+                times.Add(ordermodel.CreateTime.ToString());
+                times.Add(ordermodel.PayTime.ToString());
+                times.Add(ordermodel.DeliveryTime.ToString());
+                times.Add(ordermodel.CompleteTime.ToString());
                 var orderDetail = orderbll.GetList(x => x.IsDelete == 0 && x.UserID == userId && x.OrderNo == orderNo).Select(x => new
                 {
                     orderNo = x.OrderNo,
-                    createTime = x.CreateTime,
-                    payTime = x.PayTime,
-                    deliveryTime = x.DeliveryTime,
-                    completeTime = x.CompleteTime,
-                    CourierName = x.CourierName,
-                    CourierNo = x.CourierNo,
-                    goodList = ordergoodbll.GetList(y => y.IsDelete == 0 && y.OrderNo == x.OrderNo).Select(y => new
+                    orderState=x.OrderState,
+                    courierName = x.CourierName,
+                    courierNo = x.CourierNo,
+                    receiveName = x.Name,
+                    receivePhone = x.Phone,
+                    receiveAddress = x.Address,
+                    payWay = x.PayWay,
+                    payMoney = x.PayMoney,
+
+                    timeProgress= times,
+                    goodList = ordergoodbll.GetList(y => y.IsDelete == 0 && y.OrderNo == orderNo).Select(y => new
                     {
                         goodName = goodbll.GetList(z => z.IsDelete == 0 && z.ID == y.GoodID).FirstOrDefault().Name,
                         goodImage = goodbll.GetList(z => z.IsDelete == 0 && z.ID == y.GoodID).FirstOrDefault().CoverImage,
                         goodPrice = goodbll.GetList(z => z.IsDelete == 0 && z.ID == y.GoodID).FirstOrDefault().PresentPrice,
-                        goodNumber = y.GoodNumber
-                    }),
-                    receiveInfo = userbll.GetList(z => z.IsDelete == 0 && z.ID == userId).Select(z => new
-                    {
-                        receiveName = z.ReceiveName,
-                        receivePhone = z.ReceivePhone,
-                        receiveAddress = z.ReceiveAddress
-                    }),
-                    payWay = x.PayWay,
-                    payMoney = x.PayMoney,
+                        goodNumber = y.GoodNumber,
+                    }),  
                 });
                 mr.data = orderDetail;
                 mr.total = 1;
