@@ -15,7 +15,8 @@ namespace ACE_Mall.Common
             Type type2 = typeof(Pr);
             foreach (PropertyInfo pro in type.GetProperties())
             {
-                if (pro.GetValue(model) != null && pro.GetValue(model).ToString() != "" && pro.GetValue(model).ToString() != "0")
+                //&& pro.GetValue(model).ToString() != "0"&& pro.GetValue(model).ToString() != ""
+                if (pro.GetValue(model) != null)
                 {
                     PropertyInfo pp = type2.GetProperty(pro.Name);
                     pp.SetValue(efmodel, pro.GetValue(model));

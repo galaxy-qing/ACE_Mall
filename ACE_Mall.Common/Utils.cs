@@ -706,6 +706,18 @@ namespace ACE_Mall.Common
         //}
         public static string Number(int Length, bool Sleep)
         {
+
+            byte[] bytes = new byte[4];
+            RNGCryptoServiceProvider r = new RNGCryptoServiceProvider();
+            int number = 0;
+            for (int i = 0; i < 10; i++)
+            {
+                r.GetBytes(bytes);
+                number = BitConverter.ToInt32(bytes, 0);
+                //Console.WriteLine(number);
+            }
+            return number.ToString().Replace("-","").Substring(0,5);
+
             //if (Sleep)
             //    System.Threading.Thread.Sleep(3);
             //string result = "";
@@ -717,18 +729,21 @@ namespace ACE_Mall.Common
             //return result;
 
 
-            byte[] random = new Byte[5/2];
-            // 使用加密服务提供程序 (CSP) 提供的实现来实现加密随机数生成器 (RNG)。无法继承此类
-            RNGCryptoServiceProvider rng = new RNGCryptoServiceProvider();
-            rng.GetNonZeroBytes(random);
-            StringBuilder sb = new StringBuilder(5);
-            int i;
-            for (i = 0; i < random.Length; i++)
-            {
-                // 以10进制格式输出
-                sb.Append(String.Format("{0:D1}", random[i]));
-            }
-            return sb.ToString();
+            //byte[] random = new Byte[5/2];
+            //// 使用加密服务提供程序 (CSP) 提供的实现来实现加密随机数生成器 (RNG)。无法继承此类
+            //RNGCryptoServiceProvider rng = new RNGCryptoServiceProvider();
+            //rng.GetNonZeroBytes(random);
+            //StringBuilder sb = new StringBuilder(5);
+            //int i;
+            //for (i = 0; i < random.Length; i++)
+            //{
+            //    // 以10进制格式输出
+            //    sb.Append(String.Format("{0:D1}", random[i]));
+            //}
+            //return sb.ToString();
+
+
+
             //string aaa = "";
             //for (int i = 0; i < 5; i++)
             //{
