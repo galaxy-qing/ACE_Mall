@@ -71,8 +71,8 @@
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="CategoryID" Type="int" />
           <Property Name="CoverImage" Type="varchar" MaxLength="500" />
-          <Property Name="DetailImage" Type="varchar" MaxLength="2000" />
-          <Property Name="InfoImage" Type="varchar" MaxLength="2000" />
+          <Property Name="DetailImage" Type="varchar" MaxLength="8000" />
+          <Property Name="InfoImage" Type="varchar" MaxLength="8000" />
           <Property Name="Name" Type="varchar" MaxLength="50" />
           <Property Name="PresentPrice" Type="decimal" Precision="18" Scale="2" />
           <Property Name="OriginalPrice" Type="decimal" Precision="18" Scale="2" />
@@ -90,6 +90,7 @@
           <Property Name="GoodID" Type="int" />
           <Property Name="Star" Type="int" />
           <Property Name="Evaluation" Type="varchar" MaxLength="500" />
+          <Property Name="IsLook" Type="int" Nullable="false" />
           <Property Name="CreateTime" Type="datetime" Nullable="false" />
           <Property Name="IsDelete" Type="int" Nullable="false" />
         </EntityType>
@@ -211,7 +212,7 @@
           <EntitySet Name="My_Order" EntityType="ACE_MallModel.My_Order" />
           <EntitySet Name="My_Order_Good" EntityType="ACE_MallModel.My_Order_Good" />
           <EntitySet Name="My_Shopcart" EntityType="ACE_MallModel.My_Shopcart" />
-        </EntityContainer>
+          </EntityContainer>
         <EntityType Name="Adm_Log">
           <Key>
             <PropertyRef Name="ID" />
@@ -278,8 +279,8 @@
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="CategoryID" Type="Int32" />
           <Property Name="CoverImage" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="DetailImage" Type="String" MaxLength="2000" FixedLength="false" Unicode="false" />
-          <Property Name="InfoImage" Type="String" MaxLength="2000" FixedLength="false" Unicode="false" />
+          <Property Name="DetailImage" Type="String" MaxLength="8000" FixedLength="false" Unicode="false" />
+          <Property Name="InfoImage" Type="String" MaxLength="8000" FixedLength="false" Unicode="false" />
           <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="PresentPrice" Type="Decimal" Precision="18" Scale="2" />
           <Property Name="OriginalPrice" Type="Decimal" Precision="18" Scale="2" />
@@ -297,6 +298,7 @@
           <Property Name="GoodID" Type="Int32" />
           <Property Name="Star" Type="Int32" />
           <Property Name="Evaluation" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="IsLook" Type="Int32" Nullable="false" />
           <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="IsDelete" Type="Int32" Nullable="false" />
         </EntityType>
@@ -477,6 +479,7 @@
               <MappingFragment StoreEntitySet="Mall_Good_Evaluation">
                 <ScalarProperty Name="IsDelete" ColumnName="IsDelete" />
                 <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="IsLook" ColumnName="IsLook" />
                 <ScalarProperty Name="Evaluation" ColumnName="Evaluation" />
                 <ScalarProperty Name="Star" ColumnName="Star" />
                 <ScalarProperty Name="GoodID" ColumnName="GoodID" />
@@ -574,7 +577,7 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-        </EntityContainerMapping>
+          </EntityContainerMapping>
 </Mapping></edmx:Mappings>
   </edmx:Runtime>
   <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->

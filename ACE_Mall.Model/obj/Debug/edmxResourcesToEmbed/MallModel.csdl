@@ -82,8 +82,8 @@
     <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="CategoryID" Type="Int32" />
     <Property Name="CoverImage" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-    <Property Name="DetailImage" Type="String" MaxLength="2000" FixedLength="false" Unicode="false" />
-    <Property Name="InfoImage" Type="String" MaxLength="2000" FixedLength="false" Unicode="false" />
+    <Property Name="DetailImage" Type="String" MaxLength="8000" FixedLength="false" Unicode="false" />
+    <Property Name="InfoImage" Type="String" MaxLength="8000" FixedLength="false" Unicode="false" />
     <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
     <Property Name="PresentPrice" Type="Decimal" Precision="18" Scale="2" />
     <Property Name="OriginalPrice" Type="Decimal" Precision="18" Scale="2" />
@@ -101,6 +101,7 @@
     <Property Name="GoodID" Type="Int32" />
     <Property Name="Star" Type="Int32" />
     <Property Name="Evaluation" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+    <Property Name="IsLook" Type="Int32" Nullable="false" />
     <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
     <Property Name="IsDelete" Type="Int32" Nullable="false" />
   </EntityType>

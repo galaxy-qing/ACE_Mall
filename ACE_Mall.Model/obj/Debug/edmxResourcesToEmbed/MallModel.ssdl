@@ -66,8 +66,8 @@
     <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="CategoryID" Type="int" />
     <Property Name="CoverImage" Type="varchar" MaxLength="500" />
-    <Property Name="DetailImage" Type="varchar" MaxLength="2000" />
-    <Property Name="InfoImage" Type="varchar" MaxLength="2000" />
+    <Property Name="DetailImage" Type="varchar" MaxLength="8000" />
+    <Property Name="InfoImage" Type="varchar" MaxLength="8000" />
     <Property Name="Name" Type="varchar" MaxLength="50" />
     <Property Name="PresentPrice" Type="decimal" Precision="18" Scale="2" />
     <Property Name="OriginalPrice" Type="decimal" Precision="18" Scale="2" />
@@ -85,6 +85,7 @@
     <Property Name="GoodID" Type="int" />
     <Property Name="Star" Type="int" />
     <Property Name="Evaluation" Type="varchar" MaxLength="500" />
+    <Property Name="IsLook" Type="int" Nullable="false" />
     <Property Name="CreateTime" Type="datetime" Nullable="false" />
     <Property Name="IsDelete" Type="int" Nullable="false" />
   </EntityType>

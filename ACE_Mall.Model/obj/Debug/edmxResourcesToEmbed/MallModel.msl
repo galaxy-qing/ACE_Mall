@@ -89,6 +89,7 @@
         <MappingFragment StoreEntitySet="Mall_Good_Evaluation">
           <ScalarProperty Name="IsDelete" ColumnName="IsDelete" />
           <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+          <ScalarProperty Name="IsLook" ColumnName="IsLook" />
           <ScalarProperty Name="Evaluation" ColumnName="Evaluation" />
           <ScalarProperty Name="Star" ColumnName="Star" />
           <ScalarProperty Name="GoodID" ColumnName="GoodID" />
