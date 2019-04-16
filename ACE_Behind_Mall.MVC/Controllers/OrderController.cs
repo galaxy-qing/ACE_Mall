@@ -17,6 +17,8 @@ namespace ACE_Behind_Mall.MVC.Controllers
         protected ModelResponse<dynamic> mr = new ModelResponse<dynamic>();
         OrderBLL orderbll = new OrderBLL();
         UserBLL userbll = new UserBLL();
+        OrderGoodBLL ordergoodbll = new OrderGoodBLL();
+        GoodBLL goodbll = new GoodBLL();
         // GET: Order
         public ActionResult OrderList()
         {
@@ -56,6 +58,11 @@ namespace ACE_Behind_Mall.MVC.Controllers
                     x.CreateTime,
                     x.IsDelete,
                 }).ToList();
+                if (item.Count() == 0)
+                {
+                    mr.status = 2;
+                    mr.message = "请前往登录";
+                }
                 if (!string.IsNullOrEmpty(request.state))//下拉框搜索orderState
                 {
                     if (request.state == "1") //待发货
@@ -109,6 +116,35 @@ namespace ACE_Behind_Mall.MVC.Controllers
             {
                 Log.Error(e.Message);
                 mr.message = "发货失败";
+            }
+            return JsonHelper.Instance.Serialize(mr);
+        }
+        public string GetOrderGoodList(string id)
+        {
+            try
+            {
+                var item = ordergoodbll.GetList(x => x.IsDelete == 0&&x.OrderNo==id).Select(x => new
+                {
+                    x.ID,
+                    x.OrderNo, 
+                    GoodName = goodbll.GetList(y => y.ID == x.GoodID).FirstOrDefault().Name,
+                    goodbll.GetList(y => y.ID == x.GoodID).FirstOrDefault().PresentPrice,
+                    GoodImage = goodbll.GetList(y => y.ID == x.GoodID).FirstOrDefault().CoverImage,
+                    x.GoodNumber,
+                    x.CreateTime,
+                    x.IsDelete,
+                }).ToList();
+                if (item.Count() == 0)
+                {
+                    mr.status = 2;
+                    mr.message = "请前往登录";
+                }
+                mr.total = item.Count;
+                mr.data = item.OrderByDescending(x => x.CreateTime);
+            }
+            catch (Exception e)
+            {
+                Log.Error(e.Message);
             }
             return JsonHelper.Instance.Serialize(mr);
         }

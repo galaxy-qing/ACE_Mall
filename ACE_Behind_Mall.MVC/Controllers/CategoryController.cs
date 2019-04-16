@@ -47,7 +47,7 @@ namespace ACE_Behind_Mall.MVC.Controllers
         {
             try
             {
-                var item = categorybll.GetList(x =>true);
+                var item = categorybll.GetList(x =>x.IsDelete==0);
                 mr.status = 0;
                 mr.total = item.Count;
                 mr.data = item.OrderByDescending(x => x.CreateTime).Skip(request.limit * (request.page - 1)).Take(request.limit);
@@ -109,6 +109,20 @@ namespace ACE_Behind_Mall.MVC.Controllers
                 mr.message = ex.Message;
                 NLogHelper.Logs.Error(ex.Message);
             }
+            Hashtable ht = HashTableHelp.GetHash(flag);
+            return Json(ht, JsonRequestBehavior.AllowGet);
+        }
+        /// <summary>
+        /// 删除商品分类
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public ActionResult Delete(Mall_Category model)
+        {
+            //model.ID= admuserbll.Get
+            Mall_Category r = categorybll.GetUpdateModel<Mall_Category>(model, "ID");
+            r.IsDelete = 1;
+            bool flag = categorybll.Update(r);
             Hashtable ht = HashTableHelp.GetHash(flag);
             return Json(ht, JsonRequestBehavior.AllowGet);
         }

@@ -1,19 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-using ACE_Mall.BLL;
+﻿using ACE_Mall.BLL;
 using ACE_Mall.Common;
 using ACE_Mall.Model;
 using NLog.Fluent;
+using System;
+using System.IO;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
 
 namespace ACE_Behind_Mall.MVC.Controllers
 {
     public class GoodController : Controller
     {
         protected ModelResponse<dynamic> mr = new ModelResponse<dynamic>();
-        GoodBLL goodbll = new GoodBLL();
+        private GoodBLL goodbll = new GoodBLL();
         // GET: Good
         public ActionResult GoodList(string goodName)
         {
@@ -29,21 +29,7 @@ namespace ACE_Behind_Mall.MVC.Controllers
         }
         public string GetGoodDetail(int id)
         {
-            var goodmodel = goodbll.GetList(x => x.ID == id).Select(x => new
-            {
-                x.ID,
-                x.InfoImage,
-                x.IsDelete,
-                x.Name,
-                x.OriginalPrice,
-                x.PresentPrice,
-                x.SaleNumber,
-                x.Stock,
-                x.CategoryID,
-                x.CoverImage,
-                x.CreateTime,
-                x.DetailImage
-            });
+            var goodmodel = goodbll.GetList(x => x.ID == id).ToList();
             mr.data = goodmodel;
             return JsonHelper.Instance.Serialize(mr);
         }
@@ -73,12 +59,11 @@ namespace ACE_Behind_Mall.MVC.Controllers
         /// </summary>
         /// <param name="idList"></param>
         /// <returns></returns>
-        public string OffShelves(string idList)
+        public string OffShelves(string[] idList)
         {
-            string[] idsList = idList.Split(',');
             try
             {
-                foreach (var item in idsList)
+                foreach (var item in idList)
                 {
                     var model = goodbll.GetList(x => x.ID == Convert.ToInt32(item)).FirstOrDefault();
                     model.IsDelete = 1;
@@ -98,12 +83,11 @@ namespace ACE_Behind_Mall.MVC.Controllers
         /// </summary>
         /// <param name="idList"></param>
         /// <returns></returns>
-        public string OnShelves(string idList)
+        public string OnShelves(string[] idList)
         {
-            string[] idsList = idList.Split(',');
             try
             {
-                foreach (var item in idsList)
+                foreach (var item in idList)
                 {
                     var model = goodbll.GetList(x => x.ID == Convert.ToInt32(item)).FirstOrDefault();
                     model.IsDelete = 0;
@@ -123,6 +107,141 @@ namespace ACE_Behind_Mall.MVC.Controllers
             ViewBag.goodName = goodName;
             return true;
         }
-       
+        /// <summary>
+        /// 上传封面图片
+        /// </summary>
+        /// <returns></returns>
+        public string UploadImage1()
+        {
+            HttpFileCollectionBase files = Request.Files;
+            HttpPostedFileBase file = Request.Files["file"];
+            //string extName = Path.GetExtension(file.FileName).ToLower();
+            string path = Server.MapPath("/images/goods/");
+            //生成新文件的名称，guid保证某一时刻内唯一的（保证了文件不会被覆盖）
+            //string fileNewName = Utils.GetRamIdcode();
+            //file.SaveAs(path + fileNewName + extName);
+            //var  imagePath = "/Content/images/" + fileNewName + extName;
+            try
+            {
+                file.SaveAs(path + file.FileName);
+                var imagePath = "/images/goods/" + file.FileName;
+                mr.message = imagePath;
+                //var model = goodbll.GetList(x => x.ID == id).FirstOrDefault();
+               // model.CoverImage = imagePath;
+                //Mall_Good m = goodbll.GetUpdateModel<Mall_Good>(model, "ID");
+               // bool flag = goodbll.Update(m);
+
+                // NLogHelper.Logs.LogWriter("保存用户头像：【" + file.FileName + "】成功", _userData.User.Id, _userData.User.Account, _userData.User.Name, OpType.Edit);
+            }
+            catch (Exception ex)
+            {
+                mr.status = 1;
+                NLogHelper.Logs.Error(ex.Message);
+            }
+            return JsonHelper.Instance.Serialize(mr);
+        }
+        public string UploadImage2()
+        {
+            HttpFileCollectionBase files = Request.Files;
+            HttpPostedFileBase file = Request.Files["file"];
+            string extName = Path.GetExtension(file.FileName).ToLower();
+            string path = Server.MapPath("/images/goods/");
+            // file.SaveAs(path + file.FileName);
+            //var imagePath = "/images/goods/" + file.FileName;
+            //生成新文件的名称，guid保证某一时刻内唯一的（保证了文件不会被覆盖）
+            string fileNewName = Utils.GetRamIdcode();
+            var imagePath = "/images/goods/" + fileNewName + extName;
+            try
+            {
+               // var model = goodbll.GetList(x => x.ID == id).FirstOrDefault();
+               // model.DetailImage = (model.DetailImage + "," + imagePath).Substring(1);
+               // Mall_Good m = goodbll.GetUpdateModel<Mall_Good>(model, "ID");
+               // goodbll.Update(m);
+                file.SaveAs(path + fileNewName + extName);
+                mr.message = imagePath;
+            }
+            // NLogHelper.Logs.LogWriter("保存用户头像：【" + file.FileName + "】成功", _userData.User.Id, _userData.User.Account, _userData.User.Name, OpType.Edit);
+            catch (Exception ex)
+            {
+                NLogHelper.Logs.Error(ex.Message);
+            }
+
+
+
+            return JsonHelper.Instance.Serialize(mr);
+        }
+        public string UploadImage3()
+        {
+            HttpFileCollectionBase files = Request.Files;
+            HttpPostedFileBase file = Request.Files["file"];
+            string extName = Path.GetExtension(file.FileName).ToLower();
+            string path = Server.MapPath("/images/goods/");
+            // file.SaveAs(path + file.FileName);
+            //var imagePath = "/images/goods/" + file.FileName;
+            //生成新文件的名称，guid保证某一时刻内唯一的（保证了文件不会被覆盖）
+            string fileNewName = Utils.GetRamIdcode();
+            var imagePath = "/images/goods/" + fileNewName + extName;
+            try
+            {
+               // var model = goodbll.GetList(x => x.ID == id).FirstOrDefault();
+               // model.InfoImage = (model.InfoImage + "," + imagePath);
+              //  Mall_Good m = goodbll.GetUpdateModel<Mall_Good>(model, "ID");
+                //goodbll.Update(m);
+                file.SaveAs(path + fileNewName + extName);
+                mr.message = imagePath;
+            }
+            // NLogHelper.Logs.LogWriter("保存用户头像：【" + file.FileName + "】成功", _userData.User.Id, _userData.User.Account, _userData.User.Name, OpType.Edit);
+            catch (Exception ex)
+            {
+                NLogHelper.Logs.Error(ex.Message);
+            }
+            return JsonHelper.Instance.Serialize(mr);
+        }
+        /// <summary>
+        /// 商品信息添加/修改
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public string SubmitGoodInfo(Mall_Good model,string[] DetailImage,string[] InfoImage)
+        {
+            bool flag = false;
+            try
+            {
+                if (model.ID != 0)
+                {
+                    var goodmodel = goodbll.GetList(x => x.ID == model.ID).FirstOrDefault();
+                    model.DetailImage = "";
+                    model.InfoImage = "";
+                    model.CoverImage = goodmodel.CoverImage;
+                    foreach (var item in DetailImage)
+                    {
+                        model.DetailImage += item+",";
+                    }
+                    model.DetailImage = model.DetailImage.TrimEnd(',');
+                    foreach (var item in InfoImage)
+                    {
+                        model.InfoImage += item + ",";
+                    }
+                    model.InfoImage = model.InfoImage.TrimEnd(',');
+                    Mall_Good m = goodbll.GetUpdateModel<Mall_Good>(model, "ID");
+                    flag = goodbll.Update(m);
+                }
+                else
+                {
+                    model.CreateTime = DateTime.Now;
+                    goodbll.Add(model);
+                }
+            }
+            catch (Exception ex)
+            {
+                NLogHelper.Logs.Error(ex.Message);
+            }
+            if(flag==true)
+            {
+                mr.message = "保存成功";
+            }
+            return JsonHelper.Instance.Serialize(mr);
+
+        }
     }
 }
