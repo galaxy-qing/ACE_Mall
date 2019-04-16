@@ -19,6 +19,7 @@ namespace ACE_Mall.Model
         public Nullable<int> GoodID { get; set; }
         public Nullable<int> Star { get; set; }
         public string Evaluation { get; set; }
+        public int IsLook { get; set; }
         public System.DateTime CreateTime { get; set; }
         public int IsDelete { get; set; }
     }
