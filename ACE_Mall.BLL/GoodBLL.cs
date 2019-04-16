@@ -19,5 +19,9 @@ namespace ACE_Mall.BLL
             var list = Dao.GetEntities(exp).ToList();
             return list;
         }
+        public bool Add(Mall_Good model)
+        {
+            return Dao.Insert(model);
+        }
     }
 }
