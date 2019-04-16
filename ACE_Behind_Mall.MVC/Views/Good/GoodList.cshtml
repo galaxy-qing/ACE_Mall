@@ -24,6 +24,7 @@
             <input class="layui-input" name="Name" id="inputReload" autocomplete="off">
         </div>
         <button class="layui-btn" data-type="reload">搜索</button>
+        <button class="layui-btn layuiadmin-btn-admin" data-type="addGood">添加商品</button>
         <button class="layui-btn layuiadmin-btn-admin" data-type="onShelves">上架</button>
         <button class="layui-btn layuiadmin-btn-admin" data-type="offShelves">下架</button>
     </div>
@@ -45,7 +46,7 @@
                             <div class="cmdlist-container">
                                 <input type="hidden" name="ID" value=@item.ID />
                                 <a href="javascript:;">
-                                    <img src=@item.CoverImage data-id=@item.ID id="currentImage">
+                                    <img src=@item.CoverImage data-id=@item.ID  class="currentImage">
                                 </a>
                                 <a href="javascript:;">
                                     <div class="cmdlist-text">
