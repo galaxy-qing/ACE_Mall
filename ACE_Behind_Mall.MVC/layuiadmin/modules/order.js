@@ -117,50 +117,52 @@ layui.define(['table', 'form','vue', 'element', 'jquery'], function (exports) {
     //监听表格内部按钮
     table.on('tool(orderList)', function (obj) {
         var data = obj.data;
-        if (obj.event === 'orderDetail') {      //查看
+      
+        if (obj.event === 'orderDetail') {      //查看订单详情
             detailDlg.detail(data);
         }
+        if (obj.event === 'goodDetail') {      //查看订单商品列表
+            var goodLayer = layer.open({
+                title: "查看订单商品列表",
+                area: ["1500px", "800px"],
+                type: 1,
+                btn: ['取消'],
+                content: $('#divGoodDetail'),
+                success: function () {
+                    table.render({
+                        elem: '#orderGoodList'
+                        , url: '/Order/GetOrderGoodList?id=' + data.OrderNo //模拟接口
+                        , parseData: function (res) {
+                            return {
+                                "code": res.status,//解析接口状态
+                                "msg": res.message,//解析提示文本
+                                "count": res.total,//解析数据长度
+                                "data": res.data//解析数据列表
+                            };
+                        }
+                        , cols: [[
+                            { type: 'numbers', fixed: 'left', align: 'center' }
+                            , { field: 'OrderNo', title: '订单编号', minWidth: 225, sort: true, align: 'center' }
+                            , { field: 'GoodName', title: '商品名称', minWidth: 380, align: 'center' }
+                            , { field: 'GoodImage', title: '商品图片', align: 'center', templet: '#img' }
+                            , { field: 'PresentPrice', title: '商品现价', align: 'center', align: 'center' }
+                            , { field: 'GoodNumber', title: '购买数量', align: 'center' }
+                        ]]
+                        , page: true
+                        , limit: 10
+                        , limits: [10, 15, 20, 25, 30]
+                        , text: '对不起，加载出现异常！'
+                        , done: function () {
+                            element.render('progress')
+                        }
+                    });
+                },
+                end: table.render
+            });
+        }   
         if (obj.event === 'edit') {
             courierDlg.detail(data);
         }
     });
-    //监听工具条
-    //table.on('tool(orderList)', function (obj) {
-    //    var data = obj.data;
-    //    if (obj.event === 'orderdetail') {
-    //        var tr = $(obj.tr);
-    //        alert(JSON.stringify(obj.data));
-    //        var vm = new Vue({
-    //            el: "#formOrderDetail"
-    //        });
-    //        layer.open({
-    //            type: 2
-    //            , title: '查看订单详情'
-    //            , content: $('#divOrderDetail')
-    //            , area: ['1000px', '800px']
-    //            , btn: ['去发货', '取消']
-    //            , yes: function (index, layero) {
-    //                var iframeWindow = window['layui-layer-iframe' + index]
-    //                    , submitID = 'LAY-app-workorder-submit'
-    //                    , submit = layero.find('iframe').contents().find('#' + submitID);
-
-    //                //监听提交
-    //                iframeWindow.layui.form.on('submit(' + submitID + ')', function (data) {
-    //                    var field = data.field; //获取提交的字段
-
-    //                    //提交 Ajax 成功后，静态更新表格中的数据
-    //                    //$.ajax({});
-    //                    table.reload('LAY-user-front-submit'); //数据刷新
-    //                    layer.close(index); //关闭弹层
-    //                });
-
-    //                submit.trigger('click');
-    //            }
-    //            , success: function (layero, index) {
-    //                vm.$set('$data', data);
-    //            }
-    //        });
-    //    }
-    //});
     exports('order', {})
 });

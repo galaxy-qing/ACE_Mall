@@ -43,11 +43,6 @@
             });
         }
     };
-
-    $('.demoTable .layui-btn').on('click', function () {
-        var type = $(this).data('type');
-        active[type] ? active[type].call(this) : '';
-    });
     //添加商品分类
     var addlDlg = function () {
         var showDetail = function (data) {
@@ -142,6 +137,10 @@
         });
         return false;
     })
+    $('.demoTable .layui-btn').on('click', function () {
+        var type = $(this).data('type');
+        active[type] ? active[type].call(this) : '';
+    });
     //监听页面主按钮操作
     //事件
     var active = {
@@ -157,7 +156,7 @@
             }
             alert(JSON.stringify(checkData));
             layer.confirm('确定删除吗？', function (index) {
-                var url = "/AdminUser/Delete";
+                var url = "/Category/Delete";
                 $.post(url, data[0], function (data) {
                     layer.msg(data.message);
                     layer.close(index); //如果设定了yes回调，需进行手工关闭
@@ -166,7 +165,7 @@
                 return false;
             });
         }
-        , add: function () {  //添加
+        ,add: function () {  //添加
             addlDlg.add();
         }
     };

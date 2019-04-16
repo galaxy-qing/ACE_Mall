@@ -173,34 +173,6 @@
         }
         , add: function () {  //添加
             detailDlg.add();
-        }
-        //, add: function () {
-        //    layer.open({
-        //        title: "添加员工",
-        //        area: ["800px", "600px"],
-        //        type: 1,
-        //        btn: ['确定', '取消'],
-        //        yes: function (index, layero) {
-        //            var url = "/AdminUser/Add";
-        //            //提交数据
-        //            form.on('submit(formSubmit1)',
-        //                function (data) {
-        //                    $.post(url,
-        //                        data.field,
-        //                        function (data) {
-        //                            layer.msg(data.message);
-        //                            layer.close(index); //如果设定了yes回调，需进行手工关闭
-        //                            tableIns.reload(); 
-        //                        },
-        //                        "json");
-        //                    return false;
-        //                });
-        //            $('#formSubmit1').trigger('click');
-                    
-        //        },
-        //        content: $('#divAdd'),
-        //    });
-        //}
+        } 
     };
-
 });

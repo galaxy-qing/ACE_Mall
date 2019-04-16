@@ -10,12 +10,6 @@ layui.use(['laypage', 'layer', 'form', 'jquery', 'vue', 'element'], function () 
         , $ = layui.jquery
         , layer = layui.layer,
         idList = [];
-    //$.get({
-    //    url: "/Good/GetGoodList",
-    //    success: function (result) {
-    //        alert(result.data);
-    //    }
-    //});
     form.on('checkbox(checkGoods)', function (data) {
         var id = $(this).data('id')
         if (idList.indexOf(id) > -1) {
@@ -25,7 +19,10 @@ layui.use(['laypage', 'layer', 'form', 'jquery', 'vue', 'element'], function () 
         }
     });
     var active = {
-        offShelves: function () {
+        addGood: function () {
+            window.location.href = "/Good/GoodDetail/";
+        }
+        ,offShelves: function () {
             layer.confirm('确定下架吗？', function (index) {
                 var url = "/Good/OffShelves";
                 $.post(url,
@@ -66,7 +63,7 @@ layui.use(['laypage', 'layer', 'form', 'jquery', 'vue', 'element'], function () 
         var type = $(this).data('type');
         active[type] ? active[type].call(this) : '';
     });
-    $('#currentImage').on('click', function () {
+    $('.currentImage').on('click', function () {
         var id = $(this).data('id');
         window.location.href = "/Good/GoodDetail?id="+id;
 
