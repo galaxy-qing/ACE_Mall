@@ -8,6 +8,8 @@ using System.Web.Http.Description;
 using ACE_Mall.BLL;
 using ACE_Mall.Common;
 using NLog.Fluent;
+using ACE_Mall.Model;
+using static ACE_Behind_Mall.WebApi.Models.UserBindingModels;
 
 namespace ACE_Behind_Mall.WebApi.Controllers
 {
@@ -51,6 +53,39 @@ namespace ACE_Behind_Mall.WebApi.Controllers
 
         }
         /// <summary>
+        /// 获取首页热卖商品及推荐商品
+        /// </summary>
+        /// <returns></returns>
+        public ModelResponse<dynamic> GetHomeGoods()
+        {
+            try
+            {
+                var hotGoods = goodsbll.GetList(x => x.IsDelete == 0).OrderByDescending(x=>x.SaleNumber).Take(15);
+                var krisRecommend = goodsbll.GetList(x => x.IsDelete == 0).OrderByDescending(x => x.PresentPrice).Take(5);
+                if (hotGoods.Count() != 0&&krisRecommend.Count()!=0)
+                {
+                    mr.data = new { hotGoods, krisRecommend };
+                }
+                if (hotGoods.Count() == 0 && krisRecommend.Count() != 0)
+                {
+                    mr.data = new { hotGoods="暂无商品", krisRecommend };
+                }
+                if (hotGoods.Count() != 0 && krisRecommend.Count() == 0)
+                {
+                    mr.data = new { hotGoods, krisRecommend= "暂无商品" };
+                }
+                if (hotGoods.Count() == 0 && krisRecommend.Count() == 0)
+                {
+                    mr.data = new { hotGoods= "暂无商品", krisRecommend = "暂无商品" };
+                }
+            }
+            catch (Exception e)
+            {
+                Log.Error(e.Message);
+            }
+            return mr;
+        }
+        /// <summary>
         /// 商品列表
         /// </summary>
         /// <returns></returns>
@@ -78,7 +113,7 @@ namespace ACE_Behind_Mall.WebApi.Controllers
         /// 通过分类获取商品列表
         /// </summary>
         /// <param name="categoryId">商品类别ID</param>
-        ///  /// <param name="sortNo">排序号</param>
+        /// <param name="sortNo">排序号</param>
         /// <returns></returns>
         [HttpGet]
         public ModelResponse<dynamic> ByCategoryGetGoods(int categoryId,int sortNo)
@@ -177,6 +212,38 @@ namespace ACE_Behind_Mall.WebApi.Controllers
                 Log.Error(e.Message);
             }
             return mr;
+        }
+        /// <summary>
+        /// 添加商品评论
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public ModelResponse<dynamic> AddGoodEvaluation(AddEvaluation model)
+        {
+            bool flag = false;
+            try
+            {
+                Mall_Good_Evaluation evaluationmodel = new Mall_Good_Evaluation();
+                evaluationmodel.GoodID = model.goodId;
+                evaluationmodel.UserID = model.userId;
+                evaluationmodel.Evaluation = model.content;
+                evaluationmodel.CreateTime = DateTime.Now;
+                evaluationmodel.IsDelete = 0;
+                evaluationmodel.IsLook = 0;
+                evaluationmodel.Star = 5;
+                flag=evaluationbll.Add(evaluationmodel);
+                if (flag == true)
+                {
+                    mr.message = "评论添加成功";
+                }
+            }
+            catch (Exception e)
+            {
+                mr.status = 1;
+                Log.Error(e.Message);
+            }
+            return mr;
+
         }
     }
 }

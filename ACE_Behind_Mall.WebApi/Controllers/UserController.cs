@@ -1,19 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Web.Http;
-using ACE_Mall.BLL;
+﻿using ACE_Mall.BLL;
 using ACE_Mall.Common;
-using NLog.Fluent;
 using ACE_Mall.Model;
-using System.Web.Http.Description;
-using static ACE_Behind_Mall.WebApi.Models.UserBindingModels;
+using NLog.Fluent;
+using System;
+using System.Drawing;
+using System.IO;
+using System.Linq;
+using System.Net.Http;
+using System.Threading.Tasks;
 using System.Web;
-using System.Net.Http.Headers;
-using System.Collections.Specialized;
+using System.Web.Hosting;
+using System.Web.Http;
 using System.Web.Security;
+using static ACE_Behind_Mall.WebApi.Models.UserBindingModels;
 
 namespace ACE_Behind_Mall.WebApi.Controllers
 {
@@ -24,12 +23,12 @@ namespace ACE_Behind_Mall.WebApi.Controllers
     public class UserController : ApiController
     {
         protected ModelResponse<dynamic> mr = new ModelResponse<dynamic>();
-        UserBLL userbll = new UserBLL();
-        ShopCartBLL shopcartbll = new ShopCartBLL();
-        GoodBLL goodbll = new GoodBLL();
-        OrderBLL orderbll = new OrderBLL();
-        OrderGoodBLL ordergoodbll = new OrderGoodBLL();
-        SpecificationBLL specificationbll = new SpecificationBLL();
+        private UserBLL userbll = new UserBLL();
+        private ShopCartBLL shopcartbll = new ShopCartBLL();
+        private GoodBLL goodbll = new GoodBLL();
+        private OrderBLL orderbll = new OrderBLL();
+        private OrderGoodBLL ordergoodbll = new OrderGoodBLL();
+        private SpecificationBLL specificationbll = new SpecificationBLL();
         /// <summary>
         /// 用户登录
         /// </summary>
@@ -128,6 +127,125 @@ namespace ACE_Behind_Mall.WebApi.Controllers
                 {
                     Log.Error(e.Message);
                 }
+            }
+            return mr;
+        }
+        /// <summary>
+        /// 个人中心信息
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public ModelResponse<dynamic> GetMyData(int userId)
+        {
+            var usermodel = userbll.GetList(x => x.IsDelete == 0 && x.ID == userId).Select(x => new
+            {
+                account = x.Account,
+                cretateTime = Convert.ToDateTime(x.CreateTime).ToString("yyyy-MM-dd HH:MM:SS"),
+                email = x.Email,
+                id = x.ID,
+                image = x.Image,
+                password = x.Password,
+                receiveAddress = x.ReceiveAddress,
+                receiveName = x.ReceiveName,
+                x.ReceivePhone,
+            });
+            if (usermodel.Count()==0)
+            {
+                mr.status = 2;
+                mr.message = "请前往登录";
+            }
+            else
+            {
+                mr.data = usermodel;
+            }
+            return mr;
+        }
+        /// <summary>
+        /// 上传文件
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ModelResponse<dynamic> UpdateMyPhoto(Files model)
+        {
+            if (model.file.Count() < 1)
+            {
+                mr.status = 1;
+                mr.message = "请上传图片";
+            }
+            string result = FileHelper.SaveImage(model.file);
+            if (result == "err")
+            {
+                mr.status = 1;
+                mr.message = "服务器错误";
+            }
+            mr.data = new { img = result };
+            return mr;
+        }
+        public ModelResponse<dynamic> UpdateMyFile()
+        {
+            try
+            {
+                HttpPostedFile file = HttpContext.Current.Request.Files[0];
+                string xdpath = "images/";
+                string wlpath = HostingEnvironment.MapPath(xdpath);
+                string fileExt = file.FileName.Split('.')[1];
+                //if ( <= 0)
+                //{
+                //    mr.ErrCode = 1;
+                //    mr.ErrMsg = "仅支持" + scp.GetSysConfig(HTEnums.SiteSystem.sys_fileextension);
+                //    return mr;
+                //}
+                string newName = Utils.GetOrderNumber() + "." + fileExt;
+                if (!File.Exists(wlpath))
+                {
+                    Directory.CreateDirectory(wlpath);
+                }
+                string strPath = wlpath + newName;
+                file.SaveAs(strPath);
+                Image img = Image.FromFile(strPath);
+
+                //释放资源
+                img.Dispose();
+                file.InputStream.Close();
+                file.InputStream.Dispose();
+
+                mr.message = xdpath + newName;
+                return mr;
+            }
+            catch (Exception err)
+            {
+                mr.status = 2;
+                mr.message = err.ToString();
+                return mr;
+            }
+        }
+        /// <summary>
+        /// 修改个人信息
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ModelResponse<dynamic> UpdateMyData(MyDataInfo model)
+        {
+            try
+            {
+                var usermodel = userbll.GetList(x => x.IsDelete == 0 && x.ID == model.userId).FirstOrDefault();
+                usermodel.Email = model.email;
+                usermodel.Image = model.image;
+                usermodel.Password = model.password;
+                usermodel.ReceiveAddress = model.receiveAddress;
+                usermodel.ReceiveName = model.receiveName;
+                usermodel.ReceivePhone = model.receivePhone;
+                My_Data m = userbll.GetUpdateModel<My_Data>(usermodel, "ID");
+                bool flag = userbll.Update(m);
+                mr.message = "修改成功";
+            }
+            catch (Exception e)
+            {
+                mr.status = 1;
+                Log.Error(e.Message);
             }
             return mr;
         }
@@ -406,11 +524,11 @@ namespace ACE_Behind_Mall.WebApi.Controllers
                 foreach (var item in shopcartmodel)
                 {
                     //getModel(userId, 2);
-                    var  model = shopcartbll.GetList(x => x.IsDelete == 0 && x.UserID == userId && x.IsChecked == true);
+                    var model = shopcartbll.GetList(x => x.IsDelete == 0 && x.UserID == userId && x.IsChecked == true);
                     var usermodel = userbll.GetList(y => y.ID == userId).FirstOrDefault();
                     var mymodel = model.Select(x => new
                     {
-                        receiveName = usermodel.ReceiveName==null?"": usermodel.ReceiveName,
+                        receiveName = usermodel.ReceiveName == null ? "" : usermodel.ReceiveName,
                         receivePhone = usermodel.ReceivePhone == null ? "" : usermodel.ReceivePhone,
                         receiveAddress = usermodel.ReceiveAddress == null ? "" : usermodel.ReceiveAddress,
                         goodId = x.GoodID == 0 ? 0 : x.GoodID,
@@ -430,7 +548,7 @@ namespace ACE_Behind_Mall.WebApi.Controllers
                         totalPrice += Convert.ToDecimal(item1.subTotal);
                         totalNumber += Convert.ToInt32(item1.number);
                     }
-                    mr.data = new {totalNumber = totalNumber, checkNumber = checkNumber, totalPrice = totalPrice, mymodel };
+                    mr.data = new { totalNumber = totalNumber, checkNumber = checkNumber, totalPrice = totalPrice, mymodel };
                     mr.message = "数据加载成功";
                     mr.total = 1;
                 }
@@ -447,12 +565,12 @@ namespace ACE_Behind_Mall.WebApi.Controllers
         /// </summary>
         /// <param name="userId"></param>
         /// <param name="type"></param>
-        public void getModel(int userId,int type)
+        public void getModel(int userId, int type)
         {
             var model = shopcartbll.GetList(x => x.IsDelete == 0 && x.UserID == userId);
             if (type == 2)
             {
-                 model = shopcartbll.GetList(x => x.IsDelete == 0 && x.UserID == userId&&x.IsChecked==true);
+                model = shopcartbll.GetList(x => x.IsDelete == 0 && x.UserID == userId && x.IsChecked == true);
             }
             var usermodel = userbll.GetList(y => y.ID == userId).FirstOrDefault();
             var mymodel = model.Select(x => new
@@ -461,13 +579,13 @@ namespace ACE_Behind_Mall.WebApi.Controllers
                 //receivePhone = usermodel.ReceivePhone == null ? "" : usermodel.ReceivePhone,
                 // receiveAddress = usermodel.ReceiveAddress == null ? "" : usermodel.ReceiveAddress,
                 goodId = x.GoodID == 0 ? 0 : x.GoodID,
-                goodStock = goodbll.GetList(y => y.IsDelete == 0 & y.ID == x.GoodID).FirstOrDefault().Stock==0?0: goodbll.GetList(y => y.IsDelete == 0 & y.ID == x.GoodID).FirstOrDefault().Stock,
-                goodImage = goodbll.GetList(y => y.IsDelete == 0 & y.ID == x.GoodID).FirstOrDefault().CoverImage==null?"": goodbll.GetList(y => y.IsDelete == 0 & y.ID == x.GoodID).FirstOrDefault().CoverImage,
-                goodName = goodbll.GetList(y => y.IsDelete == 0 & y.ID == x.GoodID).FirstOrDefault().Name==null?"": goodbll.GetList(y => y.IsDelete == 0 & y.ID == x.GoodID).FirstOrDefault().Name,
-                goodPrice = goodbll.GetList(y => y.IsDelete == 0 & y.ID == x.GoodID).FirstOrDefault().PresentPrice==null?0: goodbll.GetList(y => y.IsDelete == 0 & y.ID == x.GoodID).FirstOrDefault().PresentPrice,
-                number = x.Number==0?0:x.Number,
+                goodStock = goodbll.GetList(y => y.IsDelete == 0 & y.ID == x.GoodID).FirstOrDefault().Stock == 0 ? 0 : goodbll.GetList(y => y.IsDelete == 0 & y.ID == x.GoodID).FirstOrDefault().Stock,
+                goodImage = goodbll.GetList(y => y.IsDelete == 0 & y.ID == x.GoodID).FirstOrDefault().CoverImage == null ? "" : goodbll.GetList(y => y.IsDelete == 0 & y.ID == x.GoodID).FirstOrDefault().CoverImage,
+                goodName = goodbll.GetList(y => y.IsDelete == 0 & y.ID == x.GoodID).FirstOrDefault().Name == null ? "" : goodbll.GetList(y => y.IsDelete == 0 & y.ID == x.GoodID).FirstOrDefault().Name,
+                goodPrice = goodbll.GetList(y => y.IsDelete == 0 & y.ID == x.GoodID).FirstOrDefault().PresentPrice == null ? 0 : goodbll.GetList(y => y.IsDelete == 0 & y.ID == x.GoodID).FirstOrDefault().PresentPrice,
+                number = x.Number == 0 ? 0 : x.Number,
                 isChecked = x.IsChecked,
-                subTotal = goodbll.GetList(y => y.IsDelete == 0 & y.ID == x.GoodID).FirstOrDefault().PresentPrice * x.Number==0?0: goodbll.GetList(y => y.IsDelete == 0 & y.ID == x.GoodID).FirstOrDefault().PresentPrice * x.Number,
+                subTotal = goodbll.GetList(y => y.IsDelete == 0 & y.ID == x.GoodID).FirstOrDefault().PresentPrice * x.Number == 0 ? 0 : goodbll.GetList(y => y.IsDelete == 0 & y.ID == x.GoodID).FirstOrDefault().PresentPrice * x.Number,
             });
             decimal totalPrice = 0;
             int totalNumber = mymodel.Count();
@@ -477,7 +595,7 @@ namespace ACE_Behind_Mall.WebApi.Controllers
                 totalPrice += Convert.ToDecimal(item1.subTotal);
             }
             bool isAllChecked = shopcartbll.GetList(y => y.IsDelete == 0 && y.UserID == userId && y.IsChecked == false).Count == 0 ? true : false;
-            mr.data = new { isAllChecked = isAllChecked, totalNumber = totalNumber, checkNumber = checkNumber, totalPrice = totalPrice, mymodel};
+            mr.data = new { isAllChecked = isAllChecked, totalNumber = totalNumber, checkNumber = checkNumber, totalPrice = totalPrice, mymodel };
             mr.message = "数据加载成功";
             mr.total = 1;
         }

@@ -51,6 +51,33 @@ namespace ACE_Behind_Mall.WebApi.Models
             public string receivePhone { get; set; }
         }
         /// <summary>
+        /// 用户个人信息
+        /// </summary>
+        public class MyDataInfo
+        {
+            [Required]
+            [Display(Name = "邮箱")]
+            public int userId { get; set; }
+            [Required]
+            [Display(Name = "邮箱")]
+            public string email { get; set; }
+            [Required]
+            [Display(Name = "头像")]
+            public string image { get; set; }
+            [Required]
+            [Display(Name = "密码")]
+            public string password { get; set; }
+            [Required]
+            [Display(Name = "收件人姓名")]
+            public string receiveName { get; set; }
+            [Required]
+            [Display(Name = "收件人地址")]
+            public string receiveAddress { get; set; }
+            [Required]
+            [Display(Name = "收件人电话")]
+            public string receivePhone { get; set; }
+        }
+        /// <summary>
         /// 加入购物车model
         /// </summary>
         public class MyShopCartModel
@@ -128,6 +155,24 @@ namespace ACE_Behind_Mall.WebApi.Models
             [Required]
             [Display(Name = "订单号")]
             public string orderNo { get; set; }
+        }
+        public class Files
+        {
+            [Required]
+            [Display(Name = "文件")]
+            public string file { get; set; }
+        }
+        public class AddEvaluation
+        {
+            [Required]
+            [Display(Name = "商品ID")]
+            public int goodId { get; set; }
+            [Required]
+            [Display(Name = "用户ID")]
+            public int userId { get; set; }
+            [Required]
+            [Display(Name = "评论内容")]
+            public string content { get; set; }
         }
     }
 }

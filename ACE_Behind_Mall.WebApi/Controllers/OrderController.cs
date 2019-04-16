@@ -110,32 +110,32 @@ namespace ACE_Behind_Mall.WebApi.Controllers
             try
             {
                 var ordermodel = orderbll.GetList(x => x.IsDelete == 0 && x.UserID == userId);
-                int all = ordermodel.Count();
-                int waitPay = ordermodel.Where(x => x.OrderState == 1).Count();
-                int waitDelivery = ordermodel.Where(x => x.OrderState == 2).Count();
-                int waitReceive = ordermodel.Where(x => x.OrderState == 3).Count();
-                int waitEvaluate = ordermodel.Where(x => x.OrderState == 4).Count();
-                int isComplete = ordermodel.Where(x => x.OrderState == 5).Count();
-                int isCancel = ordermodel.Where(x => x.OrderState == 6).Count();
-                mr.message = "获取成功";
-                List<int> models = new List<int>();
-                models.Add(all);
-                models.Add(waitPay);
-                models.Add(waitDelivery);
-                models.Add(waitReceive);
-                models.Add(waitEvaluate);
-                models.Add(isComplete);
-                models.Add(isCancel);
-                //Dictionary<string, object> models = new Dictionary<string, object>();
-                //models.Add("all",all);
-                //models.Add("waitPay",waitPay);
-                //models.Add("waitDelivery",waitDelivery);
-                //models.Add("waitReceive",waitReceive);
-                //models.Add("waitEvaluate",waitEvaluate);
-                //models.Add("isComplete",isComplete);
-                //models.Add("isCancel",isCancel);
-                mr.data = models;
-                // mr.data = new { all = all, waitPay = waitPay, waitDelivery = waitDelivery, waitReceive = waitReceive,waitEvaluate = waitEvaluate, DoneComplete= DoneComplete, isCancel = isCancel };
+                if (ordermodel.Count() == 0)
+                {
+                    mr.status = 2;
+                    mr.message = "请前往登录";
+                }
+                else
+                {
+                    int all = ordermodel.Count();
+                    int waitPay = ordermodel.Where(x => x.OrderState == 1).Count();
+                    int waitDelivery = ordermodel.Where(x => x.OrderState == 2).Count();
+                    int waitReceive = ordermodel.Where(x => x.OrderState == 3).Count();
+                    int waitEvaluate = ordermodel.Where(x => x.OrderState == 4).Count();
+                    int isComplete = ordermodel.Where(x => x.OrderState == 5).Count();
+                    int isCancel = ordermodel.Where(x => x.OrderState == 6).Count();
+                    mr.message = "获取成功";
+                    List<int> models = new List<int>();
+                    models.Add(all);
+                    models.Add(waitPay);
+                    models.Add(waitDelivery);
+                    models.Add(waitReceive);
+                    models.Add(waitEvaluate);
+                    models.Add(isComplete);
+                    models.Add(isCancel);
+                    mr.data = models;
+                }
+
 
             }
             catch (Exception e)
@@ -157,29 +157,37 @@ namespace ACE_Behind_Mall.WebApi.Controllers
             try
             {
                 var List = orderbll.GetList(x => x.IsDelete == 0 && x.UserID == userId).OrderBy(x => x.OrderState).ToList();
-                if (orderStatus != 0)
+                if (List.Count == 0)
                 {
-                    List=List.Where(x => x.OrderState == orderStatus).ToList();
+                    mr.status = 2;
+                    mr.message = "请前往登录";
                 }
-                var orderList = List.Select(x => new
+                else
                 {
-                    orderNo = x.OrderNo,
-                    submitTime = Convert.ToDateTime(x.CreateTime).ToString("yyyy-MM-dd HH:mm:ss"),
-                    goodNumber = ordergoodbll.GetList(y => y.IsDelete == 0 && y.OrderNo == x.OrderNo).Count(),
-                    totalMoney = x.PayMoney,
-                    receiveName=x.Name,
-                    payWay=x.PayWay,
-                    orderState=x.OrderState,
-                    goodList = ordergoodbll.GetList(y => y.IsDelete == 0 && y.OrderNo == x.OrderNo).Select(y => new
+                    if (orderStatus != 0)
                     {
-                        goodName = goodbll.GetList(z => z.IsDelete == 0 && z.ID == y.GoodID).FirstOrDefault().Name,
-                        goodImage = goodbll.GetList(z => z.IsDelete == 0 && z.ID == y.GoodID).FirstOrDefault().CoverImage,
-                        goodPrice = goodbll.GetList(z => z.IsDelete == 0 && z.ID == y.GoodID).FirstOrDefault().PresentPrice,
-                        goodNumber = y.GoodNumber
-                    })
-                });
-                mr.data = orderList;
-                mr.message = "获取成功";
+                        List = List.Where(x => x.OrderState == orderStatus).ToList();
+                    }
+                    var orderList = List.Select(x => new
+                    {
+                        orderNo = x.OrderNo,
+                        submitTime = Convert.ToDateTime(x.CreateTime).ToString("yyyy-MM-dd HH:mm:ss"),
+                        goodNumber = ordergoodbll.GetList(y => y.IsDelete == 0 && y.OrderNo == x.OrderNo).Count(),
+                        totalMoney = x.PayMoney,
+                        receiveName = x.Name,
+                        payWay = x.PayWay,
+                        orderState = x.OrderState,
+                        goodList = ordergoodbll.GetList(y => y.IsDelete == 0 && y.OrderNo == x.OrderNo).Select(y => new
+                        {
+                            goodName = goodbll.GetList(z => z.IsDelete == 0 && z.ID == y.GoodID).FirstOrDefault().Name,
+                            goodImage = goodbll.GetList(z => z.IsDelete == 0 && z.ID == y.GoodID).FirstOrDefault().CoverImage,
+                            goodPrice = goodbll.GetList(z => z.IsDelete == 0 && z.ID == y.GoodID).FirstOrDefault().PresentPrice,
+                            goodNumber = y.GoodNumber
+                        })
+                    });
+                    mr.data = orderList;
+                    mr.message = "获取成功";
+                }
             }
             catch (Exception e)
             {
