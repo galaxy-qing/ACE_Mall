@@ -14,6 +14,7 @@ namespace ACE_Behind_Mall.MVC.Controllers
         OrderBLL orderbll = new OrderBLL();
         OrderGoodBLL ordergoodbll = new OrderGoodBLL();
         CategoryBLL categorybll = new CategoryBLL();
+        GoodBLL goodbll = new GoodBLL();
         // GET: Statistics
         public ActionResult GoodSaleList()
         {
@@ -23,6 +24,14 @@ namespace ACE_Behind_Mall.MVC.Controllers
         //{
         //    var category_list = categorybll.GetList(x=>x.IsDelete==0);
         //    var 
+        //}
+        //public string SelectYear(string selectyear)
+        //{
+        //    var categorymodel = categorybll.GetList(x=>x.IsDelete==0);
+        //    var goodmodel = goodbll.GetList(x => x.IsDelete == 0).Select(x => new
+        //    {
+        //        goodsSaleNumber=goodbll.GetList(y=>y.CategoryID)
+        //    });
         //}
     }
 }

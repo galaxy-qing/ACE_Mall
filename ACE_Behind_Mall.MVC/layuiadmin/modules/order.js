@@ -26,7 +26,7 @@ layui.define(['table', 'form','vue', 'element', 'jquery'], function (exports) {
             };
         }
         , cols: [[
-            { type: 'numbers', fixed: 'left', align: 'center' }
+            { type: 'checkbox', fixed: 'left' }
             , { field: 'OrderNo', title: '订单编号', minWidth: 225, sort: true, align: 'center' }
             , { field: 'Name', title: '收件人姓名',  align: 'center' }
             , { field: 'Progress', title: '进度', align: 'center', templet: '#progressTpl', align: 'center' }

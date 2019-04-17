@@ -13,8 +13,18 @@ layui.define(function (exports) {
         laydate.render({
             elem: '#test-laydate-type-year'
             , type: 'year'
+            , done: function (value, date, endDate) {
+                let year = date.year;
+                $.get("/Statistics/SelectYear", { selectyear: year}, function (data) {
+                    if (data == "") {
+                        layer.msg("查询过程中发生错误！");
+                    }
+                    else {
+                        MonthDataBind(data);
+                    }
+                })
+            }
         });
-
         //年月选择器
         laydate.render({
             elem: '#test-laydate-type-month'
@@ -56,14 +66,14 @@ layui.define(function (exports) {
                     trigger: 'axis'
                 },
                 legend: {
-                    data: ['无畏系列', 'A.C.E.LOGO系列', 'CUBAN系列', 'TENNIS系列']
+                    data: ['无畏系列', 'A.C.E.LOGO系列', 'CUBAN系列', 'TENNIS系列']//系列名称
                 },
                 calculable: true,
                 xAxis: [
                     {
                         type: 'category',
                         boundaryGap: false,
-                        data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
+                        data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日'] //月份
                     }
                 ],
                 yAxis: [
@@ -73,33 +83,33 @@ layui.define(function (exports) {
                 ],
                 series: [
                     {
-                        name: '无畏系列',
+                        name: '无畏系列',//系列名字
                         type: 'line',
                         stack: '总量',
                         itemStyle: { normal: { areaStyle: { type: 'default' } } },
-                        data: [120, 132, 101, 134, 90, 230, 210]
-                    },
-                    {
-                        name: 'A.C.E.LOGO系列',
-                        type: 'line',
-                        stack: '总量',
-                        itemStyle: { normal: { areaStyle: { type: 'default' } } },
-                        data: [220, 182, 191, 234, 290, 330, 310]
-                    },
-                    {
-                        name: 'CUBAN系列',
-                        type: 'line',
-                        stack: '总量',
-                        itemStyle: { normal: { areaStyle: { type: 'default' } } },
-                        data: [150, 232, 201, 154, 190, 330, 410]
-                    },
-                    {
-                        name: 'TENNIS系列',
-                        type: 'line',
-                        stack: '总量',
-                        itemStyle: { normal: { areaStyle: { type: 'default' } } },
-                        data: [820, 932, 901, 934, 1290, 1330, 1320]
+                        data: [120, 132, 101, 134, 90, 230, 210]//值
                     }
+                    //{
+                    //    name: 'A.C.E.LOGO系列',
+                    //    type: 'line',
+                    //    stack: '总量',
+                    //    itemStyle: { normal: { areaStyle: { type: 'default' } } },
+                    //    data: [220, 182, 191, 234, 290, 330, 310]
+                    //},
+                    //{
+                    //    name: 'CUBAN系列',
+                    //    type: 'line',
+                    //    stack: '总量',
+                    //    itemStyle: { normal: { areaStyle: { type: 'default' } } },
+                    //    data: [150, 232, 201, 154, 190, 330, 410]
+                    //},
+                    //{
+                    //    name: 'TENNIS系列',
+                    //    type: 'line',
+                    //    stack: '总量',
+                    //    itemStyle: { normal: { areaStyle: { type: 'default' } } },
+                    //    data: [820, 932, 901, 934, 1290, 1330, 1320]
+                    //}
                 ]
             }
         ]

@@ -63,7 +63,7 @@ layui.use(['laypage', 'layer', 'form', 'jquery', 'vue', 'element'], function () 
         var type = $(this).data('type');
         active[type] ? active[type].call(this) : '';
     });
-    $('.currentImage').on('click', function () {
+    $('.cmdlist-container').on('click', function () {
         var id = $(this).data('id');
         window.location.href = "/Good/GoodDetail?id="+id;
 

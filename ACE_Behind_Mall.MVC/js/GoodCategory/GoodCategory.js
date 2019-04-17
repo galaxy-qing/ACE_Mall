@@ -145,7 +145,7 @@
     //事件
     var active = {
         delete: function () {
-            var checkStatus = table.checkStatus('mainList')
+            var checkStatus = table.checkStatus('demo')
                 , data = checkStatus.data; //得到选中的数据
 
             if (data.length === 0) {

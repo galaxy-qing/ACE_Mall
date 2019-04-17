@@ -43,10 +43,10 @@
                     foreach (var item in goodlist)
                     {
                         <div class="layui-col-md2 layui-col-sm4" id="goodsDiv">
-                            <div class="cmdlist-container">
+                            <div class="cmdlist-container" data-id=@item.ID >
                                 <input type="hidden" name="ID" value=@item.ID />
                                 <a href="javascript:;">
-                                    <img src=@item.CoverImage data-id=@item.ID  class="currentImage">
+                                    <img src=@item.CoverImage  class="currentImage">
                                 </a>
                                 <a href="javascript:;">
                                     <div class="cmdlist-text">
