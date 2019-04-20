@@ -57,9 +57,6 @@ namespace ACE_Behind_Mall.WebApi.Models
         {
             [Required]
             [Display(Name = "邮箱")]
-            public int userId { get; set; }
-            [Required]
-            [Display(Name = "邮箱")]
             public string email { get; set; }
             [Required]
             [Display(Name = "头像")]
@@ -83,9 +80,6 @@ namespace ACE_Behind_Mall.WebApi.Models
         public class MyShopCartModel
         {
             [Required]
-            [Display(Name = "用户ID")]
-            public int userId { get; set; }
-            [Required]
             [Display(Name = "商品ID")]
             public int goodId { get; set; }
             [Required]
@@ -98,9 +92,6 @@ namespace ACE_Behind_Mall.WebApi.Models
         public class DeleteShopCartGoodModel
         {
             [Required]
-            [Display(Name = "用户ID")]
-            public int userId { get; set; }
-            [Required]
             [Display(Name = "商品ID")]
             public int goodId { get; set; }
         }
@@ -110,9 +101,6 @@ namespace ACE_Behind_Mall.WebApi.Models
         public class GetGoodsChecked
         {
 
-            [Required]
-            [Display(Name = "用户ID")]
-            public int userId { get; set; }
             [Required]
             [Display(Name = "商品ID")]
             public int goodId { get; set; }
@@ -126,9 +114,6 @@ namespace ACE_Behind_Mall.WebApi.Models
         public class GetGoodsAllChecked
         {
             [Required]
-            [Display(Name = "用户ID")]
-            public int userId { get; set; }
-            [Required]
             [Display(Name = "是否选中")]
             public bool isChecked { get; set; }
         }
@@ -140,9 +125,6 @@ namespace ACE_Behind_Mall.WebApi.Models
         }
         public class SubmitOrder
         {
-            [Required]
-            [Display(Name = "用户ID")]
-            public int userId { get; set; }
             [Required]
             [Display(Name = "用户留言")]
             public string note { get; set; }
@@ -167,9 +149,6 @@ namespace ACE_Behind_Mall.WebApi.Models
             [Required]
             [Display(Name = "商品ID")]
             public int goodId { get; set; }
-            [Required]
-            [Display(Name = "用户ID")]
-            public int userId { get; set; }
             [Required]
             [Display(Name = "评论内容")]
             public string content { get; set; }
