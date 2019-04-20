@@ -49,6 +49,7 @@
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.IO.Compression" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
@@ -64,6 +65,7 @@
   <ItemGroup>
     <Compile Include="CacheHelper.cs" />
     <Compile Include="ConvertHelper.cs" />
+    <Compile Include="FileHelper.cs" />
     <Compile Include="GetEnum.cs" />
     <Compile Include="GetModelHelper.cs" />
     <Compile Include="HashTableHelp.cs" />

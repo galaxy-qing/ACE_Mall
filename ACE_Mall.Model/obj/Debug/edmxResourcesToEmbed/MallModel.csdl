@@ -11,6 +11,7 @@
     <EntitySet Name="Mall_Good_Evaluation" EntityType="ACE_MallModel.Mall_Good_Evaluation" />
     <EntitySet Name="Mall_Good_Specification" EntityType="ACE_MallModel.Mall_Good_Specification" />
     <EntitySet Name="Mall_Question" EntityType="ACE_MallModel.Mall_Question" />
+    <EntitySet Name="Mall_Rotation" EntityType="ACE_MallModel.Mall_Rotation" />
     <EntitySet Name="My_Data" EntityType="ACE_MallModel.My_Data" />
     <EntitySet Name="My_Order" EntityType="ACE_MallModel.My_Order" />
     <EntitySet Name="My_Order_Good" EntityType="ACE_MallModel.My_Order_Good" />
@@ -124,6 +125,16 @@
     <Property Name="UserID" Type="Int32" />
     <Property Name="Question" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
     <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="IsDelete" Type="Int32" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Mall_Rotation">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="GoodID" Type="Int32" />
+    <Property Name="Picture" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="Createtime" Type="DateTime" Nullable="false" Precision="3" />
     <Property Name="IsDelete" Type="Int32" Nullable="false" />
   </EntityType>
   <EntityType Name="My_Data">

@@ -110,6 +110,16 @@
     <Property Name="CreateTime" Type="datetime" Nullable="false" />
     <Property Name="IsDelete" Type="int" Nullable="false" />
   </EntityType>
+  <EntityType Name="Mall_Rotation">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="GoodID" Type="int" />
+    <Property Name="Picture" Type="varchar" MaxLength="200" />
+    <Property Name="Createtime" Type="datetime" Nullable="false" />
+    <Property Name="IsDelete" Type="int" Nullable="false" />
+  </EntityType>
   <EntityType Name="My_Data">
     <Key>
       <PropertyRef Name="ID" />
@@ -183,6 +193,7 @@
     <EntitySet Name="Mall_Good_Evaluation" EntityType="Self.Mall_Good_Evaluation" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Mall_Good_Specification" EntityType="Self.Mall_Good_Specification" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Mall_Question" EntityType="Self.Mall_Question" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Mall_Rotation" EntityType="Self.Mall_Rotation" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="My_Data" EntityType="Self.My_Data" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="My_Order" EntityType="Self.My_Order" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="My_Order_Good" EntityType="Self.My_Order_Good" Schema="dbo" store:Type="Tables" />

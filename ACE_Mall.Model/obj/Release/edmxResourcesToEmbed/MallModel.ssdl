@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Schema Namespace="ACE_MallModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+<Schema Namespace="Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
   <EntityType Name="Adm_Log">
     <Key>
       <PropertyRef Name="ID" />
@@ -17,7 +17,7 @@
       <PropertyRef Name="ID" />
     </Key>
     <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="PositionID" Type="int" Nullable="false" />
+    <Property Name="RoleID" Type="int" />
     <Property Name="ReallyName" Type="varchar" MaxLength="50" />
     <Property Name="Account" Type="varchar" MaxLength="50" />
     <Property Name="Phone" Type="varchar" MaxLength="20" />
@@ -29,7 +29,7 @@
     <Property Name="CreateTime" Type="datetime" Nullable="false" />
     <Property Name="IsDelete" Type="int" Nullable="false" />
   </EntityType>
-  <EntityType Name="Adm_User_Position">
+  <EntityType Name="Adm_User_Role">
     <Key>
       <PropertyRef Name="ID" />
     </Key>
@@ -65,10 +65,14 @@
     </Key>
     <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="CategoryID" Type="int" />
-    <Property Name="CoverImage" Type="varchar" MaxLength="200" />
-    <Property Name="DetailImage" Type="varchar" MaxLength="2000" />
+    <Property Name="CoverImage" Type="varchar" MaxLength="500" />
+    <Property Name="DetailImage" Type="varchar" MaxLength="8000" />
+    <Property Name="InfoImage" Type="varchar" MaxLength="8000" />
     <Property Name="Name" Type="varchar" MaxLength="50" />
+    <Property Name="PresentPrice" Type="decimal" Precision="18" Scale="2" />
     <Property Name="OriginalPrice" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="SaleNumber" Type="int" Nullable="false" />
+    <Property Name="Stock" Type="int" Nullable="false" />
     <Property Name="CreateTime" Type="datetime" Nullable="false" />
     <Property Name="IsDelete" Type="int" Nullable="false" />
   </EntityType>
@@ -81,6 +85,7 @@
     <Property Name="GoodID" Type="int" />
     <Property Name="Star" Type="int" />
     <Property Name="Evaluation" Type="varchar" MaxLength="500" />
+    <Property Name="IsLook" Type="int" Nullable="false" />
     <Property Name="CreateTime" Type="datetime" Nullable="false" />
     <Property Name="IsDelete" Type="int" Nullable="false" />
   </EntityType>
@@ -89,6 +94,7 @@
       <PropertyRef Name="ID" />
     </Key>
     <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="GoodID" Type="int" Nullable="false" />
     <Property Name="Name" Type="varchar" MaxLength="50" />
     <Property Name="Price" Type="decimal" Precision="18" Scale="2" />
     <Property Name="CreateTime" Type="datetime" Nullable="false" />
@@ -125,14 +131,20 @@
     </Key>
     <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="UserID" Type="int" Nullable="false" />
-    <Property Name="Orderno" Type="varchar" MaxLength="50" Nullable="false" />
-    <Property Name="OrderState" Type="int" />
+    <Property Name="OrderNo" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="OrderState" Type="int" Nullable="false" />
     <Property Name="Name" Type="varchar" MaxLength="50" />
     <Property Name="Address" Type="varchar" MaxLength="500" />
     <Property Name="Phone" Type="varchar" MaxLength="20" />
+    <Property Name="PayMoney" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="PayWay" Type="int" />
     <Property Name="Note" Type="varchar" MaxLength="200" />
-    <Property Name="CreateTime" Type="datetime" Nullable="false" />
+    <Property Name="CourierName" Type="varchar" MaxLength="50" />
+    <Property Name="CourierNo" Type="varchar" MaxLength="50" />
+    <Property Name="PayTime" Type="datetime" />
     <Property Name="DeliveryTime" Type="datetime" />
+    <Property Name="CompleteTime" Type="datetime" />
+    <Property Name="CreateTime" Type="datetime" />
     <Property Name="IsDelete" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="My_Order_Good">
@@ -140,9 +152,10 @@
       <PropertyRef Name="ID" />
     </Key>
     <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="OrderNo" Type="varchar" MaxLength="50" />
-    <Property Name="Good_Specification_ID" Type="int" />
-    <Property Name="Good_Number" Type="int" />
+    <Property Name="OrderNo" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="GoodID" Type="int" Nullable="false" />
+    <Property Name="GoodSpecificationID" Type="int" />
+    <Property Name="GoodNumber" Type="int" />
     <Property Name="CreateTime" Type="datetime" Nullable="false" />
     <Property Name="IsDelete" Type="int" Nullable="false" />
   </EntityType>
@@ -151,16 +164,19 @@
       <PropertyRef Name="ID" />
     </Key>
     <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="UserID" Type="int" />
+    <Property Name="UserID" Type="int" Nullable="false" />
+    <Property Name="GoodID" Type="int" Nullable="false" />
     <Property Name="SpecificationID" Type="int" />
     <Property Name="Number" Type="int" />
+    <Property Name="IsChecked" Type="bit" Nullable="false" />
     <Property Name="CreateTime" Type="datetime" Nullable="false" />
     <Property Name="IsDelete" Type="int" Nullable="false" />
   </EntityType>
-  <EntityContainer Name="ACE_MallModelStoreContainer">
+  <Function Name="AutoCancelOrder" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+  <EntityContainer Name="StoreContainer">
     <EntitySet Name="Adm_Log" EntityType="Self.Adm_Log" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Adm_User" EntityType="Self.Adm_User" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="Adm_User_Position" EntityType="Self.Adm_User_Position" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Adm_User_Role" EntityType="Self.Adm_User_Role" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Mall_Answer" EntityType="Self.Mall_Answer" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Mall_Category" EntityType="Self.Mall_Category" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Mall_Good" EntityType="Self.Mall_Good" Schema="dbo" store:Type="Tables" />

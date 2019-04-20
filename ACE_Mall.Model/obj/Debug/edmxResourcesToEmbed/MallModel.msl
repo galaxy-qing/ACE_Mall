@@ -121,6 +121,17 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="Mall_Rotation">
+      <EntityTypeMapping TypeName="ACE_MallModel.Mall_Rotation">
+        <MappingFragment StoreEntitySet="Mall_Rotation">
+          <ScalarProperty Name="IsDelete" ColumnName="IsDelete" />
+          <ScalarProperty Name="Createtime" ColumnName="Createtime" />
+          <ScalarProperty Name="Picture" ColumnName="Picture" />
+          <ScalarProperty Name="GoodID" ColumnName="GoodID" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
     <EntitySetMapping Name="My_Data">
       <EntityTypeMapping TypeName="ACE_MallModel.My_Data">
         <MappingFragment StoreEntitySet="My_Data">

@@ -36,6 +36,7 @@ namespace ACE_Mall.Model
         public virtual DbSet<Mall_Good_Evaluation> Mall_Good_Evaluation { get; set; }
         public virtual DbSet<Mall_Good_Specification> Mall_Good_Specification { get; set; }
         public virtual DbSet<Mall_Question> Mall_Question { get; set; }
+        public virtual DbSet<Mall_Rotation> Mall_Rotation { get; set; }
         public virtual DbSet<My_Data> My_Data { get; set; }
         public virtual DbSet<My_Order> My_Order { get; set; }
         public virtual DbSet<My_Order_Good> My_Order_Good { get; set; }

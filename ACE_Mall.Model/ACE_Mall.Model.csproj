@@ -92,6 +92,9 @@
     <Compile Include="Mall_Question.cs">
       <DependentUpon>MallModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Mall_Rotation.cs">
+      <DependentUpon>MallModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="My_Data.cs">
       <DependentUpon>MallModel.tt</DependentUpon>
     </Compile>
