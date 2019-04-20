@@ -10,6 +10,8 @@ using ACE_Mall.Common;
 using NLog.Fluent;
 using ACE_Mall.Model;
 using static ACE_Behind_Mall.WebApi.Models.UserBindingModels;
+using ACE_Behind_Mall.WebApi.App_Start;
+using System.Web;
 
 namespace ACE_Behind_Mall.WebApi.Controllers
 {
@@ -17,14 +19,37 @@ namespace ACE_Behind_Mall.WebApi.Controllers
     /// <summary>
     /// 商品信息
     /// </summary>
-    public class GoodController : ApiController
+    public class GoodController : BasicController
     {
-        protected ModelResponse<dynamic> mr = new ModelResponse<dynamic>();
         GoodBLL goodsbll = new GoodBLL();
         CategoryBLL categorybll = new CategoryBLL();
         EvaluationBLL evaluationbll = new EvaluationBLL();
         UserBLL userbll = new UserBLL();
         SpecificationBLL specificationbll = new SpecificationBLL();
+        RotationBLL rotationbll = new RotationBLL();
+        /// <summary>
+        /// 获取轮播图
+        /// </summary>
+        /// <returns></returns>
+        public ModelResponse<dynamic> GetRotationPicture()
+        {
+            try
+            {
+                var model = rotationbll.GetList(x => x.IsDelete == 0).Select(x => new
+                {
+                    goodID = x.GoodID,
+                    picture = x.Picture,
+                });
+                mr.data = model;
+                mr.message = "获取成功";
+            }
+            catch (Exception e)
+            {
+                mr.status = 1;
+                Log.Error(e.Message);
+            }
+            return mr;
+        }
         /// <summary>
         /// 获取商品类别
         /// </summary>
@@ -60,51 +85,27 @@ namespace ACE_Behind_Mall.WebApi.Controllers
         {
             try
             {
-                var hotGoods = goodsbll.GetList(x => x.IsDelete == 0).OrderByDescending(x=>x.SaleNumber).Take(15);
-                var krisRecommend = goodsbll.GetList(x => x.IsDelete == 0).OrderByDescending(x => x.PresentPrice).Take(5);
-                if (hotGoods.Count() != 0&&krisRecommend.Count()!=0)
+                 var goodsList1 = goodsbll.GetList(x => x.IsDelete == 0).OrderByDescending(x => x.SaleNumber).Take(15).Select(x => new
                 {
-                    mr.data = new { hotGoods, krisRecommend };
-                }
-                if (hotGoods.Count() == 0 && krisRecommend.Count() != 0)
-                {
-                    mr.data = new { hotGoods="暂无商品", krisRecommend };
-                }
-                if (hotGoods.Count() != 0 && krisRecommend.Count() == 0)
-                {
-                    mr.data = new { hotGoods, krisRecommend= "暂无商品" };
-                }
-                if (hotGoods.Count() == 0 && krisRecommend.Count() == 0)
-                {
-                    mr.data = new { hotGoods= "暂无商品", krisRecommend = "暂无商品" };
-                }
+                    img = x.CoverImage,
+                    id = x.ID,
+                    name = x.Name,
+                    originalPrice = x.OriginalPrice,
+                    presentPrice = x.PresentPrice,
+                });
+                var goodsList2 = goodsbll.GetList(x => x.IsDelete == 0).OrderByDescending(x => x.PresentPrice).Take(5).Select(x=>new {
+                    img = x.CoverImage,
+                    id = x.ID,
+                    name = x.Name,
+                    originalPrice = x.OriginalPrice,
+                    presentPrice = x.PresentPrice,
+                });
+                var hotGoods = new { title = "热卖商品", goodsList= goodsList1 };
+                var krisRecommend = new { title = "Kris wu 推荐", goodsList = goodsList2 };
+                mr.data = new { hotGoods, krisRecommend };
             }
             catch (Exception e)
             {
-                Log.Error(e.Message);
-            }
-            return mr;
-        }
-        /// <summary>
-        /// 商品列表
-        /// </summary>
-        /// <returns></returns>
-        [HttpGet]
-        public ModelResponse<dynamic> GetGoods()
-        {
-            try
-            {
-                var item = goodsbll.GetList(x => x.IsDelete == 0);
-                if (item.Count > 0)
-                {
-                    mr.total = item.Count;
-                    mr.data = item;
-                }
-            }
-            catch (Exception e)
-            {
-                mr.status = 1;
-                mr.data = goodsbll.GetList(x => x.IsDelete == 0);
                 Log.Error(e.Message);
             }
             return mr;
@@ -112,16 +113,18 @@ namespace ACE_Behind_Mall.WebApi.Controllers
         /// <summary>
         /// 通过分类获取商品列表
         /// </summary>
+        /// <param name="pageSize">每页数量</param>
+        /// <param name="page">第几页</param>
         /// <param name="categoryId">商品类别ID</param>
         /// <param name="sortNo">排序号</param>
         /// <returns></returns>
         [HttpGet]
-        public ModelResponse<dynamic> ByCategoryGetGoods(int categoryId,int sortNo)
+        public ModelResponse<dynamic> ByCategoryGetGoods(int pageSize,int page,int categoryId,int sortNo)
         {
             //sortNo  0 默认，1，价格高，2，价格低，3，销量高，4，销量低
             try
             {
-                var model = goodsbll.GetList(x => x.IsDelete == 0 & x.CategoryID == categoryId).Select(x => new
+                var model = goodsbll.GetList(x => x.IsDelete == 0 & x.CategoryID == categoryId).Take(pageSize * page).Skip(pageSize * (page - 1)).Select(x => new
                 {
                     name = x.Name,
                     img = x.CoverImage,
@@ -147,7 +150,7 @@ namespace ACE_Behind_Mall.WebApi.Controllers
                     model = model.OrderBy(x => x.saleNamber).ToList();
                 }
                 mr.data = new { goodsList = model };
-                mr.total = model.Count();
+                mr.total = goodsbll.GetList(x => x.IsDelete == 0 & x.CategoryID == categoryId).Count();
             }
             catch (Exception e)
             {
@@ -189,14 +192,16 @@ namespace ACE_Behind_Mall.WebApi.Controllers
         /// <summary>
         /// 获取商品评价
         /// </summary>
+        /// <param name="pageSize">每页显示数量</param>
+        /// <param name="page">第几页</param>
         /// <param name="goodId">商品ID</param>
         /// <returns></returns>
         [HttpGet]
-        public ModelResponse<dynamic> ByGoodIDGetGoodEvaluation(int goodId)
+        public ModelResponse<dynamic> ByGoodIDGetGoodEvaluation(int pageSize,int page,int goodId)
         {
             try
             {
-                var model = evaluationbll.GetList(x => x.IsDelete == 0 && x.GoodID == goodId).Select(x => new {
+                var model = evaluationbll.GetList(x => x.IsDelete == 0 && x.GoodID == goodId).Take(pageSize * page).Skip(pageSize * (page - 1)).Select(x => new {
                     addTime=x.CreateTime.ToString(),
                     evaluation = x.Evaluation,
                     account = userbll.GetList(y=>y.ID==x.UserID).FirstOrDefault().Account,
@@ -204,7 +209,7 @@ namespace ACE_Behind_Mall.WebApi.Controllers
                     //specification= specificationbll.GetList(y=>y.)
                 });
                 mr.data = model;
-                mr.total = model.Count();
+                mr.total = evaluationbll.GetList(x => x.IsDelete == 0 && x.GoodID == goodId).Count();
             }
             catch (Exception e)
             {
@@ -218,14 +223,17 @@ namespace ACE_Behind_Mall.WebApi.Controllers
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
+        [HttpPost]
+        [RequestAuthorize]
         public ModelResponse<dynamic> AddGoodEvaluation(AddEvaluation model)
         {
+            int userId = GetTicket();
             bool flag = false;
             try
             {
                 Mall_Good_Evaluation evaluationmodel = new Mall_Good_Evaluation();
                 evaluationmodel.GoodID = model.goodId;
-                evaluationmodel.UserID = model.userId;
+                evaluationmodel.UserID = userId;
                 evaluationmodel.Evaluation = model.content;
                 evaluationmodel.CreateTime = DateTime.Now;
                 evaluationmodel.IsDelete = 0;

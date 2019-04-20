@@ -1,4 +1,5 @@
-﻿using ACE_Mall.BLL;
+﻿using ACE_Behind_Mall.WebApi.App_Start;
+using ACE_Mall.BLL;
 using ACE_Mall.Common;
 using ACE_Mall.Model;
 using NLog.Fluent;
@@ -7,6 +8,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Hosting;
@@ -20,9 +22,8 @@ namespace ACE_Behind_Mall.WebApi.Controllers
     /// <summary>
     /// 我的信息
     /// </summary>
-    public class UserController : ApiController
+    public class UserController : BasicController
     {
-        protected ModelResponse<dynamic> mr = new ModelResponse<dynamic>();
         private UserBLL userbll = new UserBLL();
         private ShopCartBLL shopcartbll = new ShopCartBLL();
         private GoodBLL goodbll = new GoodBLL();
@@ -133,12 +134,15 @@ namespace ACE_Behind_Mall.WebApi.Controllers
         /// <summary>
         /// 个人中心信息
         /// </summary>
-        /// <param name="userId"></param>
         /// <returns></returns>
         [HttpGet]
-        public ModelResponse<dynamic> GetMyData(int userId)
+        [AllowAnonymous]
+        [RequestAuthorize]
+        public ModelResponse<dynamic> GetMyData()
         {
-            var usermodel = userbll.GetList(x => x.IsDelete == 0 && x.ID == userId).Select(x => new
+            // GetUserId(userTicket);
+             int userId=GetTicket();
+             var usermodel = userbll.GetList(x => x.IsDelete == 0 && x.ID == userId).Select(x => new
             {
                 account = x.Account,
                 cretateTime = Convert.ToDateTime(x.CreateTime).ToString("yyyy-MM-dd HH:MM:SS"),
@@ -167,6 +171,8 @@ namespace ACE_Behind_Mall.WebApi.Controllers
         /// <param name="model"></param>
         /// <returns></returns>
         [HttpPost]
+        [AllowAnonymous]
+        [RequestAuthorize]
         public ModelResponse<dynamic> UpdateMyPhoto(Files model)
         {
             if (model.file.Count() < 1)
@@ -183,55 +189,20 @@ namespace ACE_Behind_Mall.WebApi.Controllers
             mr.data = new { img = result };
             return mr;
         }
-        public ModelResponse<dynamic> UpdateMyFile()
-        {
-            try
-            {
-                HttpPostedFile file = HttpContext.Current.Request.Files[0];
-                string xdpath = "images/";
-                string wlpath = HostingEnvironment.MapPath(xdpath);
-                string fileExt = file.FileName.Split('.')[1];
-                //if ( <= 0)
-                //{
-                //    mr.ErrCode = 1;
-                //    mr.ErrMsg = "仅支持" + scp.GetSysConfig(HTEnums.SiteSystem.sys_fileextension);
-                //    return mr;
-                //}
-                string newName = Utils.GetOrderNumber() + "." + fileExt;
-                if (!File.Exists(wlpath))
-                {
-                    Directory.CreateDirectory(wlpath);
-                }
-                string strPath = wlpath + newName;
-                file.SaveAs(strPath);
-                Image img = Image.FromFile(strPath);
-
-                //释放资源
-                img.Dispose();
-                file.InputStream.Close();
-                file.InputStream.Dispose();
-
-                mr.message = xdpath + newName;
-                return mr;
-            }
-            catch (Exception err)
-            {
-                mr.status = 2;
-                mr.message = err.ToString();
-                return mr;
-            }
-        }
         /// <summary>
         /// 修改个人信息
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
         [HttpPost]
+        [AllowAnonymous]
+        [RequestAuthorize]
         public ModelResponse<dynamic> UpdateMyData(MyDataInfo model)
         {
+            int userId = GetTicket();
             try
             {
-                var usermodel = userbll.GetList(x => x.IsDelete == 0 && x.ID == model.userId).FirstOrDefault();
+                var usermodel = userbll.GetList(x => x.IsDelete == 0 && x.ID == userId).FirstOrDefault();
                 usermodel.Email = model.email;
                 usermodel.Image = model.image;
                 usermodel.Password = model.password;
@@ -255,8 +226,11 @@ namespace ACE_Behind_Mall.WebApi.Controllers
         /// <param name="userId">用户ID</param>
         /// <returns></returns>
         [HttpGet]
-        public ModelResponse<dynamic> GetMyShopCart(int userId)
+        [AllowAnonymous]
+        [RequestAuthorize]
+        public ModelResponse<dynamic> GetMyShopCart()
         {
+            int userId = GetTicket();
             try
             {
                 if (userId == 0)
@@ -282,15 +256,18 @@ namespace ACE_Behind_Mall.WebApi.Controllers
         /// <param name="model">userId:用户ID<br/>goodId:商品ID<br/>number:商品数量</param>
         /// <returns></returns>
         [HttpPost]
+        [AllowAnonymous]
+        [RequestAuthorize]
         public ModelResponse<dynamic> AddMyShopCart(MyShopCartModel model)
         {
-            if (model.userId == 0)
+            int userId = GetTicket();
+            if (userId == 0)
             {
                 mr.status = 2;//未登录
                 mr.message = "请先登录";
             }
-            var usermodel = userbll.GetList(x => x.ID == model.userId).Count();
-            if (model.userId != 0 && usermodel > 0)
+            var usermodel = userbll.GetList(x => x.ID == userId).Count();
+            if (userId != 0 && usermodel > 0)
             {
                 try
                 {
@@ -302,12 +279,12 @@ namespace ACE_Behind_Mall.WebApi.Controllers
                     }
                     else//库存充足
                     {
-                        var shopcartmodel = shopcartbll.GetList(x => x.IsDelete == 0 && x.UserID == model.userId && x.GoodID == model.goodId).FirstOrDefault();
+                        var shopcartmodel = shopcartbll.GetList(x => x.IsDelete == 0 && x.UserID == userId && x.GoodID == model.goodId).FirstOrDefault();
                         bool flag = false;
                         if (shopcartmodel == null)
                         {
                             My_Shopcart mymodel = new My_Shopcart();
-                            mymodel.UserID = model.userId;
+                            mymodel.UserID = userId;
                             mymodel.GoodID = model.goodId;
                             mymodel.Number = model.number;
                             mymodel.CreateTime = DateTime.Now;
@@ -351,8 +328,11 @@ namespace ACE_Behind_Mall.WebApi.Controllers
         /// <param name="model">userId:用户ID<br/>goodId:商品ID<br/>number:商品数量</param>
         /// <returns></returns>
         [HttpPost]
+        [AllowAnonymous]
+        [RequestAuthorize]
         public ModelResponse<dynamic> UpdateShopCartNumber(MyShopCartModel model)
         {
+            int userId = GetTicket();
             try
             {
                 int good_stock = goodbll.GetList(x => x.IsDelete == 0 & x.ID == model.goodId).FirstOrDefault().Stock;
@@ -363,13 +343,13 @@ namespace ACE_Behind_Mall.WebApi.Controllers
                 }
                 else
                 {
-                    var shopcartmodel = shopcartbll.GetList(x => x.IsDelete == 0 && x.UserID == model.userId && x.GoodID == model.goodId).FirstOrDefault();
+                    var shopcartmodel = shopcartbll.GetList(x => x.IsDelete == 0 && x.UserID == userId && x.GoodID == model.goodId).FirstOrDefault();
                     shopcartmodel.Number = model.number;
                     My_Shopcart m = shopcartbll.GetUpdateModel<My_Shopcart>(shopcartmodel, "ID");
                     bool flag = shopcartbll.Update(m);
                     if (flag == true)
                     {
-                        getModel(model.userId, 1);
+                        getModel(userId, 1);
                     }
                 }
             }
@@ -386,38 +366,20 @@ namespace ACE_Behind_Mall.WebApi.Controllers
         /// <param name="model"></param>
         /// <returns></returns>
         [HttpDelete]
+        [AllowAnonymous]
+        [RequestAuthorize]
         public ModelResponse<dynamic> DeleteShopCartGood(DeleteShopCartGoodModel model)
         {
+            int userId = GetTicket();
             try
             {
-                var shopcartmodel = shopcartbll.GetList(x => x.IsDelete == 0 && x.UserID == model.userId && x.GoodID == model.goodId).FirstOrDefault();
+                var shopcartmodel = shopcartbll.GetList(x => x.IsDelete == 0 && x.UserID == userId && x.GoodID == model.goodId).FirstOrDefault();
                 shopcartmodel.IsDelete = 1;
                 My_Shopcart m = shopcartbll.GetUpdateModel<My_Shopcart>(shopcartmodel, "ID");
                 bool flag = shopcartbll.Update(m);
                 if (flag == true)
                 {
-                    getModel(model.userId, 1);
-                    //var mymodel = shopcartbll.GetList(x => x.IsDelete == 0 & x.UserID == model.userId).Select(x => new
-                    //{
-                    //    goodId = x.GoodID,
-                    //    goodStock = goodbll.GetList(y => y.IsDelete == 0 & y.ID == x.GoodID).FirstOrDefault().Stock,
-                    //    goodImage = goodbll.GetList(y => y.IsDelete == 0 & y.ID == x.GoodID).FirstOrDefault().CoverImage,
-                    //    goodName = goodbll.GetList(y => y.IsDelete == 0 & y.ID == x.GoodID).FirstOrDefault().Name,
-                    //    goodPrice = goodbll.GetList(y => y.IsDelete == 0 & y.ID == x.GoodID).FirstOrDefault().PresentPrice,
-                    //    number = x.Number,
-                    //    isChecked = x.IsChecked,
-                    //    subTotal = goodbll.GetList(y => y.IsDelete == 0 & y.ID == x.GoodID).FirstOrDefault().PresentPrice * x.Number,
-                    //});
-                    //decimal totalPrice = 0;
-                    //int totalNumber = mymodel.Count();
-                    //foreach (var item in mymodel.Where(x => x.isChecked == true))
-                    //{
-                    //    totalPrice += Convert.ToDecimal(item.subTotal);
-                    //}
-                    //int checkNumber = shopcartbll.GetList(x => x.IsDelete == 0 && x.UserID == model.userId && x.IsChecked == true).Count();
-                    //mr.data = new { totalNumber = totalNumber, totalPrice = totalPrice, mymodel };
-                    //mr.message = "删除成功";
-                    //mr.total = 1;
+                    getModel(userId, 1);
                 }
             }
             catch (Exception e)
@@ -433,45 +395,20 @@ namespace ACE_Behind_Mall.WebApi.Controllers
         /// <param name="model"></param>
         /// <returns></returns>
         [HttpPost]
+        [AllowAnonymous]
+        [RequestAuthorize]
         public ModelResponse<dynamic> SetGoodsChecked(GetGoodsChecked model)
         {
+            int userId = GetTicket();
             try
             {
-                var shopcartmodel = shopcartbll.GetList(x => x.IsDelete == 0 && x.UserID == model.userId && x.GoodID == model.goodId).FirstOrDefault();
+                var shopcartmodel = shopcartbll.GetList(x => x.IsDelete == 0 && x.UserID == userId && x.GoodID == model.goodId).FirstOrDefault();
                 shopcartmodel.IsChecked = model.isChecked;
                 My_Shopcart m = shopcartbll.GetUpdateModel<My_Shopcart>(shopcartmodel, "ID");
                 bool flag = shopcartbll.Update(m);
                 if (flag == true)
                 {
-                    getModel(model.userId, 1);
-                    //var mymodel = shopcartbll.GetList(x => x.IsDelete == 0 && x.UserID == model.userId).Select(x => new
-                    //{
-                    //    goodId = x.GoodID,
-                    //    goodStock = goodbll.GetList(y => y.IsDelete == 0 & y.ID == x.GoodID).FirstOrDefault().Stock,
-                    //    goodImage = goodbll.GetList(y => y.IsDelete == 0 & y.ID == x.GoodID).FirstOrDefault().CoverImage,
-                    //    goodName = goodbll.GetList(y => y.IsDelete == 0 & y.ID == x.GoodID).FirstOrDefault().Name,
-                    //    goodPrice = goodbll.GetList(y => y.IsDelete == 0 & y.ID == x.GoodID).FirstOrDefault().PresentPrice,
-                    //    number = x.Number,
-                    //    isChecked = x.IsChecked,
-                    //    subTotal = goodbll.GetList(y => y.IsDelete == 0 & y.ID == x.GoodID).FirstOrDefault().PresentPrice * x.Number,
-                    //});
-                    //decimal totalPrice = 0;
-                    //int totalNumber = 0;
-                    //foreach (var item2 in mymodel)
-                    //{
-                    //    totalNumber += Convert.ToInt32(item2.number);
-                    //}
-                    //int checkNumber = 0;
-                    //foreach (var item1 in mymodel.Where(x => x.isChecked == true))
-                    //{
-                    //    totalPrice += Convert.ToDecimal(item1.subTotal);
-                    //    checkNumber += Convert.ToInt32(item1.number);
-                    //}
-                    //bool isAllChecked = shopcartbll.GetList(y => y.IsDelete == 0 && y.UserID == model.goodId && y.IsChecked == false).Count == 0 ? true : false;
-                    //mr.data = new { isAllChecked = isAllChecked, totalNumber = totalNumber, checkNumber = checkNumber, totalPrice = totalPrice, mymodel };
-                    //mr.message = "修改成功";
-                    //mr.total = 1;
-
+                    getModel(userId, 1);
                 }
             }
             catch (Exception e)
@@ -489,9 +426,10 @@ namespace ACE_Behind_Mall.WebApi.Controllers
         [HttpPost]
         public ModelResponse<dynamic> SetGoodsAllChecked(GetGoodsAllChecked model)
         {
+            int userId = GetTicket();
             try
             {
-                var shopcartmodel = shopcartbll.GetList(x => x.IsDelete == 0 && x.UserID == model.userId);
+                var shopcartmodel = shopcartbll.GetList(x => x.IsDelete == 0 && x.UserID == userId);
                 foreach (var item in shopcartmodel)
                 {
                     item.IsChecked = model.isChecked;
@@ -499,7 +437,7 @@ namespace ACE_Behind_Mall.WebApi.Controllers
                     bool flag = shopcartbll.Update(m);
                     if (flag == true)
                     {
-                        getModel(model.userId, 1);
+                        getModel(userId, 1);
                     }
                 }
             }
@@ -516,8 +454,10 @@ namespace ACE_Behind_Mall.WebApi.Controllers
         /// <param name="userId"></param>
         /// <returns></returns>
         [HttpGet]
-        public ModelResponse<dynamic> GetShopCartShow(int userId)
+        [RequestAuthorize]
+        public ModelResponse<dynamic> GetShopCartShow()
         {
+            int userId = GetTicket();
             try
             {
                 var shopcartmodel = shopcartbll.GetList(x => x.IsDelete == 0 && x.UserID == userId);

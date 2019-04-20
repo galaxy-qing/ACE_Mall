@@ -14,15 +14,15 @@ using System.Web;
 using System.Net.Http.Headers;
 using System.Collections.Specialized;
 using System.Web.Security;
+using ACE_Behind_Mall.WebApi.App_Start;
 
 namespace ACE_Behind_Mall.WebApi.Controllers
 {
     /// <summary>
     /// 订单信息
     /// </summary>
-    public class OrderController : ApiController
+    public class OrderController : BasicController
     {
-        protected ModelResponse<dynamic> mr = new ModelResponse<dynamic>();
         UserBLL userbll = new UserBLL();
         ShopCartBLL shopcartbll = new ShopCartBLL();
         GoodBLL goodbll = new GoodBLL();
@@ -35,22 +35,24 @@ namespace ACE_Behind_Mall.WebApi.Controllers
         /// <param name="model"></param>
         /// <returns></returns>
         [HttpPost]
+        [RequestAuthorize]
         public ModelResponse<dynamic> SubmitOrder(SubmitOrder model)
         {
+            int userId = GetTicket();
             try
             {
                 My_Order myorder = new My_Order();
-                myorder.UserID = model.userId;
+                myorder.UserID = userId;
                 myorder.OrderNo = "ACE" + Utils.GetOrderNumber();
                 myorder.OrderState = 1;
                 myorder.PayMoney = model.payMoney;
-                myorder.Name = userbll.GetList(x => x.ID == model.userId && x.IsDelete == 0).FirstOrDefault().ReceiveName;
-                myorder.Phone = userbll.GetList(x => x.ID == model.userId && x.IsDelete == 0).FirstOrDefault().ReceivePhone;
-                myorder.Address = userbll.GetList(x => x.ID == model.userId && x.IsDelete == 0).FirstOrDefault().ReceiveAddress;
+                myorder.Name = userbll.GetList(x => x.ID == userId && x.IsDelete == 0).FirstOrDefault().ReceiveName;
+                myorder.Phone = userbll.GetList(x => x.ID ==userId && x.IsDelete == 0).FirstOrDefault().ReceivePhone;
+                myorder.Address = userbll.GetList(x => x.ID ==userId && x.IsDelete == 0).FirstOrDefault().ReceiveAddress;
                 myorder.CreateTime = DateTime.Now;
                 myorder.IsDelete = 0;
                 orderbll.Add(myorder);
-                var shopcartmodel = shopcartbll.GetList(x => x.IsDelete == 0 && x.UserID == model.userId && x.IsChecked == true);
+                var shopcartmodel = shopcartbll.GetList(x => x.IsDelete == 0 && x.UserID == userId && x.IsChecked == true);
                 foreach (var item in shopcartmodel)
                 {
                     My_Order_Good myordergood = new My_Order_Good();
@@ -80,6 +82,7 @@ namespace ACE_Behind_Mall.WebApi.Controllers
         /// <param name="model"></param>
         /// <returns></returns>
         [HttpPost]
+        [RequestAuthorize]
         public ModelResponse<dynamic> PayOrder(PayOrder model)
         {
             try
@@ -105,8 +108,10 @@ namespace ACE_Behind_Mall.WebApi.Controllers
         /// <param name="userId">用户ID</param>
         /// <returns></returns>
         [HttpGet]
-        public ModelResponse<dynamic> GetOrderStatusNumber(int userId)
+        [RequestAuthorize]
+        public ModelResponse<dynamic> GetOrderStatusNumber()
         {
+            int userId = GetTicket();
             try
             {
                 var ordermodel = orderbll.GetList(x => x.IsDelete == 0 && x.UserID == userId);
@@ -152,8 +157,10 @@ namespace ACE_Behind_Mall.WebApi.Controllers
         /// <param name="orderStatus">订单状态</param>
         /// <returns></returns>
         [HttpGet]
-        public ModelResponse<dynamic> GetOrderList(int userId, int orderStatus)
+        [RequestAuthorize]
+        public ModelResponse<dynamic> GetOrderList(int orderStatus)
         {
+            int userId = GetTicket();
             try
             {
                 var List = orderbll.GetList(x => x.IsDelete == 0 && x.UserID == userId).OrderBy(x => x.OrderState).ToList();
@@ -177,7 +184,7 @@ namespace ACE_Behind_Mall.WebApi.Controllers
                         receiveName = x.Name,
                         payWay = x.PayWay,
                         orderState = x.OrderState,
-                        goodList = ordergoodbll.GetList(y => y.IsDelete == 0 && y.OrderNo == x.OrderNo).Select(y => new
+                        goodList = ordergoodbll.GetList(y => y.OrderNo == x.OrderNo).Select(y => new
                         {
                             goodName = goodbll.GetList(z => z.IsDelete == 0 && z.ID == y.GoodID).FirstOrDefault().Name,
                             goodImage = goodbll.GetList(z => z.IsDelete == 0 && z.ID == y.GoodID).FirstOrDefault().CoverImage,
@@ -191,7 +198,6 @@ namespace ACE_Behind_Mall.WebApi.Controllers
             }
             catch (Exception e)
             {
-                mr.status = 1;
                 Log.Error(e.Message);
             }
             return mr;
@@ -199,12 +205,13 @@ namespace ACE_Behind_Mall.WebApi.Controllers
         /// <summary>
         /// 获取订单详情
         /// </summary>
-        /// <param name="userId"></param>
         /// <param name="orderNo"></param>
         /// <returns></returns>
         [HttpGet]
-        public ModelResponse<dynamic> GetOrderDetail(int userId, string orderNo)
+        [RequestAuthorize]
+        public ModelResponse<dynamic> GetOrderDetail(string orderNo)
         {
+            int userId = GetTicket();
             try
             {
                 var ordermodel = orderbll.GetList(x => x.IsDelete == 0 && x.UserID == userId && x.OrderNo == orderNo).FirstOrDefault();
