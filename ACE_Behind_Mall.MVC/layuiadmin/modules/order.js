@@ -1,9 +1,7 @@
 ﻿/**
 
- @Name：layuiAdmin 订单系统
- @Author：star1029
- @Site：http://www.layui.com/admin/
- @License：GPL-2
+ @Name：ACE-MALL 商城后台
+ @Author：张青青
     
  */
 
@@ -59,7 +57,6 @@ layui.define(['table', 'form','vue', 'element', 'jquery'], function (exports) {
                 success: function () {
                     vm.$set('$data', data);
                     form.render();
-                    //tableIns.reload();
                 },
                 end: table.render
             });
@@ -89,7 +86,6 @@ layui.define(['table', 'form','vue', 'element', 'jquery'], function (exports) {
                     $(':input', '#formCourierDetail').not(':button,:submit,:reset,:hidden').val('');
                     vm1.$set('$data', data);
                     form.render();
-                    //tableIns.reload();
                 },
                 end: table.render
             });
