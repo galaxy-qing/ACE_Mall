@@ -70,6 +70,7 @@
     <Compile Include="GetModelHelper.cs" />
     <Compile Include="HashTableHelp.cs" />
     <Compile Include="JsonHelper.cs" />
+    <Compile Include="MailHelper.cs" />
     <Compile Include="ModelResponse.cs" />
     <Compile Include="NLogHelper.cs" />
     <Compile Include="PageReq.cs" />

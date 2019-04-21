@@ -11,8 +11,8 @@ namespace ACE_Behind_Mall.WebApi
         protected void Application_Start()
         {
             AreaRegistration.RegisterAllAreas();
-            //注册定时任务
-            TimeJob.Start();
+            ////注册定时任务
+            //TimeJob.Start();
             GlobalConfiguration.Configure(WebApiConfig.Register);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);

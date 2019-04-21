@@ -22,6 +22,31 @@ namespace ACE_Behind_Mall.MVC.Controllers
         /// <returns>视图</returns>
         public ActionResult Login()
         {
+            //获取cookie中的数据
+            HttpCookie cookie = Request.Cookies.Get("mycookie");
+            if (cookie != null)
+            {
+                //把保存的用户名和密码赋值给对应的文本框
+                //用户名
+                var name = cookie.Values["username"].ToString();
+                ViewBag.username = name;
+                //密码
+                var pwd = cookie.Values["password"].ToString();
+                ViewBag.password = pwd;
+            }
+            return View();
+        }
+        /// <summary>
+        /// 忘记密码
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult Forget()
+        {
+            return View();
+        }
+        public ActionResult SendEmail()
+        {
+            MailHelper.SendEmail("1945697586@qq.com", "ACE-MALL接收密码", "111", false);
             return View();
         }
         /// <summary>
@@ -40,27 +65,38 @@ namespace ACE_Behind_Mall.MVC.Controllers
         /// <param name="username">账户</param>
         /// <param name="password">密码</param>
         /// <returns></returns>
-        public string LoginIndex(string username, string password)
+        public string LoginIndex(string username, string password,string remember)
         {
             Hashtable ht = new Hashtable();
             try
             {
                 var userList = admuserbll.GetList(x => x.Account == username & x.Password == password&x.IsDelete==0).Count;
-               
                 if (userList == 0)
                 {
-                    ht["message"] = "账号错误";
+                    ht["message"] = "账号或密码错误";
                     ht["result"] = false;
                 }
                 else
                 {
                     ht["message"] = "登陆成功";
                     ht["result"] = true;
-                    ///System.Web.HttpContext.Current.Session["account"] = username;//存用户Session
-                   // System.Web.HttpContext.Current.Session.Timeout = 60;
-                   // var model = admuserbll.GetList(x => x.Account == username).FirstOrDefault();
-                   // TimeSpan SessTimeOut = new TimeSpan(0, 0, System.Web.HttpContext.Current.Session.Timeout, 0, 0);
-                   // HttpRuntime.Cache.Insert("p" + model.Account, "p" + model.Account, null, DateTime.MaxValue, SessTimeOut, CacheItemPriority.NotRemovable, null);
+                    if (remember == "on")
+                    {
+                        HttpCookie hc = new HttpCookie("mycookie");
+                        hc["username"] = username;
+                        hc["password"] = password;
+                        hc.Expires = DateTime.Now.AddDays(5);
+                        Response.Cookies.Add(hc);
+                    }
+                    else
+                    {
+                        HttpCookie hc = new HttpCookie("mycookie");
+                        if (hc != null)
+                        {
+                            hc.Expires = DateTime.Now.AddDays(-1);
+                            Response.Cookies.Add(hc);
+                        }
+                    }
                 }
             }
             catch (Exception e)
