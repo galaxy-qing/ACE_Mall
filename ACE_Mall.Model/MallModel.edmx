@@ -188,6 +188,26 @@
           <Property Name="CreateTime" Type="datetime" Nullable="false" />
           <Property Name="IsDelete" Type="int" Nullable="false" />
         </EntityType>
+        <!--生成过程中发现错误:
+警告 6002: 表/视图“ACE_Mall.dbo.View_Category_Good_Order”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
+        <EntityType Name="View_Category_Good_Order">
+          <Key>
+            <PropertyRef Name="CategoryDelete" />
+            <PropertyRef Name="GoodID" />
+            <PropertyRef Name="CreateTime" />
+            <PropertyRef Name="OrderDelete" />
+            <PropertyRef Name="GoodDelete" />
+            <PropertyRef Name="GoodNumber" />
+          </Key>
+          <Property Name="Name" Type="varchar" MaxLength="50" />
+          <Property Name="CategoryDelete" Type="int" Nullable="false" />
+          <Property Name="CategoryID" Type="int" />
+          <Property Name="GoodID" Type="int" Nullable="false" />
+          <Property Name="GoodNumber" Type="int" Nullable="false" />
+          <Property Name="CreateTime" Type="datetime" Nullable="false" />
+          <Property Name="OrderDelete" Type="int" Nullable="false" />
+          <Property Name="GoodDelete" Type="int" Nullable="false" />
+        </EntityType>
         <Function Name="AutoCancelOrder" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <EntityContainer Name="StoreContainer">
           <EntitySet Name="Adm_Log" EntityType="Self.Adm_Log" Schema="dbo" store:Type="Tables" />
@@ -204,6 +224,18 @@
           <EntitySet Name="My_Order" EntityType="Self.My_Order" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="My_Order_Good" EntityType="Self.My_Order_Good" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="My_Shopcart" EntityType="Self.My_Shopcart" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="View_Category_Good_Order" EntityType="Self.View_Category_Good_Order" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [View_Category_Good_Order].[Name] AS [Name], 
+    [View_Category_Good_Order].[CategoryDelete] AS [CategoryDelete], 
+    [View_Category_Good_Order].[CategoryID] AS [CategoryID], 
+    [View_Category_Good_Order].[GoodID] AS [GoodID], 
+    [View_Category_Good_Order].[GoodNumber] AS [GoodNumber], 
+    [View_Category_Good_Order].[CreateTime] AS [CreateTime], 
+    [View_Category_Good_Order].[OrderDelete] AS [OrderDelete], 
+    [View_Category_Good_Order].[GoodDelete] AS [GoodDelete]
+    FROM [dbo].[View_Category_Good_Order] AS [View_Category_Good_Order]</DefiningQuery>
+          </EntitySet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
@@ -225,6 +257,7 @@
           <EntitySet Name="My_Order" EntityType="ACE_MallModel.My_Order" />
           <EntitySet Name="My_Order_Good" EntityType="ACE_MallModel.My_Order_Good" />
           <EntitySet Name="My_Shopcart" EntityType="ACE_MallModel.My_Shopcart" />
+          <EntitySet Name="View_Category_Good_Order" EntityType="ACE_MallModel.View_Category_Good_Order" />
           </EntityContainer>
         <EntityType Name="Adm_Log">
           <Key>
@@ -408,6 +441,24 @@
           <Property Name="IsChecked" Type="Boolean" Nullable="false" />
           <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="IsDelete" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="View_Category_Good_Order">
+          <Key>
+            <PropertyRef Name="CategoryDelete" />
+            <PropertyRef Name="GoodID" />
+            <PropertyRef Name="CreateTime" />
+            <PropertyRef Name="OrderDelete" />
+            <PropertyRef Name="GoodDelete" />
+            <PropertyRef Name="GoodNumber" />
+          </Key>
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CategoryDelete" Type="Int32" Nullable="false" />
+          <Property Name="CategoryID" Type="Int32" />
+          <Property Name="GoodID" Type="Int32" Nullable="false" />
+          <Property Name="GoodNumber" Type="Int32" Nullable="false" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="OrderDelete" Type="Int32" Nullable="false" />
+          <Property Name="GoodDelete" Type="Int32" Nullable="false" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -610,6 +661,20 @@
                 <ScalarProperty Name="GoodID" ColumnName="GoodID" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="View_Category_Good_Order">
+            <EntityTypeMapping TypeName="ACE_MallModel.View_Category_Good_Order">
+              <MappingFragment StoreEntitySet="View_Category_Good_Order">
+                <ScalarProperty Name="GoodDelete" ColumnName="GoodDelete" />
+                <ScalarProperty Name="OrderDelete" ColumnName="OrderDelete" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="GoodNumber" ColumnName="GoodNumber" />
+                <ScalarProperty Name="GoodID" ColumnName="GoodID" />
+                <ScalarProperty Name="CategoryID" ColumnName="CategoryID" />
+                <ScalarProperty Name="CategoryDelete" ColumnName="CategoryDelete" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

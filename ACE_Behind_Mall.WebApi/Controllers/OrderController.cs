@@ -57,7 +57,7 @@ namespace ACE_Behind_Mall.WebApi.Controllers
                 {
                     My_Order_Good myordergood = new My_Order_Good();
                     myordergood.OrderNo = myorder.OrderNo;
-                    myordergood.GoodNumber = item.Number;
+                    myordergood.GoodNumber = Convert.ToInt32(item.Number);
                     myordergood.GoodID = item.GoodID;
                     myordergood.CreateTime = DateTime.Now;
                     myordergood.IsDelete = 0;

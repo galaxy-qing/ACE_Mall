@@ -73,6 +73,7 @@
     <Compile Include="ShopCartBLL.cs" />
     <Compile Include="SpecificationBLL.cs" />
     <Compile Include="UserBLL.cs" />
+    <Compile Include="ViewCategoryBLL.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

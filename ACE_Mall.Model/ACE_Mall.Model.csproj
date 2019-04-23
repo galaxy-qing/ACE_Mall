@@ -108,6 +108,9 @@
       <DependentUpon>MallModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="View_Category_Good_Order.cs">
+      <DependentUpon>MallModel.tt</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <EntityDeploy Include="MallModel.edmx">

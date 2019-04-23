@@ -41,6 +41,7 @@ namespace ACE_Mall.Model
         public virtual DbSet<My_Order> My_Order { get; set; }
         public virtual DbSet<My_Order_Good> My_Order_Good { get; set; }
         public virtual DbSet<My_Shopcart> My_Shopcart { get; set; }
+        public virtual DbSet<View_Category_Good_Order> View_Category_Good_Order { get; set; }
     
         public virtual int AutoCancelOrder()
         {

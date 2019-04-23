@@ -29,39 +29,34 @@
                             <div class="layui-form-item">
                                 <label class="layui-form-label">我的角色</label>
                                 <div class="layui-input-inline">
-                                    <select name="role" lay-verify="">
-                                        <option value="1" selected>超级管理员</option>
-                                        <option value="2" disabled>普通管理员</option>
-                                        <option value="3" disabled>审核员</option>
-                                        <option value="4" disabled>编辑人员</option>
-                                    </select>
+                                    <select name="RoleID" lay-verify=""></select>
                                 </div>
                                 <div class="layui-form-mid layui-word-aux">当前角色不可更改为其它角色</div>
                             </div>
                             <div class="layui-form-item">
                                 <label class="layui-form-label">用户名</label>
                                 <div class="layui-input-inline">
-                                    <input type="text" name="username" value="xianxin" readonly class="layui-input">
+                                    <input type="text" name="Account" v-model="Account" value="xianxin" readonly class="layui-input">
                                 </div>
                                 <div class="layui-form-mid layui-word-aux">不可修改。一般用于后台登入名</div>
                             </div>
                             <div class="layui-form-item">
-                                <label class="layui-form-label">昵称</label>
+                                <label class="layui-form-label">真实姓名</label>
                                 <div class="layui-input-inline">
-                                    <input type="text" name="nickname" value="贤心" lay-verify="nickname" autocomplete="off" placeholder="请输入昵称" class="layui-input">
+                                    <input type="text" name="ReallyName" v-model="ReallyName" autocomplete="off" placeholder="请输入真实姓名" class="layui-input">
                                 </div>
                             </div>
-                            <div class="layui-form-item">
+                            <div class="layui-form-item" pane>
                                 <label class="layui-form-label">性别</label>
                                 <div class="layui-input-block">
-                                    <input type="radio" name="sex" value="男" title="男">
-                                    <input type="radio" name="sex" value="女" title="女" checked>
+                                    <input type="radio" name="Sex" lay-filter="auditEvent" value="男" title="男" :checked="true">
+                                    <input type="radio" name="Sex" lay-filter="auditEvent" value="女" title="女" :checked="Sex">
                                 </div>
                             </div>
                             <div class="layui-form-item">
                                 <label class="layui-form-label">头像</label>
                                 <div class="layui-input-inline">
-                                    <input name="avatar" lay-verify="required" id="LAY_avatarSrc" placeholder="图片地址" value="http://cdn.layui.com/avatar/168.jpg" class="layui-input">
+                                    <input name="Image" v-model="ReallyName" lay-verify="required" id="LAY_avatarSrc" placeholder="图片地址" value="http://cdn.layui.com/avatar/168.jpg" class="layui-input">
                                 </div>
                                 <div class="layui-input-inline layui-btn-container" style="width: auto;">
                                     <button type="button" class="layui-btn layui-btn-primary" id="LAY_avatarUpload">
@@ -73,19 +68,19 @@
                             <div class="layui-form-item">
                                 <label class="layui-form-label">手机</label>
                                 <div class="layui-input-inline">
-                                    <input type="text" name="cellphone" value="" lay-verify="phone" autocomplete="off" class="layui-input">
+                                    <input type="text" name="Phone" v-model="Phone" value="" lay-verify="phone" autocomplete="off" class="layui-input">
                                 </div>
                             </div>
                             <div class="layui-form-item">
                                 <label class="layui-form-label">邮箱</label>
                                 <div class="layui-input-inline">
-                                    <input type="text" name="email" value="" lay-verify="email" autocomplete="off" class="layui-input">
+                                    <input type="text" name="Email" v-model="Email" value="" lay-verify="email" autocomplete="off" class="layui-input">
                                 </div>
                             </div>
-                            <div class="layui-form-item layui-form-text">
-                                <label class="layui-form-label">备注</label>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">出生日期</label>
                                 <div class="layui-input-block">
-                                    <textarea name="remarks" placeholder="请输入内容" class="layui-textarea"></textarea>
+                                    <input type="text" name="Birthday" id="Birthday" placeholder="yyyy-MM-dd" autocomplete="off" class="layui-input">
                                 </div>
                             </div>
                             <div class="layui-form-item">
