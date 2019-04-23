@@ -3,7 +3,7 @@
   ,"msg": ""
   ,"count": "100"
   ,"data": [{
-    "keywords": "贤心是男是女"
+    "keywords": "galaxy-qing是男是女"
     ,"frequency": 8520
     ,"userNums": 2216
   },{

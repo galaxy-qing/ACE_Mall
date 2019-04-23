@@ -5,7 +5,7 @@
   ,"data": [{
     "id": 111
     ,"title": "社区开始接受 “赞助商广告” 投放"
-    ,"username": "贤心"
+    ,"username": "galaxy-qing"
     ,"channel": "公告"
     ,"href": "http://fly.layui.com/jie/15697/"
     ,"crt": 61632

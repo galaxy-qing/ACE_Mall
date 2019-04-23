@@ -230,7 +230,8 @@ namespace ACE_Behind_Mall.WebApi.Controllers
         [RequestAuthorize]
         public ModelResponse<dynamic> GetMyShopCart()
         {
-            int userId = GetTicket();
+            int userId = 0;
+            userId = GetTicket();
             try
             {
                 if (userId == 0)

@@ -10,9 +10,7 @@
 *.ide-wal
 *.dll
 *.pdb
-*.pdb
 *.txt
-*.cache
 *.cache
 *.nupkg
 *.p7s
@@ -20,3 +18,9 @@
 *.ssdl
 *.msl
 *.csdl
+/packages/
+
+*.diagram
+*.map
+ACE_Behind_Mall.MVC/bin/roslyn/vbc.exe
+*.exe

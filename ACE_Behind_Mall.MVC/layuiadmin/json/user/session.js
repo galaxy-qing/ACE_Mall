@@ -2,7 +2,7 @@
   "code": 0
   ,"msg": ""
   ,"data": {
-    "username": "贤心"
+    "username": "galaxy-qing"
     ,"sex": "男"
     ,"role": 1
   }

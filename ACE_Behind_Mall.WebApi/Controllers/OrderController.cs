@@ -252,5 +252,54 @@ namespace ACE_Behind_Mall.WebApi.Controllers
             }
             return mr;
         }
+        /// <summary>
+        /// 取消订单
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ModelResponse<dynamic> CancelOrder(PayOrder model)
+        {
+            try
+            {
+                var ordermodel = orderbll.GetList(x => x.IsDelete == 0 && x.OrderNo == model.orderNo).FirstOrDefault();
+                ordermodel.OrderState = 6;
+                My_Order m = orderbll.GetUpdateModel<My_Order>(ordermodel, "ID");
+                orderbll.Update(m);
+                mr.message = "您已成功取消订单";
+            }
+            catch (Exception e)
+            {
+                mr.status = 1;
+                mr.message = "服务器错误";
+                Log.Error(e.Message);
+            }
+            return mr;
+        }
+        /// <summary>
+        /// 确认收货
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ModelResponse<dynamic> ConfirmReceipt(PayOrder model)
+        {
+            try
+            {
+                var ordermodel = orderbll.GetList(x => x.IsDelete == 0 && x.OrderNo == model.orderNo).FirstOrDefault();
+                ordermodel.OrderState = 4;
+                ordermodel.CompleteTime = DateTime.Now;
+                My_Order m = orderbll.GetUpdateModel<My_Order>(ordermodel, "ID");
+                orderbll.Update(m);
+                mr.message = "您已成功确认收货";
+            }
+            catch (Exception e)
+            {
+                mr.status = 1;
+                mr.message = "服务器错误";
+                Log.Error(e.Message);
+            }
+            return mr;
+        }
     }
 }

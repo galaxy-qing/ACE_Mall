@@ -24,6 +24,7 @@ namespace ACE_Mall.Model
         public string Image { get; set; }
         public Nullable<System.DateTime> Birthday { get; set; }
         public string Sex { get; set; }
+        public string Code { get; set; }
         public System.DateTime CreateTime { get; set; }
         public int IsDelete { get; set; }
     }

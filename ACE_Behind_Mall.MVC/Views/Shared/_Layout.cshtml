@@ -1,8 +1,9 @@
-﻿<!DOCTYPE html>
+﻿
+<!DOCTYPE html>
 <html>
 <head>
     @*<meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">*@
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">*@
     <meta charset="utf-8">
     <title>layuiAdmin通用后台管理模板系统</title>
     <meta name="renderer" content="webkit">
@@ -23,7 +24,7 @@
                         </a>
                     </li>
                     <li class="layui-nav-item layui-hide-xs" lay-unselect>
-                        <a href="http://www.layui.com/admin/" target="_blank" title="前台">
+                        <a href="http://meigeni.cn" target="_blank" title="前台">
                             <i class="layui-icon layui-icon-website"></i>
                         </a>
                     </li>
@@ -63,12 +64,11 @@
                     </li>
                     <li class="layui-nav-item" lay-unselect>
                         <a href="javascript:;">
-                            <cite>贤心</cite>
+                            <cite id="galaxyqing"></cite>
                         </a>
                         <dl class="layui-nav-child">
                             <dd><a lay-href="set/user/info.html">基本资料</a></dd>
-                            <dd><a lay-href="set/user/password.html">修改密码</a></dd>
-                            <hr>
+                            <dd><a lay-href="/AdminUser/SetPassword">修改密码</a></dd>
                             <dd layadmin-event="logout" style="text-align: center;"><a>退出</a></dd>
                         </dl>
                     </li>
@@ -160,7 +160,7 @@
             <div class="layui-body" id="LAY_app_body">
                 <div class="layadmin-tabsbody-item layui-show">
                     @*<iframe src="" frameborder="0" class="layadmin-iframe"  seamless>*@
-                        @RenderBody()
+                    @RenderBody()
                     @*</iframe>*@
                 </div>
             </div>

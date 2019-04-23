@@ -22,6 +22,48 @@ namespace ACE_Behind_Mall.MVC.Controllers
         {
             return View();
         }
+        public ActionResult SetPassword()
+        {
+            return View();
+        }
+        public ActionResult SetUserInfo()
+        {
+            return View();
+        }
+        public string GetMyAccount()
+        {
+            int userId = Convert.ToInt32(Session["userID"]);
+            var usermodel = admuserbll.GetList(x => x.ID == userId).FirstOrDefault();
+            if (userId != 0)
+            {
+                mr.message = usermodel.Account;
+            }
+            else
+            {
+                mr.status = 2;
+                mr.message = "请先登录";
+            }
+            return JsonHelper.Instance.Serialize(mr);
+        }
+        public string UpdatePassword(string oldPassword,string password)
+        {
+            int userId = Convert.ToInt32(Session["userID"]);
+            var usermodel = admuserbll.GetList(x => x.ID == userId).FirstOrDefault();
+            string pwd = Utils.MD5(oldPassword);
+            if (pwd != usermodel.Password)
+            {
+                mr.status = 1;
+                mr.message = "您输入的旧密码不正确";
+            }
+            else
+            {
+                usermodel.Password = pwd;
+                Adm_User r = admuserbll.GetUpdateModel<Adm_User>(usermodel, "ID");
+                admuserbll.Update(r);
+                mr.message = "您已成功修改密码";
+            }
+            return JsonHelper.Instance.Serialize(mr);
+        }
         public ActionResult GetRoleList()
         {
             var rolemodel = rolebll.GetList(x => x.IsDelete == 0).ToList();

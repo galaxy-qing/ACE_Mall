@@ -27,10 +27,11 @@
           <Property Name="Account" Type="varchar" MaxLength="50" />
           <Property Name="Phone" Type="varchar" MaxLength="20" />
           <Property Name="Email" Type="varchar" MaxLength="20" />
-          <Property Name="Password" Type="varchar" MaxLength="20" />
+          <Property Name="Password" Type="varchar" MaxLength="50" />
           <Property Name="Image" Type="varchar" MaxLength="200" />
           <Property Name="Birthday" Type="date" />
           <Property Name="Sex" Type="varchar" MaxLength="2" Nullable="false" />
+          <Property Name="Code" Type="varchar" MaxLength="50" />
           <Property Name="CreateTime" Type="datetime" Nullable="false" />
           <Property Name="IsDelete" Type="int" Nullable="false" />
         </EntityType>
@@ -247,10 +248,11 @@
           <Property Name="Account" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Phone" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="Email" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="Password" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Image" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
           <Property Name="Birthday" Type="DateTime" Precision="0" />
           <Property Name="Sex" Type="String" Nullable="false" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="Code" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="IsDelete" Type="Int32" Nullable="false" />
         </EntityType>
@@ -432,6 +434,7 @@
               <MappingFragment StoreEntitySet="Adm_User">
                 <ScalarProperty Name="IsDelete" ColumnName="IsDelete" />
                 <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
                 <ScalarProperty Name="Sex" ColumnName="Sex" />
                 <ScalarProperty Name="Birthday" ColumnName="Birthday" />
                 <ScalarProperty Name="Image" ColumnName="Image" />

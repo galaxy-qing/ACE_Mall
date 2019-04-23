@@ -119,12 +119,12 @@ namespace ACE_Behind_Mall.WebApi.Controllers
         /// <param name="sortNo">排序号</param>
         /// <returns></returns>
         [HttpGet]
-        public ModelResponse<dynamic> ByCategoryGetGoods(int pageSize,int page,int categoryId,int sortNo)
+        public ModelResponse<dynamic> ByCategoryGetGoods(int categoryId,int sortNo)
         {
             //sortNo  0 默认，1，价格高，2，价格低，3，销量高，4，销量低
             try
             {
-                var model = goodsbll.GetList(x => x.IsDelete == 0 & x.CategoryID == categoryId).Take(pageSize * page).Skip(pageSize * (page - 1)).Select(x => new
+                var model = goodsbll.GetList(x => x.IsDelete == 0 & x.CategoryID == categoryId).Select(x => new
                 {
                     name = x.Name,
                     img = x.CoverImage,

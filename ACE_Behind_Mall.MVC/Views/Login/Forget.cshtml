@@ -29,7 +29,8 @@
             <div class="layadmin-user-login-box layadmin-user-login-body layui-form">
 
                 <script type="text/html" template>
-                    {{# if(layui.router().search.type === 'resetpass'){ }}
+                    {{# if(layui.router().search.type == 'resetpass'){ }}
+                    <input type="hidden" name="userId" value=@ViewBag.UserID/>
                     <div class="layui-form-item">
                         <label class="layadmin-user-login-icon layui-icon layui-icon-password" for="LAY-user-login-password"></label>
                         <input type="password" name="password" id="LAY-user-login-password" lay-verify="pass" placeholder="新密码" class="layui-input">
@@ -43,14 +44,14 @@
                     </div>
                     {{# } else { }}
                     <div class="layui-form-item">
-                        <label class="layadmin-user-login-icon layui-icon layui-icon-cellemail" for="LAY-user-login-cellemail"></label>
-                        <input type="text" name="cellemail" id="LAY-user-login-cellemail" lay-verify="email" placeholder="请输入当前使用的邮箱号" class="layui-input">
+                        <label class="layadmin-user-login-icon layui-icon layui-icon-cellphone" for="LAY-user-login-cellphone"></label>
+                        <input type="text" name="cellphone" id="LAY-user-login-cellphone" lay-verify="email" placeholder="请输入注册时的邮箱号" class="layui-input">
                     </div>
                     <div class="layui-form-item">
                         <div class="layui-row">
                             <div class="layui-col-xs7">
                                 <label class="layadmin-user-login-icon layui-icon layui-icon-vercode" for="LAY-user-login-vercode"></label>
-                                <input type="text" name="vercode" id="LAY-user-login-vercode" lay-verify="required" placeholder="图形验证码" class="layui-input">
+                                <input type="text" name="picturecode" id="LAY-user-login-vercode" lay-verify="required" placeholder="图形验证码" class="layui-input">
                             </div>
                             <div class="layui-col-xs5">
                                 <div style="margin-left: 10px;">
@@ -111,17 +112,24 @@
             //找回密码下一步
             form.on('submit(LAY-user-forget-submit)', function (obj) {
                 var field = obj.field;
-
+                console.log(field)
+                debugger
                 //请求接口
-                admin.req({
-                    url: layui.setter.base + 'json/user/forget.js' //实际使用请改成服务端真实接口
-                    , data: field
-                    , done: function (res) {
-                        location.hash = '/type=resetpass';
-                        location.reload();
+                $.ajax({
+                    url: '/Login/VerifyCode',
+                    data: field ,
+                    dataType: 'json',
+                    type: 'post',
+                    success: function (res) {
+                        if (res.status == 0) {
+                            location.hash = '/type=resetpass/id=' + res.message;
+                            location.reload();
+                        }
+                        else {
+                            layer.msg(res.message);
+                        }
                     }
                 });
-
                 return false;
             });
 
@@ -133,22 +141,32 @@
                 if (field.password !== field.repass) {
                     return layer.msg('两次密码输入不一致');
                 }
-
+                var router = layui.router();
+                var id = router.search.id;
                 //请求接口
-                admin.req({
-                    url: layui.setter.base + 'json/user/resetpass.js' //实际使用请改成服务端真实接口
-                    , data: field
-                    , done: function (res) {
-                        layer.msg('密码已成功重置', {
+                $.ajax({
+                    url: '/Login/SetPwd',
+                    data:{
+                      password: $("#LAY-user-login-password").val(),
+                      id:id
+                    },
+                    dataType: 'json',
+                    type: 'post',
+                    success: function (res) {
+                        if (res.status == 0) {
+                            layer.msg('密码已成功重置', {
                             offset: '15px'
                             , icon: 1
                             , time: 1000
                         }, function () {
-                            location.href = 'login.html'; //跳转到登入页
+                            location.href = '/Login/Login'; //跳转到登入页
                         });
+                        }
+                        else {
+                            layer.msg(res.message);
+                        }
                     }
                 });
-
                 return false;
             });
 

@@ -7,12 +7,13 @@ using ACE_Mall.BLL;
 using ACE_Mall.Common;
 using System.Collections;
 using NLog.Fluent;
-using System.Web.Caching;
+using ACE_Mall.Model;
 
 namespace ACE_Behind_Mall.MVC.Controllers
 {
     public class LoginController : Controller
     {
+        protected ModelResponse<dynamic> mr = new ModelResponse<dynamic>();
         AdmUserBLL admuserbll = new AdmUserBLL();
        
         // GET: Login
@@ -44,10 +45,59 @@ namespace ACE_Behind_Mall.MVC.Controllers
         {
             return View();
         }
-        public ActionResult SendEmail()
+        public string SendEmail(string email)
         {
-            MailHelper.SendEmail("1945697586@qq.com", "ACE-MALL接收密码", "111", false);
-            return View();
+            string code = Utils.GetCheckCode(6,true);
+            var model = admuserbll.GetList(x => x.IsDelete == 0 & x.Email == email).FirstOrDefault();
+            if (model != null)
+            {
+                MailHelper.SendEmail(email, "ACE-MALL验证码", code, false);
+                model.Code = Utils.MD5(code);
+                Adm_User r = admuserbll.GetUpdateModel<Adm_User>(model, "ID");
+                bool flag = admuserbll.Update(r);
+                mr.message = "success";
+                mr.status = 0;
+            }
+            else
+            {
+                mr.message = "error";
+            }
+            return JsonHelper.Instance.Serialize(mr);
+        }
+        public string VerifyCode(string vercode,string picturecode,string cellphone)
+        {
+            var model = admuserbll.GetList(x => x.IsDelete == 0 & x.Email == cellphone).FirstOrDefault();
+            if (model != null)
+            {
+                string code = Utils.MD5(vercode);
+                if (model.Code == code)
+                {
+                    mr.message = model.Code;
+                }
+                else
+                {
+                    mr.status = 1;
+                    mr.message = "邮箱验证不通过";
+                }
+            }
+          
+            return JsonHelper.Instance.Serialize(mr);
+        }
+        public string SetPwd(string id, string password)
+        {
+            try
+            {
+                var model = admuserbll.GetList(x => x.IsDelete == 0 & x.Code == id).FirstOrDefault();
+                model.Password = Utils.MD5(password);
+                Adm_User r = admuserbll.GetUpdateModel<Adm_User>(model, "ID");
+                admuserbll.Update(r);
+            }
+            catch (Exception e)
+            {
+                mr.message="服务器内部错误";
+                Log.Error(e.Message);
+            }
+            return JsonHelper.Instance.Serialize(mr);
         }
         /// <summary>
         /// 首页
@@ -70,8 +120,9 @@ namespace ACE_Behind_Mall.MVC.Controllers
             Hashtable ht = new Hashtable();
             try
             {
-                var userList = admuserbll.GetList(x => x.Account == username & x.Password == password&x.IsDelete==0).Count;
-                if (userList == 0)
+                var pwd = Utils.MD5(password);
+                var userList = admuserbll.GetList(x => x.Account == username & x.Password == pwd&x.IsDelete==0);
+                if (userList.Count() == 0)
                 {
                     ht["message"] = "账号或密码错误";
                     ht["result"] = false;
@@ -80,6 +131,7 @@ namespace ACE_Behind_Mall.MVC.Controllers
                 {
                     ht["message"] = "登陆成功";
                     ht["result"] = true;
+                    Session["userID"] = userList.FirstOrDefault().ID;
                     if (remember == "on")
                     {
                         HttpCookie hc = new HttpCookie("mycookie");

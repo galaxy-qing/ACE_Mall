@@ -3,7 +3,7 @@
   ,"msg": ""
   ,"data": {
     "list": [{
-      "username": "贤心"
+      "username": "galaxy-qing"
       ,"id": "100001"
       ,"avatar": "//tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg"
       ,"sign": "这些都是测试数据，实际使用请严格按照该格式返回"
@@ -56,12 +56,12 @@
         "username": "林心如"
         ,"id": "76543"
         ,"avatar": "//tva3.sinaimg.cn/crop.0.0.512.512.180/48f122e6jw8fcmi072lkyj20e80e8t9i.jpg"
-        ,"sign": "我爱贤心"
+        ,"sign": "我爱galaxy-qing"
       },{
         "username": "佟丽娅"
         ,"id": "4803920"
         ,"avatar": "//tva3.sinaimg.cn/crop.0.0.750.750.180/5033b6dbjw8etqysyifpkj20ku0kuwfw.jpg"
-        ,"sign": "我也爱贤心吖吖啊"
+        ,"sign": "我也爱galaxy-qing吖吖啊"
       }]
   }
 }

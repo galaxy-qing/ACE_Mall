@@ -1,7 +1,7 @@
 /**
 
  @Name：layuiAdmin iframe版核心模块
- @Author：贤心
+ @Author：galaxy-qing
  @Site：http://www.layui.com/admin/
  @License：LPPL
     
@@ -95,21 +95,35 @@ layui.define('view', function(exports){
         }
         
         admin.req($.extend(true, {
-          url: '/auth/code'
+          url: '/Login/SendEmail'
           ,type: 'get'
           ,data: {
-            phone: value
-          }
-          ,success: function(res){
-            layer.msg('验证码已发送至你的手机，请注意查收', {
-              icon: 1
-              ,shade: 0
-            });
+            email: value
+            }
+            , parseData: function (res) {
+                return {
+                    "code": res.status,//解析接口状态
+                    "msg": res.message,//解析提示文本
+                };
+            }
+            , success: function (res) {
+                if (res.message == "success") {
+                    layer.msg('验证码已发送至你的邮箱，请注意查收', {
+                        icon: 1
+                        , shade: 0
+                    });
+                }
+                else {
+                    layer.msg('请确认您的邮箱是否正确', {
+                        icon: 1
+                        , shade: 0
+                    });
+                }
             options.elemVercode.focus();
             countDown();
             success && success(res);
           }
-        }, options.ajax));
+        }));
       });
     }
     

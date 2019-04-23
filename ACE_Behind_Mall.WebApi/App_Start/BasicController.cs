@@ -21,6 +21,10 @@ namespace ACE_Behind_Mall.WebApi.App_Start
         //int aaa=ValidateTicket("111");
         public int GetTicket()
         {
+            if (HttpContext.Current.Request.Headers["Authorization"] == ""|| HttpContext.Current.Request.Headers["Authorization"] == null)
+            {
+                return 0;
+            }
            string ticket = HttpContext.Current.Request.Headers["Authorization"].Substring(10);
             //解密Ticket
             var strTicket = FormsAuthentication.Decrypt(ticket).UserData;

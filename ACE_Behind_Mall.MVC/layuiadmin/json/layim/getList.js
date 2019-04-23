@@ -13,7 +13,7 @@
       "groupname": "知名人物"
       ,"id": 0
       ,"list": [{
-        "username": "贤心"
+        "username": "galaxy-qing"
         ,"id": "100001"
         ,"avatar": "//tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg"
         ,"sign": "这些都是测试数据，实际使用请严格按照该格式返回"
@@ -75,12 +75,12 @@
         "username": "王祖贤"
         ,"id": "76543"
         ,"avatar": "//wx2.sinaimg.cn/mw690/5db11ff4gy1flxmew7edlj203d03wt8n.jpg"
-        ,"sign": "我爱贤心"
+        ,"sign": "我爱galaxy-qing"
       },{
         "username": "佟丽娅"
         ,"id": "4803920"
         ,"avatar": "//tva3.sinaimg.cn/crop.0.0.750.750.180/5033b6dbjw8etqysyifpkj20ku0kuwfw.jpg"
-        ,"sign": "我也爱贤心吖吖啊"
+        ,"sign": "我也爱galaxy-qing吖吖啊"
       }]
     }]
     ,"group": [{

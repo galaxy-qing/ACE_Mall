@@ -101,11 +101,14 @@ namespace ACE_Behind_Mall.MVC.Controllers
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public string UpdateCourier(My_Order model)
+        public string UpdateCourier(int ID,string CourierName,string CourierNo)
         {
             bool flag = false;
             try
             {
+                var model = orderbll.GetList(x => x.IsDelete == 0 && x.ID == ID).FirstOrDefault();
+                model.CourierName = CourierName;
+                model.CourierNo = CourierNo;
                 model.DeliveryTime = DateTime.Now;
                 model.OrderState = 3;
                 My_Order r = orderbll.GetUpdateModel<My_Order>(model, "ID");
