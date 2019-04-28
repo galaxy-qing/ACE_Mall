@@ -611,6 +611,7 @@
     <Content Include="layuiadmin\lib\extend\echartsTheme.js" />
     <Content Include="layuiadmin\lib\index.js" />
     <Content Include="layuiadmin\lib\view.js" />
+    <Content Include="layuiadmin\modules\adminuser.js" />
     <Content Include="layuiadmin\modules\role.js" />
     <Content Include="layuiadmin\modules\common.js" />
     <Content Include="layuiadmin\modules\console.js" />
@@ -622,6 +623,7 @@
     <Content Include="layuiadmin\modules\im.js" />
     <Content Include="layuiadmin\modules\message.js" />
     <Content Include="layuiadmin\modules\order.js" />
+    <Content Include="layuiadmin\modules\salesenior.js" />
     <Content Include="layuiadmin\modules\sample.js" />
     <Content Include="layuiadmin\modules\senior.js" />
     <Content Include="layuiadmin\modules\set.js" />
@@ -752,6 +754,7 @@
     <Content Include="Scripts\popper-utils.js.map" />
     <Content Include="Views\AdminUser\SetPassword.cshtml" />
     <Content Include="Views\AdminUser\SetUserInfo.cshtml" />
+    <Content Include="Views\Statistics\SaleMoneyList.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

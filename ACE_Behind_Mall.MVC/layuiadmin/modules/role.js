@@ -14,7 +14,7 @@ layui.define(['table', 'form', 'vue', 'element', 'jquery'], function (exports) {
         , form = layui.form
         , element = layui.element;
 
-    table.render({
+    var tableIns=table.render({
         elem: '#roleList'
         , toolbar: '#toolbarDemo'
         , url: '/Role/GetRoleList' //模拟接口
@@ -28,16 +28,17 @@ layui.define(['table', 'form', 'vue', 'element', 'jquery'], function (exports) {
         }
         , cols: [[
             { type: 'checkbox', fixed: 'left' }
-            ,{ field: 'ID', title: '角色ID', minWidth: 225, sort: true, align: 'center' }
+            , { field: 'ID', title: '角色ID', minWidth: 225, sort: true, align: 'center' }
             , { field: 'Name', title: '角色名称', align: 'center', edit: 'roleName' }
             , { field: 'Describe', title: '角色描述', align: 'center', edit: 'roleDescribe' }
-            , { field: 'CreateTime', title: '创建时间', align: 'center' }
-            , { title: '操作', align: 'left', minWidth: 280, fixed: 'right', toolbar: '#table-system-order' }
+            , { field: 'CreateTime', title: '创建时间', sort: true, align: 'center' }
         ]]
         , page: true
         , limit: 10
         , limits: [10, 15, 20, 25, 30]
-        , text: '对不起，加载出现异常！'
+        , text: {
+            none: '暂无相关数据' //默认：无数据。
+        }
     });
     //添加
     var addlDlg = function () {
@@ -113,15 +114,13 @@ layui.define(['table', 'form', 'vue', 'element', 'jquery'], function (exports) {
         delete: function () {
             var checkStatus = table.checkStatus('roleList')
                 , data = checkStatus.data; //得到选中的数据
-
             if (data.length === 0) {
                 return layer.msg('请选择数据');
             }
             if (data.length > 1) {
                 return layer.msg('一次只能删除一条数据');
             }
-            alert(JSON.stringify(checkData));
-            layer.confirm('确定删除吗？', function (index) {
+            layer.confirm('确定删除该角色及该角色下的员工吗？', function (index) {
                 var url = "/Role/Delete";
                 $.post(url, data[0], function (data) {
                     layer.msg(data.message);

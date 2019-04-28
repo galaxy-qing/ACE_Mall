@@ -50,7 +50,7 @@ namespace ACE_Behind_Mall.MVC.Controllers
                     x.PayTime,
                     x.PayWay,
                     x.Note,
-                    Progress = x.OrderState == 6 ? "100%" : (double)x.OrderState / 5 * 100 + "%",
+                    progress = x.OrderState == 6 ? "100%" : (double)x.OrderState / 5 * 100 + "%",
                     x.CompleteTime,
                     x.CourierName,
                     x.CourierNo,
@@ -58,11 +58,6 @@ namespace ACE_Behind_Mall.MVC.Controllers
                     x.CreateTime,
                     x.IsDelete,
                 }).ToList();
-                if (item.Count() == 0)
-                {
-                    mr.status = 2;
-                    mr.message = "请前往登录";
-                }
                 if (!string.IsNullOrEmpty(request.state))//下拉框搜索orderState
                 {
                     if (request.state == "1") //待发货

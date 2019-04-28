@@ -1,6 +1,6 @@
 ﻿layui.config({
     base: "/layuiadmin/lib/"
-}).use(['admin', 'carousel', 'echarts', 'index', 'laydate'], function ()  {
+}).use(['admin', 'carousel', 'echarts', 'index', 'laydate'], function () {
     var laydate = layui.laydate;
     var $ = layui.$
         , admin = layui.admin
@@ -8,15 +8,15 @@
         , element = layui.element
         , device = layui.device()
         , echarts = layui.echarts;
-        //获取当前年
-     var year = new Date().getFullYear();
-     defaultSelect(year);
+    //获取当前年
+    var year = new Date().getFullYear();
+    defaultSelect(year);
     //轮播切换
     $('.layadmin-carousel').each(function () {
         var othis = $(this);
         carousel.render({
             elem: this
-            , width: '800px'
+            , width: '100%'
             , arrow: 'none'
             , interval: othis.data('interval')
             , autoplay: othis.data('autoplay') === true
@@ -25,62 +25,61 @@
         });
     });
     element.render('progress');
-    //堆积面积图
-    var echheaparea = [], heaparea = [
+    //堆积条形图
+    var echheapbar = [], heapbar = [
         {
             tooltip: {
-                trigger: 'axis'
+                trigger: 'axis',
+                axisPointer: {            // 坐标轴指示器，坐标轴触发有效
+                    type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+                }
             },
             legend: {
-                width: '100%',
-                //itemGap: 30,        // 间隔
                 data: []
             },
             calculable: true,
             xAxis: [
                 {
-                    type: 'category',
-                    boundaryGap: false,
-                    data: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'] //月份
+                    type: 'value'
                 }
             ],
             yAxis: [
                 {
-                    type: 'value'
+                    type: 'category',
+                    data: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'] //月份
                 }
             ],
             series: []
         }
     ]
-        , elemheaparea = $('#LAY-index-heaparea').children('div')
-        , renderheaparea = function (index) {
-            echheaparea[index] = echarts.init(elemheaparea[index], layui.echartsTheme);
-            echheaparea[index].setOption(heaparea[index]);
-            window.onresize = echheaparea[index].resize;
+        , elemheapbar = $('#LAY-index-heapbar').children('div')
+        , renderheapbar = function (index) {
+            echheapbar[index] = echarts.init(elemheapbar[index], layui.echartsTheme);
+            echheapbar[index].setOption(heapbar[index]);
+            window.onresize = echheapbar[index].resize;
         };
-    if (!elemheaparea[0]) return;
-    renderheaparea(0);
+    if (!elemheapbar[0]) return;
+    renderheapbar(0);
     function defaultSelect(year) {
-        $.get("/Statistics/SelectYear", { selectyear: year }, function (res) {
+        $.get("/Statistics/SelectSaleYear", { selectyear: year }, function (res) {
             res = JSON.parse(res)
             if (!res) {
                 layer.msg("查询过程中发生错误！");
             }
             if (res.status == 0) {
-                //MonthDataBind(data);
                 var baseSeries = {
-                    type: 'line',
+                    type: 'bar',
                     stack: '总量',
-                    itemStyle: { normal: { areaStyle: { type: 'default' } } }
+                    itemStyle: { normal: { label: { show: true, position: 'insideRight' } } },
                 }
                 var seriesArr = [];
                 res.data.series.forEach(function (item) {
                     $.extend(item, baseSeries);
                     seriesArr.push(item);
                 })
-                heaparea[0].legend.data = res.data.category
-                heaparea[0].series = seriesArr;
-                renderheaparea(0);
+                heapbar[0].legend.data = res.data.category
+                heapbar[0].series = seriesArr;
+                renderheapbar(0);
             }
         })
     }
@@ -91,13 +90,13 @@
         , done: function (value, date, endDate) {
             let year = date.year;
             defaultSelect(year);
-           
+
         }
     });
-    //年月选择器
-    laydate.render({
-        elem: '#test-laydate-type-month'
-        , type: 'month'
-    });
+    ////年月选择器
+    //laydate.render({
+    //    elem: '#test-laydate-type-month'
+    //    , type: 'month'
+    //});
 
 });

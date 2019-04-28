@@ -64,17 +64,6 @@ namespace ACE_Behind_Mall.MVC.Controllers
             }
             return JsonHelper.Instance.Serialize(mr);
         }
-        public ActionResult GetRoleList()
-        {
-            var rolemodel = rolebll.GetList(x => x.IsDelete == 0).ToList();
-            return Json(rolemodel,JsonRequestBehavior.AllowGet);
-            //List<SelectListItem> roleList = new List<SelectListItem>
-            //{
-            //    new SelectListItem{ Text="",Value=""},
-            //};
-            //ViewData["roleList"] = new SelectList(roleList, "Value", "Text", "");
-            //return View();
-        }
         /// <summary>
         /// 得到员工列表
         /// </summary>
@@ -125,13 +114,12 @@ namespace ACE_Behind_Mall.MVC.Controllers
             return Json(ht, JsonRequestBehavior.AllowGet);
         }
         /// <summary>
-        /// 删除员工
+        /// 员工离职
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
         public ActionResult Delete(Adm_User model)
         {
-            //model.ID= admuserbll.Get
             Adm_User r = admuserbll.GetUpdateModel<Adm_User>(model, "ID");
             r.IsDelete = 1;
             bool flag = admuserbll.Update(r);

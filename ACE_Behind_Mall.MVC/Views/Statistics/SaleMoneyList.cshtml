@@ -1,6 +1,6 @@
 ﻿
 @{
-    ViewBag.Title = "GoodList";
+    ViewBag.Title = "SaleMoneyList";
     Layout = null;
 }
 <!DOCTYPE html>
@@ -25,18 +25,12 @@
                         <input type="text" class="layui-input" id="test-laydate-type-year" placeholder="yyyy">
                     </div>
                 </div>
-                @*<div class="layui-inline">
-                    <label class="layui-form-label">年月选择器</label>
-                    <div class="layui-input-inline">
-                        <input type="text" class="layui-input" id="test-laydate-type-month" placeholder="yyyy-MM">
-                    </div>
-                </div>*@
-                <div class="layui-card" style="margin-top:20px;">
-                    <div class="layui-card-header">销售量面积图</div>
+                <div class="layui-card">
+                    <div class="layui-card-header">销售额条形图</div>
                     <div class="layui-card-body">
 
-                        <div class="layui-carousel layadmin-carousel layadmin-dataview" data-anim="fade" lay-filter="LAY-index-heaparea">
-                            <div carousel-item id="LAY-index-heaparea">
+                        <div class="layui-carousel layadmin-carousel layadmin-dataview" data-anim="fade" lay-filter="LAY-index-heapbar">
+                            <div carousel-item id="LAY-index-heapbar">
                                 <div><i class="layui-icon layui-icon-loading1 layadmin-loading"></i></div>
                             </div>
                         </div>
@@ -48,17 +42,18 @@
         </div>
     </div>
 
-    
+
     <script src="../../../layuiadmin/layui/layui.js"></script>
     <script>
         layui.config({
             base: '../../../layuiadmin/' //静态资源所在路径
         }).extend({
             index: 'lib/index' //主入口模块
-            }).use(['index', 'goodsenior']);
+            }).use(['index', 'salesenior']);
     </script>
 </body>
 </html>
+
 
 
 
