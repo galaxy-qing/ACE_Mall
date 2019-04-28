@@ -22,5 +22,6 @@ namespace ACE_Mall.Model
         public System.DateTime CreateTime { get; set; }
         public int OrderDelete { get; set; }
         public int GoodDelete { get; set; }
+        public decimal PresentPrice { get; set; }
     }
 }

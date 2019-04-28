@@ -198,6 +198,7 @@
             <PropertyRef Name="OrderDelete" />
             <PropertyRef Name="GoodDelete" />
             <PropertyRef Name="GoodNumber" />
+            <PropertyRef Name="PresentPrice" />
           </Key>
           <Property Name="Name" Type="varchar" MaxLength="50" />
           <Property Name="CategoryDelete" Type="int" Nullable="false" />
@@ -207,6 +208,7 @@
           <Property Name="CreateTime" Type="datetime" Nullable="false" />
           <Property Name="OrderDelete" Type="int" Nullable="false" />
           <Property Name="GoodDelete" Type="int" Nullable="false" />
+          <Property Name="PresentPrice" Type="decimal" Precision="18" Scale="2" Nullable="false" />
         </EntityType>
         <Function Name="AutoCancelOrder" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <EntityContainer Name="StoreContainer">
@@ -233,7 +235,8 @@
     [View_Category_Good_Order].[GoodNumber] AS [GoodNumber], 
     [View_Category_Good_Order].[CreateTime] AS [CreateTime], 
     [View_Category_Good_Order].[OrderDelete] AS [OrderDelete], 
-    [View_Category_Good_Order].[GoodDelete] AS [GoodDelete]
+    [View_Category_Good_Order].[GoodDelete] AS [GoodDelete], 
+    [View_Category_Good_Order].[PresentPrice] AS [PresentPrice]
     FROM [dbo].[View_Category_Good_Order] AS [View_Category_Good_Order]</DefiningQuery>
           </EntitySet>
         </EntityContainer>
@@ -450,6 +453,7 @@
             <PropertyRef Name="OrderDelete" />
             <PropertyRef Name="GoodDelete" />
             <PropertyRef Name="GoodNumber" />
+            <PropertyRef Name="PresentPrice" />
           </Key>
           <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="CategoryDelete" Type="Int32" Nullable="false" />
@@ -459,6 +463,7 @@
           <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="OrderDelete" Type="Int32" Nullable="false" />
           <Property Name="GoodDelete" Type="Int32" Nullable="false" />
+          <Property Name="PresentPrice" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -667,6 +672,7 @@
           <EntitySetMapping Name="View_Category_Good_Order">
             <EntityTypeMapping TypeName="ACE_MallModel.View_Category_Good_Order">
               <MappingFragment StoreEntitySet="View_Category_Good_Order">
+                <ScalarProperty Name="PresentPrice" ColumnName="PresentPrice" />
                 <ScalarProperty Name="GoodDelete" ColumnName="GoodDelete" />
                 <ScalarProperty Name="OrderDelete" ColumnName="OrderDelete" />
                 <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />

@@ -151,8 +151,14 @@ namespace ACE_Behind_Mall.WebApi.Models
             [Display(Name = "商品ID")]
             public int goodId { get; set; }
             [Required]
+            [Display(Name = "订单号")]
+            public string orderNo { get; set; }
+            [Required]
             [Display(Name = "评论内容")]
             public string content { get; set; }
+            [Required]
+            [Display(Name = "星星等级")]
+            public int star { get; set; }
         }
     }
 }
