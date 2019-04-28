@@ -27,6 +27,8 @@ namespace ACE_Behind_Mall.WebApi.Controllers
         UserBLL userbll = new UserBLL();
         SpecificationBLL specificationbll = new SpecificationBLL();
         RotationBLL rotationbll = new RotationBLL();
+        OrderGoodBLL ordergoodbll = new OrderGoodBLL();
+        OrderBLL orderbll = new OrderBLL();
         /// <summary>
         /// 获取轮播图
         /// </summary>
@@ -205,7 +207,7 @@ namespace ACE_Behind_Mall.WebApi.Controllers
                     addTime=x.CreateTime.ToString(),
                     evaluation = x.Evaluation,
                     account = userbll.GetList(y=>y.ID==x.UserID).FirstOrDefault().Account,
-                    image= "http://192.168.0.143:60391"+userbll.GetList(y => y.ID == x.UserID).FirstOrDefault().Image,
+                    image= "http://192.168.0.144:60391"+userbll.GetList(y => y.ID == x.UserID).FirstOrDefault().Image,
                     //specification= specificationbll.GetList(y=>y.)
                 });
                 mr.data = model;
@@ -224,25 +226,40 @@ namespace ACE_Behind_Mall.WebApi.Controllers
         /// <param name="model"></param>
         /// <returns></returns>
         [HttpPost]
+        [AllowAnonymous]
         [RequestAuthorize]
         public ModelResponse<dynamic> AddGoodEvaluation(AddEvaluation model)
         {
             int userId = GetTicket();
-            bool flag = false;
+            bool flag1 = false;
+            bool flag2 = false;
             try
             {
-                Mall_Good_Evaluation evaluationmodel = new Mall_Good_Evaluation();
-                evaluationmodel.GoodID = model.goodId;
-                evaluationmodel.UserID = userId;
-                evaluationmodel.Evaluation = model.content;
-                evaluationmodel.CreateTime = DateTime.Now;
-                evaluationmodel.IsDelete = 0;
-                evaluationmodel.IsLook = 0;
-                evaluationmodel.Star = 5;
-                flag=evaluationbll.Add(evaluationmodel);
-                if (flag == true)
+                var ordergoodmodel = ordergoodbll.GetList(x => x.OrderNo == model.orderNo && x.GoodID == model.goodId);
+                if (ordergoodmodel.Count() > 0)
                 {
-                    mr.message = "评论添加成功";
+                    Mall_Good_Evaluation evaluationmodel = new Mall_Good_Evaluation();
+                    evaluationmodel.GoodID = model.goodId;
+                    evaluationmodel.UserID = userId;
+                    evaluationmodel.Evaluation = model.content;
+                    evaluationmodel.CreateTime = DateTime.Now;
+                    evaluationmodel.IsDelete = 0;
+                    evaluationmodel.IsLook = 0;
+                    evaluationmodel.Star = model.star;
+                    flag1 = evaluationbll.Add(evaluationmodel);
+                    var ordermodel = orderbll.GetList(x=>x.OrderNo==model.orderNo).FirstOrDefault();
+                    ordermodel.OrderState = 5;
+                    My_Order m = orderbll.GetUpdateModel<My_Order>(ordermodel, "ID");
+                    flag2 = orderbll.Update(m);
+                    if (flag1 == true&& flag2 == true)
+                    {
+                        mr.message = "评论添加成功";
+                    }
+                }
+                else
+                {
+                    mr.status = 1;
+                    mr.message = "您尚未购买此商品，请勿评价";
                 }
             }
             catch (Exception e)

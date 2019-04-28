@@ -35,6 +35,7 @@ namespace ACE_Behind_Mall.WebApi.Controllers
         /// <param name="model"></param>
         /// <returns></returns>
         [HttpPost]
+        [AllowAnonymous]
         [RequestAuthorize]
         public ModelResponse<dynamic> SubmitOrder(SubmitOrder model)
         {
@@ -82,6 +83,7 @@ namespace ACE_Behind_Mall.WebApi.Controllers
         /// <param name="model"></param>
         /// <returns></returns>
         [HttpPost]
+        [AllowAnonymous]
         [RequestAuthorize]
         public ModelResponse<dynamic> PayOrder(PayOrder model)
         {
@@ -108,6 +110,7 @@ namespace ACE_Behind_Mall.WebApi.Controllers
         /// <param name="userId">用户ID</param>
         /// <returns></returns>
         [HttpGet]
+        [AllowAnonymous]
         [RequestAuthorize]
         public ModelResponse<dynamic> GetOrderStatusNumber()
         {
@@ -157,6 +160,7 @@ namespace ACE_Behind_Mall.WebApi.Controllers
         /// <param name="orderStatus">订单状态</param>
         /// <returns></returns>
         [HttpGet]
+        [AllowAnonymous]
         [RequestAuthorize]
         public ModelResponse<dynamic> GetOrderList(int orderStatus)
         {
@@ -186,6 +190,7 @@ namespace ACE_Behind_Mall.WebApi.Controllers
                         orderState = x.OrderState,
                         goodList = ordergoodbll.GetList(y => y.OrderNo == x.OrderNo).Select(y => new
                         {
+                            goodId=y.GoodID,
                             goodName = goodbll.GetList(z => z.IsDelete == 0 && z.ID == y.GoodID).FirstOrDefault().Name,
                             goodImage = goodbll.GetList(z => z.IsDelete == 0 && z.ID == y.GoodID).FirstOrDefault().CoverImage,
                             goodPrice = goodbll.GetList(z => z.IsDelete == 0 && z.ID == y.GoodID).FirstOrDefault().PresentPrice,
@@ -208,6 +213,7 @@ namespace ACE_Behind_Mall.WebApi.Controllers
         /// <param name="orderNo"></param>
         /// <returns></returns>
         [HttpGet]
+        [AllowAnonymous]
         [RequestAuthorize]
         public ModelResponse<dynamic> GetOrderDetail(string orderNo)
         {

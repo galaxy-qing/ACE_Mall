@@ -62,7 +62,7 @@ namespace ACE_Behind_Mall.WebApi.Controllers
                     {
                         id = x.ID,
                         email = x.Email,
-                        image = "http://192.168.0.143:60391" + x.Image,
+                        image = "http://192.168.0.144:60391" + x.Image,
                         account = x.Account,
                         receiveName = x.ReceiveName,
                         receivePhone = x.ReceivePhone,
