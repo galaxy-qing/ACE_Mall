@@ -88,15 +88,16 @@ layui.define(['form', 'upload'], function(exports){
     layer.msg(JSON.stringify(obj.field));
     
     //提交修改
-    /*
+    
     admin.req({
-      url: ''
+        url: '/AdminUser/UpdateMyInfo'
       ,data: obj.field
-      ,success: function(){
-        
+        , success: function (res) {
+            layer.message(res.message);
+            window.location.reload();
       }
     });
-    */
+    
     return false;
   });
 

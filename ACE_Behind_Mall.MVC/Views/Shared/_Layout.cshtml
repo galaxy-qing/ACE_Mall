@@ -67,7 +67,7 @@
                             <cite id="galaxyqing"></cite>
                         </a>
                         <dl class="layui-nav-child">
-                            <dd><a lay-href="/AdminUser/SetUserInfo">基本资料</a></dd>
+                            <dd><a lay-href="/AdminUser/SetUserInfo" class="lookInfo">基本资料</a></dd>
                             <dd><a lay-href="/AdminUser/SetPassword">修改密码</a></dd>
                             <dd layadmin-event="logout" style="text-align: center;"><a>退出</a></dd>
                         </dl>
@@ -170,12 +170,15 @@
     </div>
     <script src="~/layuiadmin/layui/layui.js"></script>
     <script>
-        layui.config({
-            base: '../layuiadmin/' //静态资源所在路径
-        }).extend({
-            index: 'lib/index' //主入口模块
-        }).use('index');
+        
     </script>
+    <script>
+            layui.config({
+                base: '../layuiadmin/' //静态资源所在路径
+            }).extend({
+                index: 'lib/index' //主入口模块
+            }).use('index');
+        </script>
 </body>
 </html>
 

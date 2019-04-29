@@ -612,6 +612,7 @@
     <Content Include="layuiadmin\lib\index.js" />
     <Content Include="layuiadmin\lib\view.js" />
     <Content Include="layuiadmin\modules\adminuser.js" />
+    <Content Include="layuiadmin\modules\malluser.js" />
     <Content Include="layuiadmin\modules\role.js" />
     <Content Include="layuiadmin\modules\common.js" />
     <Content Include="layuiadmin\modules\console.js" />

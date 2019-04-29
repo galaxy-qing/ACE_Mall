@@ -6,7 +6,9 @@
  @License：LPPL
     
  */
- 
+
+//window.console.error = function () { }
+
 layui.extend({
   setter: 'config' //配置模块
   ,admin: 'lib/admin' //核心模块
@@ -16,8 +18,7 @@ layui.extend({
   ,element = layui.element
   ,admin = layui.admin
   ,tabsPage = admin.tabsPage
-  ,view = layui.view
-
+  , view = layui.view
   //打开标签页
   ,openTabsPage = function(url, text){
     //遍历页签选项卡
@@ -95,10 +96,8 @@ layui.extend({
   });
   
   view().autoRender();
-  
   //加载公共模块
   layui.use('common');
-
   //对外输出
   exports('index', {
     openTabsPage: openTabsPage

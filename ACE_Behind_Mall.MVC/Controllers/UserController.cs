@@ -33,19 +33,27 @@ namespace ACE_Behind_Mall.MVC.Controllers
         {
             try
             {
-                var item = userbll.GetList(x => x.IsDelete == 0);
-                if (!string.IsNullOrEmpty(request.key))//关键字搜索
+                var item = userbll.GetList(x => x.IsDelete == 0).Select(x=>new {
+                    x.ID,
+                    x.Email,
+                    x.Image,
+                    x.Account,
+                    x.Password,
+                    x.ReceiveAddress,
+                    x.ReceiveName,
+                    x.ReceivePhone,
+                    x.CreateTime,
+                    x.IsDelete
+                }).ToList();
+                if (!string.IsNullOrEmpty(request.key1))//关键字搜索
                 {
-                    item = item.Where(x=>x.ReceiveName.Contains(request.key.Trim())).ToList();
+                    item = item.Where(x=>x.Account.Contains(request.key1.Trim())).ToList();
                 }
-                    mr.status = 0;
                     mr.total = item.Count;
                     mr.data = item.OrderByDescending(x => x.CreateTime).Skip(request.limit * (request.page - 1)).Take(request.limit);
             }
             catch (Exception e)
             {
-                mr.status = 500;
-                mr.data = userbll.GetList(x => x.IsDelete == 0).ToList();
                 Log.Error(e.Message);
             }
             return JsonHelper.Instance.Serialize(mr);

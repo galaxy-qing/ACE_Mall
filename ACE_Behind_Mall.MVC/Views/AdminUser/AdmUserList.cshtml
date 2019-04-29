@@ -19,12 +19,16 @@
         <div class="layui-card">
             <div class="layui-form layui-card-header layuiadmin-card-header-auto">
                 <div class="layui-form-item">
+                    <div class="demoTable layui-inline">
+                        <button class="layui-btn layuiadmin-btn-admin" data-type="delete">离职</button>
+                        <button class="layui-btn layuiadmin-btn-admin" data-type="add">添加员工</button>
+                    </div>
                     <div class="layui-inline">
                         <label class="layui-form-label">在职状态</label>
                         <div class="layui-input-block">
                             <select name="state">
                                 <option value="0">在职员工</option>
-                                <option value="2">离职员工</option>
+                                <option value="1">离职员工</option>
                             </select>
                         </div>
                     </div>
@@ -50,7 +54,27 @@
             </div>
         </div>
     </div>
+    <script src="../../../layuiadmin/layui/layui.js"></script>
+    <script>
+        layui.config({
+            base: '../../../layuiadmin/' //静态资源所在路径
+        }).extend({
+            index: 'lib/index' //主入口模块
+        }).use(['index', 'adminuser', 'table'], function () {
+            var $ = layui.$
+                , form = layui.form
+                , table = layui.table;
+            //监听搜索
+            form.on('submit(btnSearch)', function (data) {
+                var field = data.field;
 
+                //执行重载
+                table.reload('adminUserList', {
+                    where: field
+                });
+            });
+        });
+    </script>
 </body>
 </html>
 <!--查看修改窗口-->
@@ -92,7 +116,7 @@
         <div class="layui-form-item">
             <label class="layui-form-label">出生日期</label>
             <div class="layui-input-block">
-                <input type="text" name="Birthday" v-model="Birthday"id="Birthday" placeholder="yyyy-MM-dd" autocomplete="off" class="layui-input">
+                <input type="text" name="Birthday" v-model="Birthday" id="Birthday" placeholder="yyyy-MM-dd" autocomplete="off" class="layui-input">
             </div>
         </div>
         @*<div class="layui-form-item">
@@ -122,31 +146,6 @@
                 <button type="reset" class="layui-btn layui-btn-primary">重置</button>
             </div>
         </div>
-        @*<div class="layui-form-item layui-hide">
-                <input type="button" lay-submit lay-filter="formSubmit" id="formSubmit" value="确认">
-            </div>*@
     </div>
 </div>
-@*<script src="~/layuiadmin/layui/layui.js"></script>
-    <script src="~/js/AdmUser/GetAdmUserList.js"></script>*@
-<script src="../../../layuiadmin/layui/layui.js"></script>
-<script>
-    layui.config({
-        base: '../../../layuiadmin/' //静态资源所在路径
-    }).extend({
-        index: 'lib/index' //主入口模块
-    }).use(['index', 'adminuser', 'table'], function () {
-        var $ = layui.$
-            , form = layui.form
-            , table = layui.table;
 
-        //监听搜索
-        form.on('submit(btnSearch)', function (data) {
-            var field = data.field;
-            //执行重载
-            table.reload('adminUserList', {
-                where: field
-            });
-        });
-    });
-</script>

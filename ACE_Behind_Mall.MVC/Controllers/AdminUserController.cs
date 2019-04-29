@@ -30,6 +30,10 @@ namespace ACE_Behind_Mall.MVC.Controllers
         {
             return View();
         }
+        /// <summary>
+        /// 获取账户
+        /// </summary>
+        /// <returns></returns>
         public string GetMyAccount()
         {
             int userId = Convert.ToInt32(Session["userID"]);
@@ -45,6 +49,12 @@ namespace ACE_Behind_Mall.MVC.Controllers
             }
             return JsonHelper.Instance.Serialize(mr);
         }
+        /// <summary>
+        /// 修改账户密码
+        /// </summary>
+        /// <param name="oldPassword"></param>
+        /// <param name="password"></param>
+        /// <returns></returns>
         public string UpdatePassword(string oldPassword,string password)
         {
             int userId = Convert.ToInt32(Session["userID"]);
@@ -65,6 +75,58 @@ namespace ACE_Behind_Mall.MVC.Controllers
             return JsonHelper.Instance.Serialize(mr);
         }
         /// <summary>
+        /// 获取账户信息
+        /// </summary>
+        /// <returns></returns>
+        public string GetMyInfo()
+        {
+            int userId = Convert.ToInt32(Session["userID"]);
+            var usermodel = admuserbll.GetList(x => x.ID == userId).Select(x=>new {
+                RoleName = rolebll.GetList(y => y.IsDelete == 0 && y.ID == x.RoleID).FirstOrDefault().Name,
+                x.ReallyName,
+                x.ID,
+                x.RoleID,
+                x.Account,
+                x.Phone,
+                x.Email,
+                x.Birthday,
+                x.Sex,
+                x.CreateTime,
+                x.IsDelete,
+            }).FirstOrDefault();
+            mr.data = usermodel;
+            return JsonHelper.Instance.Serialize(mr);
+        }
+        /// <summary>
+        /// 修改账户信息
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public string UpdateMyInfo(Adm_User model)
+        {
+            try
+            {
+                int userId = Convert.ToInt32(Session["userID"]);
+                var usermodel = admuserbll.GetList(x => x.ID == userId).FirstOrDefault();
+                usermodel.ReallyName = model.ReallyName;
+                usermodel.Sex = model.Sex;
+                usermodel.Phone = model.Phone;
+                usermodel.Email = model.Email;
+                usermodel.Birthday = model.Birthday;
+                Adm_User r = admuserbll.GetUpdateModel<Adm_User>(model, "ID");
+                bool flag = admuserbll.Update(r);
+                if (flag == true)
+                {
+                    mr.message = "修改成功";
+                }
+            }
+            catch (Exception e)
+            {
+                Log.Error(e.Message);
+            }
+            return JsonHelper.Instance.Serialize(mr);
+        }
+        /// <summary>
         /// 得到员工列表
         /// </summary>
         /// <param name="request"></param>
@@ -73,7 +135,7 @@ namespace ACE_Behind_Mall.MVC.Controllers
          {
             try
             {
-                var item = admuserbll.GetList(x => x.IsDelete == 0).Select(x=>new {
+                var item = admuserbll.GetList(x => true).Select(x=>new {
                     RoleName= rolebll.GetList(y=>y.IsDelete==0&&y.ID==x.RoleID).FirstOrDefault().Name,
                     x.ReallyName,
                     x.ID,
@@ -86,11 +148,16 @@ namespace ACE_Behind_Mall.MVC.Controllers
                     x.CreateTime,
                     x.IsDelete,
                 }).ToList();
+                int isdelete = 0;
+                if (!string.IsNullOrEmpty(request.state))//关键字搜索
+                {
+                    isdelete = Convert.ToInt32(request.state);
+                }
+                item = item.Where(x => x.IsDelete == isdelete).ToList();
                 if (!string.IsNullOrEmpty(request.key))//关键字搜索
                 {
                     item = item.Where(x => x.Account.Contains(request.key.Trim())).ToList();
                 }
-                    mr.status = 0;
                     mr.total = item.Count;
                     mr.data = item.OrderByDescending(x => x.CreateTime).Skip(request.limit * (request.page - 1)).Take(request.limit);
             }

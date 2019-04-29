@@ -25,18 +25,18 @@
                     <div class="layui-card-header">设置我的资料</div>
                     <div class="layui-card-body" pad15>
 
-                        <div class="layui-form" lay-filter="">
+                        <div class="layui-form" lay-filter="" id="formInfo">
                             <div class="layui-form-item">
                                 <label class="layui-form-label">我的角色</label>
                                 <div class="layui-input-inline">
-                                    <select name="RoleID" lay-verify=""></select>
+                                    <input type="text" name="RoleName" v-model="RoleName" readonly class="layui-input">
                                 </div>
                                 <div class="layui-form-mid layui-word-aux">当前角色不可更改为其它角色</div>
                             </div>
                             <div class="layui-form-item">
                                 <label class="layui-form-label">用户名</label>
                                 <div class="layui-input-inline">
-                                    <input type="text" name="Account" v-model="Account" value="xianxin" readonly class="layui-input">
+                                    <input type="text" name="Account" v-model="Account"  readonly class="layui-input">
                                 </div>
                                 <div class="layui-form-mid layui-word-aux">不可修改。一般用于后台登入名</div>
                             </div>
@@ -53,7 +53,7 @@
                                     <input type="radio" name="Sex" lay-filter="auditEvent" value="女" title="女" :checked="Sex">
                                 </div>
                             </div>
-                            <div class="layui-form-item">
+                            @*<div class="layui-form-item">
                                 <label class="layui-form-label">头像</label>
                                 <div class="layui-input-inline">
                                     <input name="Image" v-model="ReallyName" lay-verify="required" id="LAY_avatarSrc" placeholder="图片地址" value="http://cdn.layui.com/avatar/168.jpg" class="layui-input">
@@ -64,7 +64,7 @@
                                     </button>
                                     <button class="layui-btn layui-btn-primary" layadmin-event="avartatPreview">查看图片</button>
                                 </div>
-                            </div>
+                            </div>*@
                             <div class="layui-form-item">
                                 <label class="layui-form-label">手机</label>
                                 <div class="layui-input-inline">
@@ -98,12 +98,13 @@
     </div>
 
     <script src="../../../layuiadmin/layui/layui.js"></script>
+
     <script>
   layui.config({
     base: '../../../layuiadmin/' //静态资源所在路径
   }).extend({
     index: 'lib/index' //主入口模块
-  }).use(['index', 'set']);
+      }).use(['index', 'set']);
     </script>
 </body>
 </html>

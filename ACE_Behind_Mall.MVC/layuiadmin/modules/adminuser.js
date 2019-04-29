@@ -4,15 +4,20 @@
  @Author：张青青
     
  */
-layui.config({
-    base: "/js/"
-}).use(['form', 'table', 'jquery', 'laydate', 'vue', 'layer', 'upload'], function () {
-    var form = layui.form,
-        layer = layui.layer,
-        upload = layui.upload,
-        $ = layui.jquery;
-    var laydate = layui.laydate;
-    var table = layui.table;
+//layui.config({
+//    base: "/js/"
+//}).use(['form', 'table', 'jquery', 'laydate', 'vue', 'layer', 'upload'], function () {
+//    var form = layui.form,
+//        layer = layui.layer,
+//        upload = layui.upload,
+//        $ = layui.jquery;
+//    var laydate = layui.laydate;
+//    var table = layui.table;
+layui.define(['table', 'form', 'laydate', 'vue', 'jquery'], function (exports) {
+    var $ = layui.$
+        , table = layui.table
+        , form = layui.form
+        , laydate = layui.laydate;
     var tableIns=table.render({
         elem: '#adminUserList'
         , url: '/AdminUser/GetAdmUserList' //模拟接口
@@ -29,7 +34,7 @@ layui.config({
             , { field: 'RoleName', title: '角色', align: 'center', sort: true }
             //, { field: 'Image',title:'头像', align: 'center' }
             , { field: 'ReallyName', title: '真实姓名', align: 'center' }
-            , { field: 'Account', title: '账户', align: 'center', sort: true }
+            , { field: 'Account', title: '账号', align: 'center', sort: true }
             , { field: 'Phone', title: '电话', align: 'center' }
             , { field: 'Email', title: '邮箱', align: 'center' }
             , { field: 'Birthday', title: '出生日期', align: 'center', sort: true}
@@ -214,4 +219,5 @@ layui.config({
             detailDlg.add();
         }
     };
+    exports('adminuser', {})
 });
