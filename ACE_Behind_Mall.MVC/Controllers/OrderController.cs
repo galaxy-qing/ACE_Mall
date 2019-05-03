@@ -39,7 +39,6 @@ namespace ACE_Behind_Mall.MVC.Controllers
             {
                 var item = orderbll.GetList(x => x.IsDelete == 0).Select(x => new
                 {
-                    //RoleName = rolebll.GetList(y => y.IsDelete == 0 && y.ID == x.RoleID).FirstOrDefault().Name,
                     x.ID,
                     x.OrderNo,
                     Name = userbll.GetList(y => y.ID == x.UserID).FirstOrDefault().ReceiveName,

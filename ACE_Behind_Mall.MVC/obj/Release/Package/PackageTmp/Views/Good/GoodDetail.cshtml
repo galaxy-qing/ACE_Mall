@@ -1,0 +1,144 @@
+﻿@{
+    ViewBag.Title = "GoodDetail";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>设置我的资料</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" href="../../../layuiadmin/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="../../../layuiadmin/style/admin.css" media="all">
+    <style>
+        .btnstyle {
+            display: inline-block;
+            margin-left: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="layui-fluid">
+        <div class="layui-row layui-col-space15">
+            <div class="layui-col-md12">
+                <div class="layui-card">
+                    <div class="layui-card-header">设置我的资料</div>
+                    <div class="layui-card-body" pad15>
+                        <div class="layui-form" lay-filter="" id="formGoodDetail">
+                            <input type="hidden" name="ID" v-model="ID" />
+                            @*<div class="layui-form-item">
+                                    <label class="layui-form-label">商品分类</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="CategoryID" v-model="CategoryID" class="layui-input">
+                                    </div>
+                                </div>*@
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">选择商品分类</label>
+                                <div class="layui-input-block">
+                                    <select id="CategoryID" lay-filter="CategoryID">
+                                        <option value="">请选择</option>
+                                        @*<option v-for="(item,index) in Category" :value="item.ID">{{item.Name}}</option>*@
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">商品名称</label>
+                                <div class="layui-input-block">
+                                    <input type="text" autocomplete="off" name="Name" v-model="Name" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">商品封面图片</label>
+                                <div style="margin-left:120px;">
+                                    <img id="CoverImage" :src="CoverImage" name="CoverImage" style='width: 200px; height: 120px;'>
+                                    <button type="button" class="layui-btn btnstyle" id="imageUpload1">
+                                        <i class="layui-icon">&#xe67c;</i>上传图片
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">商品详细图片</label>
+                                <div style="display: inline-block">
+                                    <img :src="img" name="DetailImage" v-on:click="removeImg($index)" style="width: 200px; height: 120px;margin-left:10px;margin-top:10px;" v-for="img in DetailImage" />
+                                </div>
+                                <button type="button" class="layui-btn btnstyle" id="imageUpload2">
+                                    <i class="layui-icon">&#xe67c;</i>上传图片
+                                </button>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">商品介绍图片</label>
+                                <div style="display: inline-block">
+                                    <img :src="img"  name="InfoImage"  v-on:click="removeImg1($index)" style="width: 200px; height: 120px;margin-left:10px;margin-top:10px;" v-for="img in InfoImage" />
+                                </div>
+                                <button type="button" class="layui-btn btnstyle" id="imageUpload3">
+                                    <i class="layui-icon">&#xe67c;</i>上传图片
+                                </button>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">现价￥</label>
+                                <div class="layui-input-block">
+                                    <input type="text" autocomplete="off" lay-verify="number" name="PresentPrice" v-model="PresentPrice" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">原价￥</label>
+                                <div class="layui-input-block">
+                                    <input type="text" autocomplete="off" lay-verify="number" name="OriginalPrice" v-model="OriginalPrice" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">销售量</label>
+                                <div class="layui-input-block">
+                                    <input type="text" autocomplete="off" lay-verify="number" name="SaleNumber" v-model="SaleNumber" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">库存</label>
+                                <div class="layui-input-block">
+                                    <input type="text" autocomplete="off" lay-verify="number" name="Stock" v-model="Stock" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">商品时间</label>
+                                <div class="layui-input-block">
+                                    <input type="text" autocomplete="off" disabled="disabled" name="CreateTime" v-model="CreateTime" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-form-item" pane>
+                                <label class="layui-form-label">是否下架</label>
+                                <div class="layui-input-block">
+                                    <input type="radio" name="IsDelete" lay-filter="auditEvent" value="0" title="上架" :checked="true">
+                                    <input type="radio" name="IsDelete" lay-filter="auditEvent" value="1" title="下架" :checked="IsDelete">
+                                </div>
+                            </div>
+                            <div class="layui-form-item" id="divSubmit">
+                                <div class="layui-input-block">
+                                    <button class="layui-btn" lay-submit lay-filter="formSubmit">立即提交</button>
+                                    <button class="layui-btn layui-btn-back" href="javascript :;" onclick="javascript :history.back(-1);">返回</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../../../layuiadmin/layui/layui.js"></script>
+    <script>
+
+        layui.config({
+            base: '../../../layuiadmin/' //静态资源所在路径
+        }).extend({
+            index: 'lib/index' //主入口模块
+        }).use(['index', 'goodDetail']);
+
+
+
+    </script>
+</body>
+</html>

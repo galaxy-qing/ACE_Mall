@@ -5,6 +5,7 @@ layui.config({
     if (self != top) {
         //如果在iframe中，则跳转
         top.location.replace("/Login/Login");
+      
     }
 
     var form = layui.form,
@@ -104,4 +105,5 @@ layui.config({
             });
         return false;
     })
+
 })

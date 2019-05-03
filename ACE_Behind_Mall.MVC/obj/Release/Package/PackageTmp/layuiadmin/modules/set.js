@@ -1,7 +1,7 @@
 /**
 
  @Name：layuiAdmin（iframe版） 设置
- @Author：贤心
+ @Author：galaxy-qing
  @Site：http://www.layui.com/admin/
  @License: LPPL
     
@@ -88,15 +88,16 @@ layui.define(['form', 'upload'], function(exports){
     layer.msg(JSON.stringify(obj.field));
     
     //提交修改
-    /*
+    
     admin.req({
-      url: ''
+        url: '/AdminUser/UpdateMyInfo'
       ,data: obj.field
-      ,success: function(){
-        
+        , success: function (res) {
+            layer.message(res.message);
+            window.location.reload();
       }
     });
-    */
+    
     return false;
   });
 
@@ -133,18 +134,24 @@ layui.define(['form', 'upload'], function(exports){
   
   //设置密码
   form.on('submit(setmypass)', function(obj){
-    layer.msg(JSON.stringify(obj.field));
+    //layer.msg(JSON.stringify(obj.field));
     
     //提交修改
-    /*
+    
     admin.req({
-      url: ''
+      url: '/AdminUser/UpdatePassword'
       ,data: obj.field
-      ,success: function(){
-        
+        , success: function (res) {
+            if (res.status == 0) {
+                layer.msg(res.message);
+            }
+            else {
+                layer.msg(res.message);
+                window.location.href='/Login/Login'
+            }
       }
     });
-    */
+    
     return false;
   });
   

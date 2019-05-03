@@ -1,7 +1,7 @@
 /*!
 
  @Title: layui.upload 单文件上传 - 全浏览器兼容版
- @Author: 贤心
+ @Author: galaxy-qing
  @License：MIT
 
  */

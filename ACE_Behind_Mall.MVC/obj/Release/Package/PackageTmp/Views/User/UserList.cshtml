@@ -4,87 +4,59 @@
     Layout = null;
 }
 <link href="~/layuiadmin/layui/css/layui.css" rel="stylesheet" />
-<style>
-    .layui-col-xs10 {
-        width: 99%;
-        height: 99%;
-    }
-</style>
+<link href="~/layuiadmin/style/admin.css" rel="stylesheet" />
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8">
     <title>用户列表</title>
-    <link rel="stylesheet" href="/layui/css/layui.css" media="all">
 </head>
 <body>
-    <div class="demoTable" style="margin-top:10px;margin-left:20px;">
-        搜索收货人姓名：
-        <div class="layui-inline">
-            <input class="layui-input" name="ReceiveName" id="demoReload" autocomplete="off">
+    <div class="layui-fluid">
+        <div class="layui-card">
+            <div class="layui-form layui-card-header layuiadmin-card-header-auto">
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">账号</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="key1" placeholder="请输入" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <button class="layui-btn layuiadmin-btn-order" lay-submit lay-filter="btnSearch">
+                            <i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-card-body">
+                <table id="userList" lay-filter="userList"></table>
+            </div>
         </div>
-        <button class="layui-btn" data-type="reload">搜索</button>
     </div>
-    <table class="layui-table" id="demo" lay-size="bg" lay-data="{id: 'idTest'}" lay-filter="test"></table>
-
     <script src="~/layuiadmin/layui/layui.js"></script>
     <script>
-        layui.use('table', function () {
-            var table = layui.table;
-            var tableIns = table.render({
-                elem: '#demo'
-                , toolbar: '#toolbarDemo'
-                , url: '/User/GetUserList'//数据接口
-                , done: function (res, curr, count) {
-                }
-                , parseData: function (res) {
-                    return {
-                        "code": res.status,//解析接口状态
-                        "msg": res.message,//解析提示文本
-                        "count": res.total,//解析数据长度
-                        "data": res.data//解析数据列表
-                    };
-                }
-                , page: true
-                , cellMinWidth: 80
-                , cols: [[
-                    { type: 'checkbox', fixed: 'left' }
-                    , { field: 'ID', title: 'ID', align: 'center' }
-                    , { field: 'Email', title: '邮箱', align: 'center' }
-                    , { field: 'Image', title: '头像', sort: true,align:'center', templet: '#img'}
-                    , { field: 'Account', title: '账户', align: 'center' }
-                    , { field: 'ReceiveName', title: '收货人姓名', align: 'center' }
-                    , { field: 'ReceiveAddress', title: '收货人地址', align: 'center' }
-                    , { field: 'ReceivePhone', title: '收货人电话', sort: true, align: 'center' }
-                    , { field: 'CreateTime', title: '添加时间', sort: true, align: 'center' }
-                ]]
-                , id: 'idTest'
-            });
-            var $ = layui.$, active = {
-                reload: function () {
-                    var demoReload = $('#demoReload');
-                    console.log(demoReload.val());
-                    //执行重载
-                    tableIns.reload({
-                        page: {
-                            curr: 1 //重新从第 1 页开始
-                        }
-                        , where: {
-                            ReceiveName: demoReload.val()
-                        }
-                    });
-                }
-            };
+        layui.config({
+            base: '../../../layuiadmin/' //静态资源所在路径
+        }).extend({
+            index: 'lib/index' //主入口模块
+        }).use(['index', 'malluser', 'table'], function () {
+            var $ = layui.$
+                , form = layui.form
+                , table = layui.table;
+            //监听搜索
+            form.on('submit(btnSearch)', function (data) {
+                var field = data.field;
 
-            $('.demoTable .layui-btn').on('click', function () {
-                var type = $(this).data('type');
-                active[type] ? active[type].call(this) : '';
+                //执行重载
+                table.reload('userList', {
+                    where: field
+                });
             });
         });
-
     </script>
     <script type="text/html" id="img">
-        <img src="{{ d.Image }}" class="pic"style="display: inline-block; width: 30px; height: 100%;border-radius:30px" />
+        <img src="{{ d.Image }}" class="pic" style="display: inline-block; width: 30px; height: 100%;border-radius:30px" />
     </script>
 </body>
 </html>

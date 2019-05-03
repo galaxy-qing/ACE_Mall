@@ -1,20 +1,20 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
 using System.Collections;
 using System.IO;
 using System.Net;
 using System.Net.Mail;
+using System.Text;
 
 namespace ACE_Mall.Common
 {
+   
     /// <summary>
     /// 用于发送邮件的类
     /// </summary>
     public class MailHelper
     {
-        #region 发送邮件的方法
+        
+        #region 发送邮件的方法    
         /// <summary>
         /// 发送邮件的方法
         /// </summary>
@@ -36,9 +36,8 @@ namespace ACE_Mall.Common
         /// <param name="files">附件文件的集合</param>
         public static void SendEmail(string strto, string strSubject, string strBody, bool isHtmlFormat, ArrayList files)
         {
-            SendEmail("mail.hd.bitauto.com", "monitor@hd.bitauto.com", "tt#23j", strto, strSubject, strBody, isHtmlFormat, files);
-            //SendEmail("mail.qq.com", "920971988@qq.com", "wang111111", strto, strSubject, strBody, isHtmlFormat, files);
-        }        
+             SendEmail("mail.hd.bitauto.com", "monitor@hd.bitauto.com", "tt#23j", strto, strSubject, strBody, isHtmlFormat, files);   
+        }
         /// <summary>
         /// 发送邮件的方法
         /// </summary>
@@ -52,7 +51,7 @@ namespace ACE_Mall.Common
         public static void SendEmail(string strSmtpServer, string strFrom, string strFromPass, string strto, string strSubject, string strBody, bool isHtmlFormat)
         {
             SendEmail(strSmtpServer, strFrom, strFromPass, strto, strSubject, strBody, isHtmlFormat, new ArrayList());
-        }        
+        }
         /// <summary>
         /// 发送邮件的方法
         /// </summary>
@@ -99,6 +98,30 @@ namespace ACE_Mall.Common
                 }
             }
         }
+        //public static void SendQQEmail(string receiveEmail,string receiveTheme,string receiveContent)
+        //{
+        //    System.Web.Mail.MailMessage mail = new System.Web.Mail.MailMessage();
+        //    try        //    {
+        //        mail.To = receiveEmail;
+        //        mail.From = "1945697586@qq.com";
+        //        mail.Subject = receiveTheme;
+        //        mail.BodyFormat = System.Web.Mail.MailFormat.Html;
+        //        mail.Body = receiveContent;
+        //        mail.Fields.Add("http://schemas.microsoft.com/cdo/configuration/smtpauthenticate", "1"); //身份验证
+        //        mail.Fields.Add("http://schemas.microsoft.com/cdo/configuration/sendusername", mail.From); //邮箱登录账号，这里跟前面的发送账号一样就行
+        //        mail.Fields.Add("http://schemas.microsoft.com/cdo/configuration/sendpassword", "********"); //这个密码要注意：如果是一般账号，要用授权码；企业账号用登录密码
+        //        mail.Fields.Add("http://schemas.microsoft.com/cdo/configuration/smtpserverport", 465);//端口
+        //        mail.Fields.Add("http://schemas.microsoft.com/cdo/configuration/smtpusessl", "true");//SSL加密
+        //        System.Web.Mail.SmtpMail.SmtpServer = "smtp.qq.com";    //企业账号用smtp.exmail.qq.com
+        //        System.Web.Mail.SmtpMail.Send(mail);
+
+        //        //邮件发送成功
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        //失败，错误信息：ex.Message;
+        //    }
+        //}
         #endregion
     }
 }

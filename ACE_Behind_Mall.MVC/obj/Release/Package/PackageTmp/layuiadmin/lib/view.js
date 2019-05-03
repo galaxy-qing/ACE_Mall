@@ -1,7 +1,7 @@
 /**
 
  @Name：layuiAdmin 视图模块
- @Author：贤心
+ @Author：galaxy-qing
  @Site：http://www.layui.com/admin/
  @License：LPPL
     
@@ -87,8 +87,7 @@ layui.define(['laytpl', 'layer'], function(exports){
     
     delete options.success;
     delete options.error;
-
-    return $.ajax($.extend({
+      return $.ajax($.extend({
       type: 'get'
       ,dataType: 'json'
       ,success: function(res){
@@ -105,13 +104,13 @@ layui.define(['laytpl', 'layer'], function(exports){
         }
         
         //其它异常
-        else {
-          var error = [
-            '<cite>Error：</cite> ' + (res[response.msgName] || '返回状态码异常')
-            ,debug()
-          ].join('');
-          view.error(error);
-        }
+        //else {
+        //  var error = [
+        //    '<cite>Error：</cite> ' + (res[response.msgName] || '返回状态码异常')
+        //    ,debug()
+        //  ].join('');
+        //  view.error(error);
+        //}
         
         //只要 http 状态码正常，无论 response 的 code 是否正常都执行 success
         typeof success === 'function' && success(res);

@@ -1,7 +1,7 @@
 /**
 
  @Name：layuiAdmin（iframe版） 消息中心
- @Author：贤心
+ @Author：galaxy-qing
  @Site：http://www.layui.com/admin/
  @License：LPPL
     

@@ -105,8 +105,11 @@ namespace ACE_Behind_Mall.MVC.Controllers
         /// <returns>视图</returns>
         public ActionResult Index()
         {
-           // var model = admuserbll.GetList(x => x.Account == Session["account"].ToString()).FirstOrDefault();
+            // var model = admuserbll.GetList(x => x.Account == Session["account"].ToString()).FirstOrDefault();
             //NLogHelper.Logs.LogWriter("登录成功",model.ID, model.ReallyName,model.Account,"登录");
+            int userid = Convert.ToInt32(Session["userID"]);
+            string account = admuserbll.GetList(x => x.IsDelete == 0 && x.ID == userid).FirstOrDefault().Account;
+            ViewBag.account = account;
             return View();
         }
         /// <summary>

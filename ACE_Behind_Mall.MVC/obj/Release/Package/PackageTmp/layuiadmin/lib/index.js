@@ -1,12 +1,14 @@
 /**
 
  @Name：layuiAdmin iframe版主入口
- @Author：贤心
+ @Author：galaxy-qing
  @Site：http://www.layui.com/admin/
  @License：LPPL
     
  */
- 
+
+//window.console.error = function () { }
+
 layui.extend({
   setter: 'config' //配置模块
   ,admin: 'lib/admin' //核心模块
@@ -16,8 +18,7 @@ layui.extend({
   ,element = layui.element
   ,admin = layui.admin
   ,tabsPage = admin.tabsPage
-  ,view = layui.view
-  
+  , view = layui.view
   //打开标签页
   ,openTabsPage = function(url, text){
     //遍历页签选项卡
@@ -67,7 +68,18 @@ layui.extend({
   
   ,APP_BODY = '#LAY_app_body', FILTER_TAB_TBAS = 'layadmin-layout-tabs'
   ,$ = layui.$, $win = $(window);
-  
+    admin.req({
+        url: '/AdminUser/GetMyAccount'
+        , success: function (res) {
+            if (res.status == 0) {
+                $('#galaxyqing').html(res.message)
+            }
+            else {
+                layer.msg(res.message);
+                window.location.href = '/Login/Login'
+            }
+        }
+    });
   //初始
   if(admin.screen() < 2) admin.sideFlexible();
   
@@ -84,10 +96,8 @@ layui.extend({
   });
   
   view().autoRender();
-  
   //加载公共模块
   layui.use('common');
-
   //对外输出
   exports('index', {
     openTabsPage: openTabsPage

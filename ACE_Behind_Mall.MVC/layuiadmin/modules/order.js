@@ -12,7 +12,7 @@ layui.define(['table', 'form','vue', 'element', 'jquery'], function (exports) {
         , form = layui.form
         , element = layui.element;
 
-    table.render({
+    var tableIns =table.render({
         elem: '#orderList'
         , url: '/Order/GetOrderList' //模拟接口
         , parseData: function (res) {
@@ -101,6 +101,7 @@ layui.define(['table', 'form','vue', 'element', 'jquery'], function (exports) {
                         function (data) {
                             layer.msg(data.message);
                             layer.close(courierLayer);
+                            tableIns.reload();
                         },
                         "json");
                     return false;

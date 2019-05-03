@@ -1,7 +1,7 @@
 /**
 
  @Name：layim mobile 开源包
- @Author：贤心
+ @Author：galaxy-qing
  @License：MIT
     
  */

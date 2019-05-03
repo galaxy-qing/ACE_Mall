@@ -1,7 +1,7 @@
 /**
 
  @Name：layuiAdmin iframe版核心模块
- @Author：贤心
+ @Author：galaxy-qing
  @Site：http://www.layui.com/admin/
  @License：LPPL
     
@@ -80,14 +80,14 @@ layui.define('view', function(exports){
 
       btn.on('click', function(){
         var elemPhone = options.elemPhone
-        ,value = elemPhone.val();
+           , value = elemPhone.val();
 
         if(seconds !== options.seconds || $(this).hasClass(DISABLED)) return;
 
-        if(!/^1\d{10}$/.test(value)){
-          elemPhone.focus();
-          return layer.msg('请输入正确的手机号')
-        };
+        //if(!/^1\d{10}$/.test(value)){
+        //  elemPhone.focus();
+        //  return layer.msg('请输入正确的手机号')
+        //};
         
         if(typeof options.ajax === 'object'){
           var success = options.ajax.success;
@@ -95,13 +95,14 @@ layui.define('view', function(exports){
         }
         
         admin.req($.extend(true, {
-          url: '/auth/code'
+          url: '/Login/SendEmail'
           ,type: 'get'
           ,data: {
-            phone: value
+              email: value,
           }
-          ,success: function(res){
-            layer.msg('验证码已发送至你的手机，请注意查收', {
+            , success: function (res) {
+
+            layer.msg('验证码已发送至你的邮箱，请注意查收', {
               icon: 1
               ,shade: 0
             });

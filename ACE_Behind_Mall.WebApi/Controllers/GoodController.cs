@@ -172,7 +172,9 @@ namespace ACE_Behind_Mall.WebApi.Controllers
             try
             {
                 var model = goodsbll.GetList(x=>x.IsDelete==0&&x.ID==goodId).Select(x=>new {
-                    goodName=x.Name,
+                    categoryID=x.CategoryID,
+                    categoryName=categorybll.GetList(y=>y.IsDelete==0&&y.ID==x.CategoryID).FirstOrDefault().Name,
+                    goodName =x.Name,
                     goodCategory=x.CategoryID,
                     presentPrice=x.PresentPrice,
                     saleNumber=x.SaleNumber,
@@ -180,6 +182,7 @@ namespace ACE_Behind_Mall.WebApi.Controllers
                     stock =x.Stock,
                     evaluationNum=evaluationbll.GetList(y=>y.GoodID==x.ID).Count(),
                     infoImage=x.InfoImage,
+                    isShow=x.IsDelete,//0,未下架，1，已下架
                 });
                 mr.data = model ;
                 mr.total = model.Count();
@@ -205,13 +208,14 @@ namespace ACE_Behind_Mall.WebApi.Controllers
             {
                 var model = evaluationbll.GetList(x => x.IsDelete == 0 && x.GoodID == goodId).Take(pageSize * page).Skip(pageSize * (page - 1)).Select(x => new {
                     addTime=x.CreateTime.ToString(),
+                    star=x.Star,
                     evaluation = x.Evaluation,
                     account = userbll.GetList(y=>y.ID==x.UserID).FirstOrDefault().Account,
-                    image= "http://192.168.0.144:60391"+userbll.GetList(y => y.ID == x.UserID).FirstOrDefault().Image,
-                    //specification= specificationbll.GetList(y=>y.)
+                    image= userbll.GetList(y => y.ID == x.UserID).FirstOrDefault().Image,
                 });
-                mr.data = model;
-                mr.total = evaluationbll.GetList(x => x.IsDelete == 0 && x.GoodID == goodId).Count();
+                int total = evaluationbll.GetList(x => x.IsDelete == 0 && x.GoodID == goodId).Count();
+                mr.data = new { model, total };
+               
             }
             catch (Exception e)
             {

@@ -46,6 +46,7 @@ namespace ACE_Behind_Mall.WebApi.Controllers
                 myorder.UserID = userId;
                 myorder.OrderNo = "ACE" + Utils.GetOrderNumber();
                 myorder.OrderState = 1;
+                myorder.Note = model.note;
                 myorder.PayMoney = model.payMoney;
                 myorder.Name = userbll.GetList(x => x.ID == userId && x.IsDelete == 0).FirstOrDefault().ReceiveName;
                 myorder.Phone = userbll.GetList(x => x.ID ==userId && x.IsDelete == 0).FirstOrDefault().ReceivePhone;

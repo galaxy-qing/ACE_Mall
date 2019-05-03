@@ -7,7 +7,7 @@
     ,"title": "移动支付踏入马来西亚，聚合支付紧随其后"
     ,"attr": "公告"
     ,"progress": "25%"
-    ,"submit": "贤心"
+    ,"submit": "galaxy-qing"
     ,"accept": "员工-1"
     ,"state": "处理中"
   },{

@@ -1,7 +1,7 @@
 /**
 
  @Name：layim mobile 2.1.0
- @Author：贤心
+ @Author：galaxy-qing
  @Site：http://layim.layui.com
  @License：LGPL
     

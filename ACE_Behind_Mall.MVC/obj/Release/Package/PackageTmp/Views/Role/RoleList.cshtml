@@ -1,0 +1,60 @@
+﻿
+@{
+    ViewBag.Title = "CategoryList";
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>角色列表</title>
+    <link href="~/layuiadmin/layui/css/layui.css" rel="stylesheet" />
+    <link href="~/layuiadmin/style/admin.css" rel="stylesheet" />
+</head>
+<body>
+    <table class="layui-table" id="roleList" lay-data="{id: 'idTest',skin:'line'}" lay-filter="roleList"></table>
+    <!--添加窗口-->
+    <div id="divAdd" style="display: none">
+        <div class="layui-form layui-form-pane" id="formAdd" style="padding: 20px 30px 0 50px;">
+            <input type="hidden" name="ID" />
+            <div class="layui-form-item">
+                <label class="layui-form-label">角色名称</label>
+                <div class="layui-input-block">
+                    <input type="text" name="Name" placeholder="请输入角色名称" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">角色描述</label>
+                <div class="layui-input-block">
+                    <input type="text" name="Describe" placeholder="请输入角色描述" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn" lay-submit lay-filter="formSubmit">立即提交</button>
+                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="~/layuiadmin/layui/layui.js"></script>
+    <script type="text/html" id="toolbarDemo">
+        <div class="layui-btn-container demoTable">
+            <button class="layui-btn layuiadmin-btn-admin" data-type="add">添加</button>
+            @*<button class="layui-btn layuiadmin-btn-admin" data-type="delete">删除</button>*@
+        </div>
+    </script>
+</body>
+</html>
+
+<script>
+    layui.config({
+        base: '../../../layuiadmin/' //静态资源所在路径
+    }).extend({
+        index: 'lib/index' //主入口模块
+    }).use(['index', 'role', 'table'], function () {
+        var $ = layui.$
+            , form = layui.form
+            , table = layui.table;
+    });
+</script>

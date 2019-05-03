@@ -267,7 +267,7 @@ layui.define(function(exports){
           trigger: 'axis'
         },
         legend: {
-          data:['邮件营销','联盟广告','视频广告','直接访问','搜索引擎']
+            data: ['无畏系列', 'A.C.E.LOGO系列', 'CUBAN系列','TENNIS系列']
         },
         calculable : true,
         xAxis : [
@@ -284,35 +284,28 @@ layui.define(function(exports){
         ],
         series : [
           {
-            name:'邮件营销',
+            name:'无畏系列',
             type:'line',
             stack: '总量',
             itemStyle: {normal: {areaStyle: {type: 'default'}}},
             data:[120, 132, 101, 134, 90, 230, 210]
           },
           {
-            name:'联盟广告',
+              name:'A.C.E.LOGO系列',
             type:'line',
             stack: '总量',
             itemStyle: {normal: {areaStyle: {type: 'default'}}},
             data:[220, 182, 191, 234, 290, 330, 310]
           },
           {
-            name:'视频广告',
+            name:'CUBAN系列',
             type:'line',
             stack: '总量',
             itemStyle: {normal: {areaStyle: {type: 'default'}}},
             data:[150, 232, 201, 154, 190, 330, 410]
           },
           {
-            name:'直接访问',
-            type:'line',
-            stack: '总量',
-            itemStyle: {normal: {areaStyle: {type: 'default'}}},
-            data:[320, 332, 301, 334, 390, 330, 320]
-          },
-          {
-            name:'搜索引擎',
+            name:'TENNIS系列',
             type:'line',
             stack: '总量',
             itemStyle: {normal: {areaStyle: {type: 'default'}}},

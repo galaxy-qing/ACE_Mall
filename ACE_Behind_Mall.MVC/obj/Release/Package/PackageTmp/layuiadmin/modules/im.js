@@ -1,7 +1,7 @@
 /**
 
  @Name：layuiAdmin 用户登入和注册等
- @Author：贤心
+ @Author：galaxy-qing
  @Site：http://www.layui.com/admin/
  @License: LPPL
     
@@ -26,7 +26,7 @@ layui.define(['index', 'layim'], function(exports){
     '<（@￣︶￣@）>',
     '你要和我说话？你真的要和我说话？你确定自己想说吗？你一定非说不可吗？那你说吧，这是自动回复。',
     'face[黑线]  你慢慢说，别急……',
-    '(*^__^*) face[嘻嘻] ，是贤心吗？'
+    '(*^__^*) face[嘻嘻] ，是galaxy-qing吗？'
   ];
   
   //基础配置
@@ -177,7 +177,7 @@ layui.define(['index', 'layim'], function(exports){
     ,message: function(){
       //制造好友消息
       layim.getMessage({
-        username: "贤心"
+        username: "galaxy-qing"
         ,avatar: "//tp1.sinaimg.cn/1571889140/180/40030060651/1"
         ,id: "100001"
         ,type: "friend"
