@@ -1,7 +1,7 @@
 ﻿/**
 
  @Name：layuiAdmin 订单系统
- @Author：star1029
+ @Author：gala-qing
  @Site：http://www.layui.com/admin/
  @License：GPL-2
     

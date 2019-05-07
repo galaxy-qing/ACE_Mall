@@ -70,7 +70,6 @@
                         }
                     });
                     $(":radio[name='Sex'][value='" + data.Sex + "']").prop("checked", "checked");
-                    alert($("input[name='Sex']:checked").val());
                     $("#Birthday").val(data.Birthday);
                     //$("#CreateTime").val(data.CreateTime);
                     $("#divSubmit").show();

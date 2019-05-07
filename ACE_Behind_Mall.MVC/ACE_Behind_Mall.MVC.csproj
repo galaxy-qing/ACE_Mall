@@ -468,7 +468,6 @@
     <Content Include="layuiadmin\json\table\user30.js" />
     <Content Include="layuiadmin\json\upload\demo.js" />
     <Content Include="layuiadmin\json\useradmin\mangadmin.js" />
-    <Content Include="layuiadmin\json\useradmin\role.js" />
     <Content Include="layuiadmin\json\useradmin\webuser.js" />
     <Content Include="layuiadmin\json\user\forget.js" />
     <Content Include="layuiadmin\json\user\login.js" />
@@ -628,6 +627,7 @@
     <Content Include="layuiadmin\modules\sample.js" />
     <Content Include="layuiadmin\modules\senior.js" />
     <Content Include="layuiadmin\modules\set.js" />
+    <Content Include="layuiadmin\modules\setmydata.js" />
     <Content Include="layuiadmin\modules\user.js" />
     <Content Include="layuiadmin\modules\useradmin.js" />
     <Content Include="layuiadmin\modules\vue.js" />
@@ -715,6 +715,7 @@
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\OrderController.cs" />
     <Compile Include="Controllers\RoleController.cs" />
+    <Compile Include="Controllers\SetMyDataController.cs" />
     <Compile Include="Controllers\StatisticsController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
@@ -766,6 +767,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Models\" />
+    <Folder Include="Views\SetMyData\" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />

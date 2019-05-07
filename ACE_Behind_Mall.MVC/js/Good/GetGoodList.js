@@ -23,7 +23,7 @@ layui.use(['laypage', 'layer', 'form', 'jquery', 'vue', 'element'], function () 
             window.location.href = "/Good/GoodDetail/";
         }
         ,offShelves: function () {
-            layer.confirm('确定下架吗？', function (index) {
+            layer.confirm('确认下架吗？', function (index) {
                 var url = "/Good/OffShelves";
                 $.post(url,
                     { idList: idList },
@@ -35,7 +35,7 @@ layui.use(['laypage', 'layer', 'form', 'jquery', 'vue', 'element'], function () 
             });
         }
         , onShelves: function () {
-            layer.confirm('确定上架吗？', function (index) {
+            layer.confirm('确认上架吗？', function (index) {
                 var url = "/Good/OnShelves";
                 $.post(url,
                     { idList: idList },
@@ -63,7 +63,7 @@ layui.use(['laypage', 'layer', 'form', 'jquery', 'vue', 'element'], function () 
         var type = $(this).data('type');
         active[type] ? active[type].call(this) : '';
     });
-    $('.cmdlist-container').on('click', function () {
+    $('.currentImage').on('click', function () {
         var id = $(this).data('id');
         window.location.href = "/Good/GoodDetail?id="+id;
 

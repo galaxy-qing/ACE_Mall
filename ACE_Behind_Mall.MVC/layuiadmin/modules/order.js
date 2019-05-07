@@ -124,7 +124,7 @@ layui.define(['table', 'form','vue', 'element', 'jquery'], function (exports) {
         if (obj.event === 'goodDetail') {      //查看订单商品列表
             var goodLayer = layer.open({
                 title: "查看订单商品列表",
-                area: ["1500px", "800px"],
+                area: ["1400px", "800px"],
                 type: 1,
                 btn: ['取消'],
                 content: $('#divGoodDetail'),
@@ -141,8 +141,7 @@ layui.define(['table', 'form','vue', 'element', 'jquery'], function (exports) {
                             };
                         }
                         , cols: [[
-                            { type: 'numbers', fixed: 'left', align: 'center' }
-                            , { field: 'OrderNo', title: '订单编号', minWidth: 225, sort: true, align: 'center' }
+                            , { field: 'OrderNo', title: '订单编号', minWidth: 225, align: 'center' }
                             , { field: 'GoodName', title: '商品名称', minWidth: 380, align: 'center' }
                             , { field: 'GoodImage', title: '商品图片', align: 'center', templet: '#img' }
                             , { field: 'PresentPrice', title: '商品现价', align: 'center', align: 'center' }
@@ -151,7 +150,9 @@ layui.define(['table', 'form','vue', 'element', 'jquery'], function (exports) {
                         , page: true
                         , limit: 10
                         , limits: [10, 15, 20, 25, 30]
-                        , text: '对不起，加载出现异常！'
+                        , text: {
+                            none: '暂无相关数据' //默认：无数据。
+                        }
                         //, done: function () {
                         //    element.render('progress')
                         //}

@@ -68,7 +68,6 @@ namespace ACE_Behind_Mall.WebApi.Controllers
                 if (model.Count > 0)
                 {
                     mr.data = model;
-                    mr.total = model.Count;
                 }
             }
             catch (Exception e)
@@ -152,7 +151,6 @@ namespace ACE_Behind_Mall.WebApi.Controllers
                     model = model.OrderBy(x => x.saleNamber).ToList();
                 }
                 mr.data = new { goodsList = model };
-                mr.total = goodsbll.GetList(x => x.IsDelete == 0 & x.CategoryID == categoryId).Count();
             }
             catch (Exception e)
             {
@@ -185,7 +183,6 @@ namespace ACE_Behind_Mall.WebApi.Controllers
                     isShow=x.IsDelete,//0,未下架，1，已下架
                 });
                 mr.data = model ;
-                mr.total = model.Count();
             }
             catch (Exception e)
             {

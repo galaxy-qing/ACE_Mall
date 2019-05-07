@@ -105,11 +105,13 @@ layui.define(['table', 'form', 'laydate', 'vue', 'jquery'], function (exports) {
                         url: '/Role/GetRoleList',
                         dataType: 'json',
                         success: function (res) {
-                            var html = ''
+                            //alert(JSON.stringify(res))
+                            var html = '';
                             res.data.forEach(function (item, index) {
                                 html += "<option  value='" + item.ID + "'>" + item.Name + "</option>"
                             })
-                            $("#RoleID").append(html)
+                            $("#RoleID").html(html);
+                            alert(JSON.stringify(data.RoleID))
                             $("#RoleID")[0].selectedIndex = data.RoleID;
                             form.render('select')
                         }

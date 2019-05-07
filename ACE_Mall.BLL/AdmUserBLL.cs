@@ -31,5 +31,9 @@ namespace ACE_Mall.BLL
         {
             return Dao.Update(model);
         }
+        public bool Delete(Adm_User model)
+        {
+            return Dao.Delete(model);
+        }
     }
 }

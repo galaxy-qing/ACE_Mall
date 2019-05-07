@@ -16,6 +16,7 @@ namespace ACE_Behind_Mall.MVC.Controllers
     {
         protected ModelResponse<dynamic> mr = new ModelResponse<dynamic>();
         RoleBLL rolebll = new RoleBLL();
+        AdmUserBLL admuserbll = new AdmUserBLL();
         // GET: Role
         public ActionResult RoleList()
         {
@@ -48,10 +49,14 @@ namespace ACE_Behind_Mall.MVC.Controllers
         }
         public ActionResult Delete(Adm_User_Role model)
         {
-            //model.ID= admuserbll.Get
-            Adm_User_Role r = rolebll.GetUpdateModel<Adm_User_Role>(model, "ID");
-            r.IsDelete = 1;
-            bool flag = rolebll.Update(r);
+            bool flag = false;
+            flag = rolebll.Delete(model);
+            var admusermodel = admuserbll.GetList(x => x.RoleID == model.ID);
+            foreach (var item in admusermodel)
+            {
+                admuserbll.Delete(item);
+            }
+            
             Hashtable ht = HashTableHelp.GetHash(flag);
             return Json(ht, JsonRequestBehavior.AllowGet);
         }

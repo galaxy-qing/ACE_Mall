@@ -77,12 +77,12 @@ layui.define(['table', 'form', 'vue', 'element', 'jquery', 'upload', 'layer'], f
                 //console.log(index); //得到文件索引
                //console.log(file.Name); //得到文件对象
                // console.log(result); //得到文件base64编码，比如图片
-                vm._data.DetailImage.push(result);
+               // vm._data.DetailImage.push(result);
             });
         }
         , multiple: true
         , done: function (res, index, upload) { //每个文件提交一次触发一次。详见“请求成功的回调”
-            //vm.$set('_data.DetailImage', res.message)
+            vm.$set('_data.DetailImage', res.message)
            // console.log(res)
         }
     });   

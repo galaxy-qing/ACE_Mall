@@ -56,7 +56,6 @@ namespace ACE_Behind_Mall.MVC.Controllers
                 Adm_User r = admuserbll.GetUpdateModel<Adm_User>(model, "ID");
                 bool flag = admuserbll.Update(r);
                 mr.message = "success";
-                mr.status = 0;
             }
             else
             {
@@ -108,9 +107,16 @@ namespace ACE_Behind_Mall.MVC.Controllers
             // var model = admuserbll.GetList(x => x.Account == Session["account"].ToString()).FirstOrDefault();
             //NLogHelper.Logs.LogWriter("登录成功",model.ID, model.ReallyName,model.Account,"登录");
             int userid = Convert.ToInt32(Session["userID"]);
-            string account = admuserbll.GetList(x => x.IsDelete == 0 && x.ID == userid).FirstOrDefault().Account;
-            ViewBag.account = account;
-            return View();
+            if (userid != 0)
+            {
+                string account = admuserbll.GetList(x => x.IsDelete == 0 && x.ID == userid).FirstOrDefault().Account;
+                ViewBag.account = account;
+                return View();
+            }
+            else
+            {
+                return Redirect("/Login/Login");
+            }
         }
         /// <summary>
         /// 登录按钮操作

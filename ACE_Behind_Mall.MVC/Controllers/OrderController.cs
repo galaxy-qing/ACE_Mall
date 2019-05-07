@@ -37,6 +37,17 @@ namespace ACE_Behind_Mall.MVC.Controllers
         {
             try
             {
+                //超过20分钟未付款自动取消订单
+                var noPayOrder = orderbll.GetList(x => x.IsDelete == 0  && x.OrderState == 1).ToList();
+                DateTime nowTime = DateTime.Now;
+                foreach (var item1 in noPayOrder)
+                {
+                    TimeSpan ts = nowTime - Convert.ToDateTime(item1.CreateTime);
+                    if (Convert.ToInt64(ts.TotalMinutes) > 20)
+                    {
+                        item1.OrderState = 6;
+                    }
+                }
                 var item = orderbll.GetList(x => x.IsDelete == 0).Select(x => new
                 {
                     x.ID,
@@ -81,7 +92,7 @@ namespace ACE_Behind_Mall.MVC.Controllers
                 {
                     item = item.Where(x => x.Phone.Contains(request.key3.Trim())).ToList();
                 }
-                mr.total = item.Count;
+                mr.total = item.Count();
                 mr.data = item.OrderByDescending(x => x.CreateTime).Skip(request.limit * (request.page - 1)).Take(request.limit);
             }
             catch (Exception e)
@@ -136,7 +147,6 @@ namespace ACE_Behind_Mall.MVC.Controllers
                     mr.status = 2;
                     mr.message = "请前往登录";
                 }
-                mr.total = item.Count;
                 mr.data = item.OrderByDescending(x => x.CreateTime);
             }
             catch (Exception e)

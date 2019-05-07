@@ -98,35 +98,6 @@ namespace ACE_Behind_Mall.MVC.Controllers
             return JsonHelper.Instance.Serialize(mr);
         }
         /// <summary>
-        /// 修改账户信息
-        /// </summary>
-        /// <param name="model"></param>
-        /// <returns></returns>
-        public string UpdateMyInfo(Adm_User model)
-        {
-            try
-            {
-                int userId = Convert.ToInt32(Session["userID"]);
-                var usermodel = admuserbll.GetList(x => x.ID == userId).FirstOrDefault();
-                usermodel.ReallyName = model.ReallyName;
-                usermodel.Sex = model.Sex;
-                usermodel.Phone = model.Phone;
-                usermodel.Email = model.Email;
-                usermodel.Birthday = model.Birthday;
-                Adm_User r = admuserbll.GetUpdateModel<Adm_User>(model, "ID");
-                bool flag = admuserbll.Update(r);
-                if (flag == true)
-                {
-                    mr.message = "修改成功";
-                }
-            }
-            catch (Exception e)
-            {
-                Log.Error(e.Message);
-            }
-            return JsonHelper.Instance.Serialize(mr);
-        }
-        /// <summary>
         /// 得到员工列表
         /// </summary>
         /// <param name="request"></param>
@@ -136,7 +107,7 @@ namespace ACE_Behind_Mall.MVC.Controllers
             try
             {
                 var item = admuserbll.GetList(x => true).Select(x=>new {
-                    RoleName= rolebll.GetList(y=>y.IsDelete==0&&y.ID==x.RoleID).FirstOrDefault().Name,
+                    RoleName= rolebll.GetList(y=>y.IsDelete==0&&y.ID==x.RoleID).FirstOrDefault().Name==null?"": rolebll.GetList(y => y.IsDelete == 0 && y.ID == x.RoleID).FirstOrDefault().Name,
                     x.ReallyName,
                     x.ID,
                     x.RoleID,
@@ -158,13 +129,13 @@ namespace ACE_Behind_Mall.MVC.Controllers
                 {
                     item = item.Where(x => x.Account.Contains(request.key.Trim())).ToList();
                 }
-                    mr.total = item.Count;
+                mr.total = item.Count();
                     mr.data = item.OrderByDescending(x => x.CreateTime).Skip(request.limit * (request.page - 1)).Take(request.limit);
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
                 mr.status = 1;
-                Log.Error(e.Message);
+                NLogHelper.Logs.Error(ex.Message);
             }
             return JsonHelper.Instance.Serialize(mr);
         }

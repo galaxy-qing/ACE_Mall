@@ -143,9 +143,20 @@ namespace ACE_Behind_Mall.WebApi.Controllers
                     models.Add(isComplete);
                     models.Add(isCancel);
                     mr.data = models;
+                    //超过20分钟未付款自动取消订单
+                    var noPayOrder = orderbll.GetList(x => x.IsDelete == 0 && x.UserID == userId && x.OrderState == 1).ToList();
+                    DateTime nowTime = DateTime.Now;
+                    foreach (var item in noPayOrder)
+                    {
+                        TimeSpan ts = nowTime - Convert.ToDateTime(item.CreateTime);
+                        if (Convert.ToInt64(ts.TotalMinutes) > 20)
+                        {
+                            item.OrderState = 6;
+                            My_Order m = orderbll.GetUpdateModel<My_Order>(item, "ID");
+                            orderbll.Update(m);
+                        }
+                    }
                 }
-
-
             }
             catch (Exception e)
             {
@@ -249,7 +260,6 @@ namespace ACE_Behind_Mall.WebApi.Controllers
                     }),  
                 });
                 mr.data = orderDetail;
-                mr.total = 1;
                 mr.message = "获取成功";
             }
             catch (Exception e)
@@ -307,6 +317,27 @@ namespace ACE_Behind_Mall.WebApi.Controllers
                 Log.Error(e.Message);
             }
             return mr;
+        }
+        [HttpGet]
+        public ModelResponse<dynamic> GetAAA()
+        {
+            List<int> arryList = new List<int>();
+            Random rnd = new Random();
+            for (int i = 0; i < 100; i++)
+            {
+              
+                int a = rnd.Next(1, 10000);
+                arryList.Add(a);
+            }
+            mr.data = new { arryList};
+            return mr;
+        }
+        public void Test()
+        {
+            for (int i = 0; i < 10; i++)
+            {
+                Console.WriteLine(GetAAA());
+            } 
         }
     }
 }

@@ -30,6 +30,7 @@ namespace ACE_Behind_Mall.WebApi.Controllers
         private OrderBLL orderbll = new OrderBLL();
         private OrderGoodBLL ordergoodbll = new OrderGoodBLL();
         private SpecificationBLL specificationbll = new SpecificationBLL();
+        private EvaluationBLL evaluationbll = new EvaluationBLL();
         /// <summary>
         /// 用户登录
         /// </summary>
@@ -72,7 +73,6 @@ namespace ACE_Behind_Mall.WebApi.Controllers
                     });
                     mr.message = "登录成功";
                     mr.data = item;
-                    mr.total = item.Count();
                 }
                 else
                 {
@@ -121,7 +121,6 @@ namespace ACE_Behind_Mall.WebApi.Controllers
                     if (flag == true)
                     {
                         mr.message = "注册成功";
-                        mr.total = 1;
                     }
                 }
                 catch (Exception e)
@@ -311,7 +310,6 @@ namespace ACE_Behind_Mall.WebApi.Controllers
                         if (flag == true)
                         {
                             mr.message = "添加成功";
-                            mr.total = 1;
                         }
                     }
                 }
@@ -491,7 +489,6 @@ namespace ACE_Behind_Mall.WebApi.Controllers
                     }
                     mr.data = new { totalNumber = totalNumber, checkNumber = checkNumber, totalPrice = totalPrice, mymodel };
                     mr.message = "数据加载成功";
-                    mr.total = 1;
                 }
             }
             catch (Exception e)
@@ -500,6 +497,101 @@ namespace ACE_Behind_Mall.WebApi.Controllers
                 Log.Error(e.Message);
             }
             return mr;
+        }
+        /// <summary>
+        /// 获取我的评价
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [AllowAnonymous]
+        [RequestAuthorize]
+        public ModelResponse<dynamic> GetMyEvaluation()
+        {
+
+            int userId = 0;
+            userId = GetTicket();
+            try
+            {
+                if (userId == 0)
+                {
+                    mr.status = 2;//未登录
+                    mr.message = "请先登录";
+                }
+                if (userId != 0)
+                {
+                    var model = evaluationbll.GetList(x => x.IsDelete == 0 && x.UserID == userId).Select(x => new
+                    {
+                        goodName=goodbll.GetList(y=>y.IsDelete==0&&y.ID==x.GoodID).FirstOrDefault().Name,
+                        goodImage = goodbll.GetList(y => y.IsDelete == 0 && y.ID == x.GoodID).FirstOrDefault().CoverImage,
+                        star =x.Star,
+                        evaluation=x.Evaluation,
+                        createtime=x.CreateTime,
+                    });
+                    mr.message = "数据加载成功";
+                    mr.data = model;
+                }
+            }
+            catch (Exception e)
+            {
+                mr.status = 1;
+                Log.Error(e.Message);
+            }
+            return mr;
+        }
+        public ModelResponse<dynamic> levenshtein(String str1, String str2)
+        {
+            //计算两个字符串的长度。 
+            int len1 = str1.Length;
+            int len2 = str2.Length;
+            //建立上面说的数组，比字符长度大一个空间 
+            int[,] dif = new int[len1 + 1, len2 + 1];
+            //赋初值，步骤B。 
+            for (int a = 0; a <= len1; a++)
+            {
+                dif[a, 0] = a;
+            }
+            for (int a = 0; a <= len2; a++)
+            {
+                dif[0, a] = a;
+            }
+            //计算两个字符是否一样，计算左上的值 
+            int temp;
+            for (int i = 1; i <= len1; i++)
+            {
+                for (int j = 1; j <= len2; j++)
+                {
+                    if (str1[i - 1] == str2[j - 1])
+                    {
+                        temp = 0;
+                    }
+                    else
+                    {
+                        temp = 1;
+                    }
+                    //取三个值中最小的 
+                    dif[i, j] = min(dif[i - 1, j - 1] + temp, dif[i, j - 1] + 1,
+                    dif[i - 1, j] + 1);
+                }
+            }
+
+            //计算相似度 
+            float similarity = 1 - (float)dif[len1, len2] / Math.Max(str1.Length, str2.Length);
+            mr.message= similarity.ToString();
+            return mr;
+        }
+
+        //得到最小值 
+        private static int min(params int[] arr)
+        {
+            int min = int.MaxValue;
+            foreach (int i in arr)
+            {
+                if (min > i)
+                {
+                    min = i;
+                }
+            }
+            return min;
         }
         /// <summary>
         /// 获取购物车
@@ -538,7 +630,6 @@ namespace ACE_Behind_Mall.WebApi.Controllers
             bool isAllChecked = shopcartbll.GetList(y => y.IsDelete == 0 && y.UserID == userId && y.IsChecked == false).Count == 0 ? true : false;
             mr.data = new { isAllChecked = isAllChecked, totalNumber = totalNumber, checkNumber = checkNumber, totalPrice = totalPrice, mymodel };
             mr.message = "数据加载成功";
-            mr.total = 1;
         }
     }
 }

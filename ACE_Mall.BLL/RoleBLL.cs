@@ -41,9 +41,9 @@ namespace ACE_Mall.BLL
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public bool Delete(int ID)
+        public bool Delete(Adm_User_Role model)
         {
-            return Dao.Delete(ID);
+            return Dao.Delete(model);
         }
     }
 }
