@@ -127,9 +127,9 @@ namespace ACE_Behind_Mall.MVC.Controllers
                 var imagePath = "/images/goods/" + file.FileName;
                 mr.message = imagePath;
                 //var model = goodbll.GetList(x => x.ID == id).FirstOrDefault();
-               // model.CoverImage = imagePath;
+                //model.CoverImage = imagePath;
                 //Mall_Good m = goodbll.GetUpdateModel<Mall_Good>(model, "ID");
-               // bool flag = goodbll.Update(m);
+                //bool flag = goodbll.Update(m);
 
                 // NLogHelper.Logs.LogWriter("保存用户头像：【" + file.FileName + "】成功", _userData.User.Id, _userData.User.Account, _userData.User.Name, OpType.Edit);
             }
@@ -207,12 +207,12 @@ namespace ACE_Behind_Mall.MVC.Controllers
             bool flag = false;
             try
             {
-                if (model.ID != 0)
+                if (model.ID != 0) //修改
                 {
                     var goodmodel = goodbll.GetList(x => x.ID == model.ID).FirstOrDefault();
                     model.DetailImage = "";
                     model.InfoImage = "";
-                    model.CoverImage = goodmodel.CoverImage;
+                    model.CoverImage = model.CoverImage;
                     foreach (var item in DetailImage)
                     {
                         model.DetailImage += item+",";
@@ -226,9 +226,10 @@ namespace ACE_Behind_Mall.MVC.Controllers
                     Mall_Good m = goodbll.GetUpdateModel<Mall_Good>(model, "ID");
                     flag = goodbll.Update(m);
                 }
-                else
+                else  //添加
                 {
                     model.CreateTime = DateTime.Now;
+                    model.IsDelete = 0;
                     goodbll.Add(model);
                 }
             }
