@@ -505,7 +505,7 @@ namespace ACE_Behind_Mall.WebApi.Controllers
         [HttpGet]
         [AllowAnonymous]
         [RequestAuthorize]
-        public ModelResponse<dynamic> GetMyEvaluation()
+        public ModelResponse<dynamic> GetMyEvaluation(int page,int pageSize)
         {
 
             int userId = 0;
@@ -519,16 +519,17 @@ namespace ACE_Behind_Mall.WebApi.Controllers
                 }
                 if (userId != 0)
                 {
-                    var model = evaluationbll.GetList(x => x.IsDelete == 0 && x.UserID == userId).Select(x => new
+                    var model = evaluationbll.GetList(x => x.IsDelete == 0 && x.UserID == userId).Take(pageSize * page).Skip(pageSize * (page - 1)).Select(x => new
                     {
-                        goodName=goodbll.GetList(y=>y.IsDelete==0&&y.ID==x.GoodID).FirstOrDefault().Name,
-                        goodImage = goodbll.GetList(y => y.IsDelete == 0 && y.ID == x.GoodID).FirstOrDefault().CoverImage,
+                        goodName=goodbll.GetList(y=>y.ID==x.GoodID).FirstOrDefault().Name,
+                        goodImage = goodbll.GetList(y => y.ID == x.GoodID).FirstOrDefault().CoverImage,
                         star =x.Star,
                         evaluation=x.Evaluation,
-                        createtime=x.CreateTime,
+                        createtime = Convert.ToDateTime(x.CreateTime).ToString("yyyy-MM-dd HH:MM:ss"),
                     });
+                    int total = evaluationbll.GetList(x => x.IsDelete == 0 && x.UserID == userId).Count();
+                    mr.data = new { model, total };
                     mr.message = "数据加载成功";
-                    mr.data = model;
                 }
             }
             catch (Exception e)

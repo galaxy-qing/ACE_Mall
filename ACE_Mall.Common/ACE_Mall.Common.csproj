@@ -63,6 +63,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Code\config.cs" />
+    <Compile Include="App_Code\aliPayConfig.cs" />
     <Compile Include="CacheHelper.cs" />
     <Compile Include="ConvertHelper.cs" />
     <Compile Include="FileHelper.cs" />

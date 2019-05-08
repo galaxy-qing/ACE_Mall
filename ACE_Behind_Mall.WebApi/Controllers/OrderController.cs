@@ -15,6 +15,12 @@ using System.Net.Http.Headers;
 using System.Collections.Specialized;
 using System.Web.Security;
 using ACE_Behind_Mall.WebApi.App_Start;
+using Aop.Api;
+using Aop.Api.Domain;
+using Aop.Api.Request;
+using Aop.Api.Response;
+using ACE_Mall.Common.App_Code;
+using Newtonsoft.Json;
 
 namespace ACE_Behind_Mall.WebApi.Controllers
 {
@@ -69,7 +75,42 @@ namespace ACE_Behind_Mall.WebApi.Controllers
                     shopcartbll.Update(m);
                 }
                 mr.message = "提交订单成功";
-                mr.data = new { orderNo = myorder, payMoney = myorder.PayMoney };
+
+                //DefaultAopClient client = new DefaultAopClient(config.gatewayUrl, config.app_id, config.private_key, "json", "1.0", config.sign_type, config.alipay_public_key, config.charset, false);
+                //IAopClient client = new DefaultAopClient(config.gatewayUrl, config.app_id, config.private_key, "json", "1.0", config.sign_type, config.alipay_public_key, config.charset, false);
+
+                //外部订单号，商户网站订单系统中唯一的订单号
+                //string out_trade_no = "2019581723241";
+
+                //订单名称
+                //string subject = "测试";
+
+                //付款金额
+                //string total_amount = "0.01";
+
+                //商品描述
+                //string body = "111";
+                //string store_id = "";
+                //string timeout_express = "";
+                //实例化具体API对应的request类,类名称和接口名称对应,当前调用接口名称如：
+                //AlipayTradePrecreateRequest request = new AlipayTradePrecreateRequest();//创建API对应的request类
+
+
+                //SDK已经封装掉了公共参数，这里只需要传入业务参数
+
+
+                //request.BizContent = AliPayInfo(out_trade_no, total_amount, subject);
+                //AlipayTradePrecreateResponse response = client.Execute(request);
+                //if (response.IsError == true)
+                //{
+
+                //    mr.message = "失败";
+                //}
+                //if (response.IsError == false)
+                //{
+                //    mr.message = "成功";
+                //}
+                 mr.data = new { orderNo = myorder, payMoney = myorder.PayMoney };
             }
             catch (Exception e)
             {
@@ -77,6 +118,19 @@ namespace ACE_Behind_Mall.WebApi.Controllers
                 Log.Error(e.Message);
             }
             return mr;
+        }
+        public static string AliPayInfo(string out_trade_no, string total_amount, string subject)
+        {
+            Dictionary<string, object> dic = new Dictionary<string, object>();
+            //Log.Error("用户个人佣金或余额提现开始", "");
+            dic.Add("out_trade_no", out_trade_no);//商户转账唯一订单号
+            dic.Add("total_amount", total_amount);//收款方账户类型
+            dic.Add("subject", "");//收款方账户
+            //dic.Add("store_id", "");//转账金额
+            //dic.Add("timeout_express", "90m");//付款方姓名
+            //dic.Add("payee_real_name", payee_real_name);//收款方姓名
+            //dic.Add("remark", remark);//转账备注
+            return JsonConvert.SerializeObject(dic);
         }
         /// <summary>
         /// 订单支付
@@ -195,7 +249,7 @@ namespace ACE_Behind_Mall.WebApi.Controllers
                     {
                         orderNo = x.OrderNo,
                         submitTime = Convert.ToDateTime(x.CreateTime).ToString("yyyy-MM-dd HH:mm:ss"),
-                        goodNumber = ordergoodbll.GetList(y => y.IsDelete == 0 && y.OrderNo == x.OrderNo).Count(),
+                        goodNumber = ordergoodbll.GetList(y => y.OrderNo == x.OrderNo).Count(),
                         totalMoney = x.PayMoney,
                         receiveName = x.Name,
                         payWay = x.PayWay,
@@ -203,9 +257,9 @@ namespace ACE_Behind_Mall.WebApi.Controllers
                         goodList = ordergoodbll.GetList(y => y.OrderNo == x.OrderNo).Select(y => new
                         {
                             goodId=y.GoodID,
-                            goodName = goodbll.GetList(z => z.IsDelete == 0 && z.ID == y.GoodID).FirstOrDefault().Name,
-                            goodImage = goodbll.GetList(z => z.IsDelete == 0 && z.ID == y.GoodID).FirstOrDefault().CoverImage,
-                            goodPrice = goodbll.GetList(z => z.IsDelete == 0 && z.ID == y.GoodID).FirstOrDefault().PresentPrice,
+                            goodName = goodbll.GetList(z => z.ID == y.GoodID).FirstOrDefault().Name,
+                            goodImage = goodbll.GetList(z => z.ID == y.GoodID).FirstOrDefault().CoverImage,
+                            goodPrice = goodbll.GetList(z => z.ID == y.GoodID).FirstOrDefault().PresentPrice,
                             goodNumber = y.GoodNumber
                         })
                     });
@@ -249,13 +303,13 @@ namespace ACE_Behind_Mall.WebApi.Controllers
                     receiveAddress = x.Address,
                     payWay = x.PayWay,
                     payMoney = x.PayMoney,
-
                     timeProgress= times,
-                    goodList = ordergoodbll.GetList(y => y.IsDelete == 0 && y.OrderNo == orderNo).Select(y => new
+                    goodList = ordergoodbll.GetList(y => y.OrderNo == orderNo).Select(y => new
                     {
-                        goodName = goodbll.GetList(z => z.IsDelete == 0 && z.ID == y.GoodID).FirstOrDefault().Name,
-                        goodImage = goodbll.GetList(z => z.IsDelete == 0 && z.ID == y.GoodID).FirstOrDefault().CoverImage,
-                        goodPrice = goodbll.GetList(z => z.IsDelete == 0 && z.ID == y.GoodID).FirstOrDefault().PresentPrice,
+                        goodId=x.ID,
+                        goodName = goodbll.GetList(z => z.ID == y.GoodID).FirstOrDefault().Name,
+                        goodImage = goodbll.GetList(z => z.ID == y.GoodID).FirstOrDefault().CoverImage,
+                        goodPrice = goodbll.GetList(z => z.ID == y.GoodID).FirstOrDefault().PresentPrice,
                         goodNumber = y.GoodNumber,
                     }),  
                 });
@@ -318,26 +372,73 @@ namespace ACE_Behind_Mall.WebApi.Controllers
             }
             return mr;
         }
-        [HttpGet]
-        public ModelResponse<dynamic> GetAAA()
+        /// <summary>
+        /// 删除已关闭订单
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        [HttpDelete]
+        [AllowAnonymous]
+        [RequestAuthorize]
+        public ModelResponse<dynamic> DeleteOrder(PayOrder model)
         {
-            List<int> arryList = new List<int>();
-            Random rnd = new Random();
-            for (int i = 0; i < 100; i++)
+            int userId = 0;
+            userId = GetTicket();
+            if (userId != 0)
             {
-              
-                int a = rnd.Next(1, 10000);
-                arryList.Add(a);
+                try
+                {
+                    var ordermodel = orderbll.GetList(x => x.IsDelete == 0 && x.OrderNo == model.orderNo).FirstOrDefault();
+                    if (ordermodel.OrderState == 6)
+                    {
+                        ordermodel.IsDelete = 1;
+                        My_Order m = orderbll.GetUpdateModel<My_Order>(ordermodel, "ID");
+                        orderbll.Update(m);
+                        mr.message = "您已成功删除订单";
+                    }
+                    else
+                    {
+                        mr.status = 1;
+                        mr.message = "该订单不能删除";
+                    }
+                }
+                catch (Exception e)
+                {
+                    mr.status = 1;
+                    mr.message = "服务器错误";
+                    Log.Error(e.Message);
+                }
             }
-            mr.data = new { arryList};
             return mr;
         }
-        public void Test()
+        
+        public class config
         {
-            for (int i = 0; i < 10; i++)
+            public config()
             {
-                Console.WriteLine(GetAAA());
-            } 
+                //
+                // TODO: 在此处添加构造函数逻辑
+                //
+            }
+            // 应用ID,您的APPID
+            public static string app_id = "2019033163690973";
+
+            // 支付宝网关
+            public static string gatewayUrl = "https://openapi.alipaydev.com/gateway.do ";
+            //
+            // 商户私钥，您的原始格式RSA私钥
+            public static string private_key = "MIIEpAIBAAKCAQEAokUan80Z5Cdixf0IH3fAfC5SAk6PwNl5qRXFYoZvjGFQRNdINeit7hjntpbnHDZiPdvQ8aCdVFi5zr6j6Yb7dmo5nRmwU58gxG4B/hBsQvfLuvssb5DkVFFR0qCtWFaxKbn3ZiaGMvYdAE3LibhihpsSZfWdRn9N5yll2ZQYNK7MXYAq4/syeJyw0yixjFYmgtee56BvVB7FdYUKyPLmVHdnarmoVMx0TehDQIklpY6HvK/FRsO353jmywodz3fVI0mbplTtkPSHhKheyLmqrh/eUsh6t9LHML7gSJQJ8GxhIpTuZkSRyzu2AjN/MrHqoAAlTqWfuYXkAHAG4p6b7wIDAQABAoIBAFVbmHe7AgWcGj8frSgwbBZmn0kLXl8Jhw/EngIHyaHEht7Ph/KjpOp8O1c25fdXPDJh8PVJkbkOux7f9YUgNiLCGfBj1PcH28q4O2AT738Cri57dZJyW0lnRW1QjB7N63+RjWw0k583C2ZfhdO6JEm+RN1RaBvvV2Fjy2m6l0kOW5AFEdH0uhzpFbv8HqXJ0WBTr4Dfyu98LZdCV/9928dJXmNBXJeGUHXOLhYnuYLk7uE1QO5lFu44yFys3YoPXnKL/Orv/m/Mca0zsJkZUz9U4Dm7u4scpXvhyYOgg6C1lgXKzfOmrLpUdL8VtsLIolYPE8AGVOyvY85uSxRp09ECgYEAzOuI403XLB/2tx0BNTkU8LJp5KC14XDKNAcPcPY7OpZ68BziD5IleRPkXRIbp1VBWRSPYkVjoU4iYvNEJiFaDPkm9oWLcufSM/1eGn/vGf2a5JLGhHR+vdXwLX8DIoUMfim7FtEQODjq+3K+dkmHAbHwlOwj+ZIM3wbmpmPkR4MCgYEAyrf1KDJzmZ6AjxzH9FA4tNNRHArFkyLUCGnIFAohZ/M8cyuvWXw3639prdxnHBCKHumuZfp0SqyluuM3BIFU3QRg/yrhJIWd8QTw2H/Jt1BpptAuemSYRqiuQHKrCKYLfk+2e2EwXeaa72Bu24y/4TOs57R81HvygNcBaZ+lwiUCgYA3UBSBFo/QL0iPINsknKXUWrROrDqsAZ/y7zzxxuUx6VCB46n5ff9zcTUhEjQ4tMCQ5QXXBtffwJFzmCp7CGGgQtiLjnyXpY+NzQRLruDBaT0YGa5QLonPgCH2heQ4uyUmIOmJPSFdq69x9AUJNMumX3uLFzqWsR+cS+aSX0BNNQKBgQC9jpq9xb927FHGgOEwwTrlS5xSnnf1h+HBJDklE/v82eOyxiynfpJDsda97pS0F3swQM8FKNdJZHtscD7oBY+3Q/r3X787iX4Q+8/Cgmu68IR6qbxsUlhZ6i1WsmLgKXQh3qQCZvT1OUezgvbmcYyTJuENoSYBAw3WEDaP7+rtyQKBgQDJMS64/AHVvD8oi9DXVFXHQ3m4oYeYGFF4qW0UIBQ3ol6y+XgSlfybWzpScCF1QHu/Bp0NWdhJhvDTQx5XNDladNfo0tShptCwsLQL2WLFl2EGUuGfLSiWRFcENXFYHAqhWfzokEyMbaUj17MTgjQRIcm43JLgdArUhp7V+IxHdg==";
+
+
+            // 支付宝公钥,查看地址：https://openhome.alipay.com/platform/keyManage.htm 对应APPID下的支付宝公钥。
+            public static string alipay_public_key = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAnpFMTlDXODnOPbgTXWGBxzNXc7DrW2U26I5xNOsWAFq3jvJKjxMUx+4zUIPmBQdhLlF0OIt17OE6yYuz5BKROh0UdXf0ENR0MA398pI2GS8rq5dyLJuJBmUFmApJI5y/utC3bI+CY1/LlguPW+CSRyMr3QhWIfB9iK2AzVSclW9TflP7dsRhpHN3P/OrkWEKN3ebivtEV8jLJezFDi8dBM9wU4q5QFmeunFf4nFjx7ToAOEwuoWywupYtdz4bfxKd4RXVDKcQnGpjoOGMRw5T+JIt0pQoEv5d2y3Ri5ycsDG5mqEc4F6ApwUrEFlsHpqArmCejbmvt1ceqVM8s3j2QIDAQAB";
+
+
+            // 签名方式
+            public static string sign_type = "RSA2";
+
+            // 编码格式
+            public static string charset = "UTF-8";
         }
     }
 }

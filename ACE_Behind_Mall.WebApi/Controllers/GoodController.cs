@@ -204,8 +204,8 @@ namespace ACE_Behind_Mall.WebApi.Controllers
             try
             {
                 var model = evaluationbll.GetList(x => x.IsDelete == 0 && x.GoodID == goodId).Take(pageSize * page).Skip(pageSize * (page - 1)).Select(x => new {
-                    addTime=x.CreateTime.ToString(),
-                    star=x.Star,
+                    addTime = Convert.ToDateTime(x.CreateTime).ToString("yyyy-MM-dd HH:MM:ss"),
+                    star = x.Star,
                     evaluation = x.Evaluation,
                     account = userbll.GetList(y=>y.ID==x.UserID).FirstOrDefault().Account,
                     image= userbll.GetList(y => y.ID == x.UserID).FirstOrDefault().Image,
