@@ -81,8 +81,12 @@ layui.define(['form', 'upload'], function(exports){
     */
     return false;
   });
-  
-  
+
+    var url = "/AdminUser/GetMyInfo";
+    $.get(url, function (data) {
+        console.log(111)
+        console.log(data)
+    })
   //设置我的资料
   form.on('submit(setmyinfo)', function(obj){
     layer.msg(JSON.stringify(obj.field));

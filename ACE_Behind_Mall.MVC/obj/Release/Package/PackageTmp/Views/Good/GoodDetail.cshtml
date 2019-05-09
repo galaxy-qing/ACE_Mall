@@ -18,6 +18,14 @@
             display: inline-block;
             margin-left: 20px;
         }
+        .img-style {
+            width: 250px;
+            height: 250px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px 1px rgba(0,0,0,.5);
+            margin-left: 10px;
+            margin-top: 10px;
+        }
     </style>
 </head>
 <body>
@@ -39,7 +47,7 @@
                             <div class="layui-form-item">
                                 <label class="layui-form-label">选择商品分类</label>
                                 <div class="layui-input-block">
-                                    <select id="CategoryID" lay-filter="CategoryID">
+                                    <select id="CategoryID" lay-filter="CategoryID" lay-verify="required">
                                         <option value="">请选择</option>
                                         @*<option v-for="(item,index) in Category" :value="item.ID">{{item.Name}}</option>*@
                                     </select>
@@ -48,13 +56,13 @@
                             <div class="layui-form-item">
                                 <label class="layui-form-label">商品名称</label>
                                 <div class="layui-input-block">
-                                    <input type="text" autocomplete="off" name="Name" v-model="Name" class="layui-input">
+                                    <input type="text" autocomplete="off" name="Name" v-model="Name" lay-verify="required" class="layui-input">
                                 </div>
                             </div>
                             <div class="layui-form-item">
                                 <label class="layui-form-label">商品封面图片</label>
                                 <div style="margin-left:120px;">
-                                    <img id="CoverImage" :src="CoverImage" name="CoverImage" style='width: 200px; height: 120px;'>
+                                    <img id="CoverImage" :src="CoverImage" name="CoverImage" class="img-style">
                                     <button type="button" class="layui-btn btnstyle" id="imageUpload1">
                                         <i class="layui-icon">&#xe67c;</i>上传图片
                                     </button>
@@ -63,7 +71,7 @@
                             <div class="layui-form-item">
                                 <label class="layui-form-label">商品详细图片</label>
                                 <div style="display: inline-block">
-                                    <img :src="img" name="DetailImage" v-on:click="removeImg($index)" style="width: 200px; height: 120px;margin-left:10px;margin-top:10px;" v-for="img in DetailImage" />
+                                    <img :src="img" name="DetailImage" v-on:click="removeImg($index)"  class="img-style" v-for="img in DetailImage" />
                                 </div>
                                 <button type="button" class="layui-btn btnstyle" id="imageUpload2">
                                     <i class="layui-icon">&#xe67c;</i>上传图片
@@ -72,7 +80,7 @@
                             <div class="layui-form-item">
                                 <label class="layui-form-label">商品介绍图片</label>
                                 <div style="display: inline-block">
-                                    <img :src="img"  name="InfoImage"  v-on:click="removeImg1($index)" style="width: 200px; height: 120px;margin-left:10px;margin-top:10px;" v-for="img in InfoImage" />
+                                    <img :src="img"  name="InfoImage"  v-on:click="removeImg1($index)"  class="img-style" v-for="img in InfoImage" />
                                 </div>
                                 <button type="button" class="layui-btn btnstyle" id="imageUpload3">
                                     <i class="layui-icon">&#xe67c;</i>上传图片
@@ -108,7 +116,7 @@
                                     <input type="text" autocomplete="off" disabled="disabled" name="CreateTime" v-model="CreateTime" class="layui-input">
                                 </div>
                             </div>
-                            <div class="layui-form-item" pane>
+                            <div class="layui-form-item isShow" pane>
                                 <label class="layui-form-label">是否下架</label>
                                 <div class="layui-input-block">
                                     <input type="radio" name="IsDelete" lay-filter="auditEvent" value="0" title="上架" :checked="true">

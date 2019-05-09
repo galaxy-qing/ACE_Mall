@@ -36,7 +36,7 @@
                             <div class="layui-form-item">
                                 <label class="layui-form-label">用户名</label>
                                 <div class="layui-input-inline">
-                                    <input type="text" name="Account" v-model="Account"  readonly class="layui-input">
+                                    <input type="text" name="Account" v-model="Account" readonly class="layui-input">
                                 </div>
                                 <div class="layui-form-mid layui-word-aux">不可修改。一般用于后台登入名</div>
                             </div>
@@ -49,22 +49,22 @@
                             <div class="layui-form-item" pane>
                                 <label class="layui-form-label">性别</label>
                                 <div class="layui-input-block">
-                                    <input type="radio" name="Sex" lay-filter="auditEvent" value="男" title="男" :checked="true">
-                                    <input type="radio" name="Sex" lay-filter="auditEvent" value="女" title="女" :checked="Sex">
+                                    <input type="radio" name="Sex" value="男" title="男" :checked="true">
+                                    <input type="radio" name="Sex" value="女" title="女" :checked="Sex">
                                 </div>
                             </div>
                             @*<div class="layui-form-item">
-                                <label class="layui-form-label">头像</label>
-                                <div class="layui-input-inline">
-                                    <input name="Image" v-model="ReallyName" lay-verify="required" id="LAY_avatarSrc" placeholder="图片地址" value="http://cdn.layui.com/avatar/168.jpg" class="layui-input">
-                                </div>
-                                <div class="layui-input-inline layui-btn-container" style="width: auto;">
-                                    <button type="button" class="layui-btn layui-btn-primary" id="LAY_avatarUpload">
-                                        <i class="layui-icon">&#xe67c;</i>上传图片
-                                    </button>
-                                    <button class="layui-btn layui-btn-primary" layadmin-event="avartatPreview">查看图片</button>
-                                </div>
-                            </div>*@
+            <label class="layui-form-label">头像</label>
+            <div class="layui-input-inline">
+                <input name="Image" v-model="ReallyName" lay-verify="required" id="LAY_avatarSrc" placeholder="图片地址" value="http://cdn.layui.com/avatar/168.jpg" class="layui-input">
+            </div>
+            <div class="layui-input-inline layui-btn-container" style="width: auto;">
+                <button type="button" class="layui-btn layui-btn-primary" id="LAY_avatarUpload">
+                    <i class="layui-icon">&#xe67c;</i>上传图片
+                </button>
+                <button class="layui-btn layui-btn-primary" layadmin-event="avartatPreview">查看图片</button>
+            </div>
+        </div>*@
                             <div class="layui-form-item">
                                 <label class="layui-form-label">手机</label>
                                 <div class="layui-input-inline">
@@ -100,11 +100,14 @@
     <script src="../../../layuiadmin/layui/layui.js"></script>
 
     <script>
-  layui.config({
-    base: '../../../layuiadmin/' //静态资源所在路径
-  }).extend({
-    index: 'lib/index' //主入口模块
-      }).use(['index', 'set']);
+        layui.config({
+            base: '../../../layuiadmin/' //静态资源所在路径
+        }).extend({
+            index: 'lib/index' //主入口模块
+        }).use(['index', 'setmydata', 'table'], function () {
+            var $ = layui.$
+                , form = layui.form
+        });
     </script>
 </body>
 </html>

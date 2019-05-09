@@ -75,8 +75,11 @@ layui.extend({
                 $('#galaxyqing').html(res.message)
             }
             else {
-                layer.msg(res.message);
-                window.location.href = '/Login/Login'
+                if (window.location.href.search("Login/Forget") == -1) {//如果地址栏不包含忘记密码页面
+                    layer.msg(res.message);
+                    window.location.href = '/Login/Login'
+                }
+                
             }
         }
     });

@@ -63,27 +63,30 @@ layui.define(['table', 'form', 'vue', 'element', 'jquery', 'upload', 'layer'], f
                 return layer.msg('上传失败');
             }
             //上传成功
+            console.log(res);
             //$('#CoverImage').val(res.message);
             vm.$set('_data.CoverImage', res.message )
         }
     });
-    upload.render({
+    var aaa=upload.render({
         elem: '#imageUpload2',
         url: "/Good/UploadImage2",
         choose: function (obj) {
+            console.log(obj)
             //将每次选择的文件追加到文件队列
-            var files = obj.pushFile();
-            obj.preview(function (index, file, result) {
+           // var files = obj.pushFile();
+            //obj.preview(function (index, file, result) {
                 //console.log(index); //得到文件索引
-               //console.log(file.Name); //得到文件对象
+               // console.log(file.Name); //得到文件对象
                // console.log(result); //得到文件base64编码，比如图片
-                vm._data.DetailImage.push(result);
-            });
+               // vm._data.DetailImage.push(result);
+           // });
         }
         , multiple: true
         , done: function (res, index, upload) { //每个文件提交一次触发一次。详见“请求成功的回调”
             //vm.$set('_data.DetailImage', res.message)
-           // console.log(res)
+            vm._data.DetailImage.push(res.message);
+            console.log(res)
         }
     });   
     upload.render({
@@ -92,7 +95,7 @@ layui.define(['table', 'form', 'vue', 'element', 'jquery', 'upload', 'layer'], f
         , choose: function (obj) {
             $("#InfoImage").empty();
             //将每次选择的文件追加到文件队列
-            var files = obj.pushFile();
+            //var files = obj.pushFile();
             obj.preview(function (index, file, result) {
                // console.log(index); //得到文件索引
                // console.log(file.Name); //得到文件对象
@@ -103,7 +106,9 @@ layui.define(['table', 'form', 'vue', 'element', 'jquery', 'upload', 'layer'], f
         }
         , multiple: true
         , done: function (res, index, upload) { //每个文件提交一次触发一次。详见“请求成功的回调”
-            vm.$set('_data.InfoImage', res.message)
+            vm._data.InfoImage.push(res.message);
+           // vm.$set('_data.InfoImage', res.message)
+          
         }
     });   
     $(function () {
@@ -125,16 +130,21 @@ layui.define(['table', 'form', 'vue', 'element', 'jquery', 'upload', 'layer'], f
                             html += "<option  value='" + item.ID + "'>" + item.Name + "</option>"
                         })
                         $("#CategoryID").append(html)
-                        $("#CategoryID")[0].selectedIndex = data.CategoryID;
+                        if (data) {
+                            $("#CategoryID ").val(data.CategoryID); 
+                        }                      
                         form.render('select')
                     }
                 })
-                if (getUrlParam('id') != null) {
+                if (getUrlParam('id')) {
                     vm.$set('$data', data);
                     vm._data.InfoImage = data.InfoImage.split(',');
                     vm._data.DetailImage = data.DetailImage.split(',');
                     form.render();
-                }             
+                }
+                else {
+                    $(".isShow").hide();
+                }
             }
         })
         return false;
@@ -144,13 +154,14 @@ layui.define(['table', 'form', 'vue', 'element', 'jquery', 'upload', 'layer'], f
     }); 
     form.on('submit(formSubmit)',
         function (data) {
+            console.log(vm._data)
             $.ajax({
                 url: '/Good/SubmitGoodInfo',
                 method: 'POST',
                 data: vm._data,
                 success: function (data) {
-                    layer.msg("保存成功")
-                    //window.location.href='/Good/GoodList'
+                    layer.msg("保存成功");
+                    window.location.href = "/Good/GoodList";
                 },
             })
             return false;

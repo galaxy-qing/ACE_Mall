@@ -18,9 +18,15 @@
 *.ssdl
 *.msl
 *.csdl
+*.user
 /packages/
 
 *.diagram
 *.map
 ACE_Behind_Mall.MVC/bin/roslyn/vbc.exe
 *.exe
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+/ACE_Behind_Mall.MVC/Properties/PublishProfiles
+/ACE_Behind_Mall.WebApi/Properties/PublishProfiles
