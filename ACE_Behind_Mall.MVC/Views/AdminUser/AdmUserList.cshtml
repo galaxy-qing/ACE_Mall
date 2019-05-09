@@ -133,11 +133,11 @@
                 <input type="radio" name="Sex" value="女" title="女" :checked="Sex">
             </div>
         </div>
-        <div class="layui-form-item">
+        <div class="layui-form-item" id="CreateTime">
             <label class="layui-form-label">加入时间</label>
             <div class="layui-input-block">
-                <input type="text" name="CreateTime" v-model="CreateTime" required lay-verify="required"
-                       placeholder="加入时间" autocomplete="off" class="layui-input">
+                <input type="text" name="CreateTime" v-model="CreateTime" 
+                       placeholder="加入时间" autocomplete="off" class="layui-input" disabled>
             </div>
         </div>
         <div class="layui-form-item" id="divSubmit">

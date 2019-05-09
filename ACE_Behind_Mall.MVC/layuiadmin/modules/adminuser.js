@@ -84,11 +84,12 @@ layui.define(['table', 'form', 'laydate', 'vue', 'jquery'], function (exports) {
                 btn: ['取消'],
                 content: $('#divDetail'),
                 success: function () {
-                    if (!(update == false && look == false)) {
+                    if (!(update == false && look == false)) { //修改or查看
+                        $("#CreateTime").show();
                         vm.$set('$data', data);
                         vm._data.Birthday = data.Birthday.substr(0, 10);
                     }
-                    if ((update == false && look == false)) {
+                    if ((update == false && look == false)) { //添加
                         vm.$set('$data', {
                             RoleID: '',
                             ReallyName: '',
@@ -96,22 +97,21 @@ layui.define(['table', 'form', 'laydate', 'vue', 'jquery'], function (exports) {
                             Phone: '',
                             Email: '',
                             Birthday: '',
-                            Sex: '',
+                            Sex: '男',
                             CreateTime: '',
                             //IsDelete: '',
                         })
+                        $("#CreateTime").hide();
                     }
                     $.ajax({
                         url: '/Role/GetRoleList',
                         dataType: 'json',
                         success: function (res) {
-                            //alert(JSON.stringify(res))
                             var html = '';
                             res.data.forEach(function (item, index) {
                                 html += "<option  value='" + item.ID + "'>" + item.Name + "</option>"
                             })
                             $("#RoleID").html(html);
-                            alert(JSON.stringify(data.RoleID))
                             $("#RoleID")[0].selectedIndex = data.RoleID;
                             form.render('select')
                         }
