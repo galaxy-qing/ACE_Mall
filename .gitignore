@@ -30,3 +30,4 @@ ACE_Behind_Mall.MVC/bin/roslyn/vbc.exe
 [Ll]og/
 /ACE_Behind_Mall.MVC/Properties/PublishProfiles
 /ACE_Behind_Mall.WebApi/Properties/PublishProfiles  
+*.user
