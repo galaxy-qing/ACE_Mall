@@ -10,10 +10,10 @@
   </PropertyGroup>
   <ItemGroup>
     <File Include="bin/ACE_Behind_Mall.MVC.dll">
-      <publishTime>05/09/2019 18:26:44</publishTime>
+      <publishTime>05/09/2019 18:49:19</publishTime>
     </File>
     <File Include="bin/ACE_Behind_Mall.MVC.pdb">
-      <publishTime>05/09/2019 18:26:44</publishTime>
+      <publishTime>05/09/2019 18:49:19</publishTime>
     </File>
     <File Include="bin/ACE_Mall.BLL.dll">
       <publishTime>05/09/2019 18:25:16</publishTime>
@@ -43,10 +43,10 @@
       <publishTime>05/09/2019 18:25:15</publishTime>
     </File>
     <File Include="bin/App_global.asax.compiled">
-      <publishTime>05/09/2019 18:26:50</publishTime>
+      <publishTime>05/09/2019 18:49:24</publishTime>
     </File>
     <File Include="bin/App_global.asax.dll">
-      <publishTime>05/09/2019 18:26:50</publishTime>
+      <publishTime>05/09/2019 18:49:24</publishTime>
     </File>
     <File Include="bin/EntityFramework.dll">
       <publishTime>03/22/2019 17:00:07</publishTime>
@@ -2272,7 +2272,7 @@
       <publishTime>04/22/2019 20:16:52</publishTime>
     </File>
     <File Include="PrecompiledApp.config">
-      <publishTime>05/09/2019 18:26:46</publishTime>
+      <publishTime>05/09/2019 18:49:21</publishTime>
     </File>
     <File Include="Scripts/bootstrap.bundle.js">
       <publishTime>04/22/2019 20:16:54</publishTime>
