@@ -17,8 +17,16 @@ namespace ACE_Behind_Mall.MVC.Controllers
         protected ModelResponse<dynamic> mr = new ModelResponse<dynamic>();
         RoleBLL rolebll = new RoleBLL();
         AdmUserBLL admuserbll = new AdmUserBLL();
+        ModuleBLL modulebll = new ModuleBLL();
+        PageBLL pagebll = new PageBLL();
+        ViewBetweenBLL vbetweenbll = new ViewBetweenBLL();
+        BetweenBLL betweenbll = new BetweenBLL();
         // GET: Role
         public ActionResult RoleList()
+        {
+            return View();
+        }
+        public ActionResult AssignPower()
         {
             return View();
         }
@@ -93,6 +101,79 @@ namespace ACE_Behind_Mall.MVC.Controllers
             catch (Exception ex)
             {
                 NLogHelper.Logs.Error(ex.Message);
+            }
+            return JsonHelper.Instance.Serialize(mr);
+        }
+        public string GetPageList()
+        {
+            var model = modulebll.GetList(x => true).ToList();
+            List<object> json = new List<object>();
+            foreach (var item in model)
+            {
+                string title = item.Name;
+                string value = "m"+item.ID.ToString();
+                var data = pagebll.GetList(x => x.ModuleID == item.ID).ToList().Select(x => new
+                {
+                   value="p"+x.ID.ToString(),
+                   title=x.Name,
+                   data= new int[] { }
+            });
+                json.Add(new { title, value, data });
+            }
+            mr.data = new { json };
+            mr.total = model.Count();
+            return JsonHelper.Instance.Serialize(mr);
+        }
+        public string SetPower(string roleId, int[] checkPage)
+        {
+            try
+            {
+                var betweenModel = vbetweenbll.GetList(x => x.RoleID == Convert.ToInt32(roleId));
+                if (betweenModel != null)
+                {
+                    foreach (var item in betweenModel)
+                    {
+                        betweenbll.Delete(item.ID);
+                    }
+                }
+                if (checkPage.Length > 0)
+                {
+                    foreach (int item in checkPage)
+                    {
+                        var btnModel = new Adm_Between();
+                        btnModel.IsDelete = 0;
+                        btnModel.PageID = item;
+                        btnModel.RoleID = Convert.ToInt32(roleId);
+                        btnModel.Createtime = DateTime.Now;
+                        betweenbll.Add(btnModel);
+                    }
+                }
+                mr.message = "权限分配成功";
+            }
+            catch (Exception e)
+            {
+                mr.status = 1;
+                mr.message = e.Message;
+            }
+
+            return JsonHelper.Instance.Serialize(mr);
+        }
+        public string GetPowerPageList(string roleId)
+        {
+            try
+            {
+                var betweenModel = vbetweenbll.GetList(x => x.RoleID == Convert.ToInt32(roleId));
+                List<int?> pagemodel = new List<int?>();
+                foreach (var item in betweenModel)
+                {
+                    pagemodel.Add(item.PageID);
+                }
+                mr.data = pagemodel;
+            }
+            catch (Exception e)
+            {
+                mr.status = 1;
+                mr.message = e.Message;
             }
             return JsonHelper.Instance.Serialize(mr);
         }

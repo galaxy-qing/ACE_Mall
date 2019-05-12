@@ -32,6 +32,7 @@ layui.define(['table', 'form', 'vue', 'element', 'jquery'], function (exports) {
             , { field: 'Name', title: '角色名称', align: 'center', edit: 'roleName' }
             , { field: 'Describe', title: '角色描述', align: 'center', edit: 'roleDescribe' }
             , { field: 'CreateTime', title: '创建时间', sort: true, align: 'center' }
+            , { title: '操作', align: 'center', fixed: 'right', toolbar: '#table-system-role' }
         ]]
         , page: true
         , limit: 10
@@ -134,5 +135,41 @@ layui.define(['table', 'form', 'vue', 'element', 'jquery'], function (exports) {
             addlDlg.add();
         }
     };
+    //监听表格内部按钮
+    table.on('tool(roleList)', function (obj) {
+        var data = obj.data;
+        if (obj.event === 'rolePower') {      //为角色分配权限
+            //window.location.href = "/Role/AssignPower?roleId=" + data.ID;
+            var tr = $(obj.tr);
+            layer.open({
+                type: 2
+                , title: '为角色分配权限'
+                , content: "/Role/AssignPower?roleId=" + data.ID
+               // , content: '/Role/AssignPower'
+                , area: ['750px', '750px']
+                , btn: [ '取消']
+                //, yes: function (index, layero) {
+                //    var iframeWindow = window['layui-layer-iframe' + index]
+                //        , submitID = 'LAY-user-back-submit'
+                //        , submit = layero.find('iframe').contents().find('#' + submitID);
+
+                //    //监听提交
+                //    iframeWindow.layui.form.on('submit(' + submitID + ')', function (data) {
+                //        var field = data.field; //获取提交的字段
+
+                //        //提交 Ajax 成功后，静态更新表格中的数据
+                //        //$.ajax({});
+                //        table.reload('LAY-user-front-submit'); //数据刷新
+                //        layer.close(index); //关闭弹层
+                //    });
+
+                //    submit.trigger('click');
+                //}
+                //, success: function (layero, index) {
+
+                //}
+            })
+        }
+    });
     exports('role', {})
 });

@@ -1,0 +1,135 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>AssignPower</title>
+    <link href="~/layuiadmin/layui/css/layui.css" rel="stylesheet" />
+    <style>
+        .tree-style {
+            width: 300px;
+            height: 500px;
+            margin: 20px auto 0 auto;
+        }
+    </style>
+</head>
+<body>
+
+    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+        <legend>为角色分配权限</legend>
+    </fieldset>
+
+    <form class="layui-form" action="">
+        <div id="layui-xtree-demo1" class="tree-style"></div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit lay-filter="formSubmit" id="save" style="margin-left:160px">立即提交</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
+        @*<input type="button" value="获取全部选中的checkbox" id="btn_getCk" />*@
+        @*<button class="layui-btn layuiadmin-btn-admin" id="save" data-type="save" style="margin:10px auto;">保存</button>*@
+    </form>
+
+    <script src="~/layuiadmin/layui/layui.js"></script>
+    <script src="~/layuiadmin/layui/lay/modules/layui-xtree.js"></script>
+    <script type="text/javascript">
+      
+        var json = [];
+        layui.use(['form','jquery'], function () {
+            var form = layui.form,
+                $ = layui.jquery;
+            $.ajax({
+                url: '/Role/GetPageList',
+                dataType: 'json',
+                type: 'get',
+                success: function (res) {
+                    json = res.data.json;
+                    ctree();
+                }
+            });
+            $.ajax({
+                url: '/Role/GetPowerPageList',
+                data: {
+                    roleId: getUrlParam('roleId'),
+                },
+                dataType: 'json',
+                type: 'get',
+                success: function (res) {
+                    var xtreeNode = $('#layui-xtree-demo1').children().find('.layui-xtree-checkbox')
+                    res.data.forEach(function (item) {
+                        $("input[value=p"+item+"]").checked = true;
+                        $("input[value=p" + item + "").next().addClass('layui-form-checked');
+                        // console.log($("input[value=p" + item + "").parent().prev());
+                        console.log($("input[value=p" + item + "").parent().parent().children('input:eq(0)'))
+                        $("input[value=p" + item + "").parent().parent().children('input:eq(0)').checked = true;
+                        $("input[value=p" + item + "").parent().parent().children('input:eq(0)').next().addClass('layui-form-checked');
+                    });
+                    
+                    //console.log($(" input[ type='checkbox' ]").attr("value"))
+                }
+            })
+            //创建tree
+            var xtree
+            function ctree() {
+                xtree = new layuiXtree({
+                    elem: 'layui-xtree-demo1' //放xtree的容器（必填）
+                    ,
+                    form: form //layui form对象 （必填）
+                    ,
+                    data: json //数据，结构请参照下面 （必填）
+                    ,
+                    //isopen: false //初次加载时全部展开，默认true （选填）
+                    //,
+                    color: "#000" //图标颜色 （选填）
+                    ,
+                    icon: { //图标样式 （选填）
+                        open: "&#xe6af;" //节点打开的图标
+                        ,
+                        close: "&#xe69c;" //节点关闭的图标
+                        ,
+                        end: "&#xe664;" //末尾节点的图标
+                    }
+                });
+            }
+            function getUrlParam(name) {
+                var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)')
+                var result = window.location.search.substr(1).match(reg)
+                return result ? decodeURIComponent(result[2]) : null
+            }
+            document.getElementById('save').onclick = function () {
+                var oCks = xtree.GetChecked(); //获取全部选中的末级节点checkbox对象
+                var checkPage = [];
+                for (var i = 0; i < oCks.length; i++) {
+                    checkPage.push(oCks[i].value);
+                }
+                $.ajax({
+                    url: '/Role/SetPower',
+                    data: {
+                        roleId: getUrlParam('roleId'),
+                        checkPage: checkPage
+                    },
+                    dataType: 'json',
+                    type: 'post',
+                    success: function (res) {
+                        if (res.status == 0) {
+                            var index = parent.layer.getFrameIndex(window.name);
+                            parent.layer.close(index);//关闭当前页 
+                        }
+                        else {
+                            layer.msg(res.message);
+                        }
+                    }
+                });
+              
+            }
+        });
+    </script>
+
+</body >
+</html >

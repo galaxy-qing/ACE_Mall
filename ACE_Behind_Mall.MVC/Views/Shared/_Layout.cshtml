@@ -1,4 +1,6 @@
-﻿
+﻿@using ACE_Mall.BLL;
+@using ACE_Mall.Common;
+@using ACE_Mall.Model;
 <!DOCTYPE html>
 <html>
 <head>
@@ -80,58 +82,34 @@
                     <div class="layui-logo" lay-href="/Login/Index">
                         <span>layuiAdmin</span>
                     </div>
-
                     <ul class="layui-nav layui-nav-tree" lay-shrink="all" id="LAY-system-side-menu" lay-filter="layadmin-system-side-menu">
-                        <li data-name="home" class="layui-nav-item layui-nav-itemed">
-                            <a href="javascript:;" lay-tips="主页" lay-direction="2">
-                                <i class="layui-icon layui-icon-home"></i>
-                                <cite>主页</cite>
-                            </a>
-                            <dl class="layui-nav-child">
-                                <dd data-name="console" class="layui-this">
-                                    <a lay-href="/Login/Index">首页</a>
-                                </dd>
-                                <dd data-name="console">
-                                    <a lay-href="/Role/RoleList">角色管理</a>
-                                </dd>
-                                <dd data-name="console">
-                                    <a lay-href="/AdminUser/AdmUserList">员工管理</a>
-                                </dd>
-                                <dd data-name="console">
-                                    <a lay-href="/User/UserList">用户管理</a>
-                                </dd>
-                            </dl>
-                        </li>
-                        <li data-name="goods" class="layui-nav-item">
-                            <a href="javascript:;" lay-tips="商品管理" lay-direction="2">
-                                <i class="layui-icon layui-icon-senior"></i>
-                                <cite>商品管理</cite>
-                            </a>
-                            <dl class="layui-nav-child">
-                                <dd><a lay-href="/Category/CategoryList">商品分类</a></dd>
-                                <dd><a lay-href="/Good/GoodList">商品列表</a></dd>
-                                <dd><a lay-href="/Evaluation/EvaluationList">商品评价</a></dd>
-                            </dl>
-                        </li>
-                        <li data-name="goods" class="layui-nav-item">
-                            <a href="javascript:;" lay-tips="订单管理" lay-direction="2">
-                                <i class="layui-icon layui-icon-senior"></i>
-                                <cite>订单管理</cite>
-                            </a>
-                            <dl class="layui-nav-child">
-                                <dd><a lay-href="/Order/OrderList">订单列表</a></dd>
-                            </dl>
-                        </li>
-                        <li data-name="senior" class="layui-nav-item">
-                            <a href="javascript:;" lay-tips="统计管理" lay-direction="2">
-                                <i class="layui-icon layui-icon-senior"></i>
-                                <cite>统计管理</cite>
-                            </a>
-                            <dl class="layui-nav-child">
-                                <dd><a lay-href="/Statistics/GoodSaleList">商品销售量统计</a></dd>
-                                <dd><a lay-href="/Statistics/SaleMoneyList">商品销售额统计</a></dd>
-                            </dl>
-                        </li>
+
+                        @{
+                            ViewBetweenBLL betweenbll = new ViewBetweenBLL();
+                            AdmUserBLL userbll = new AdmUserBLL();
+                            var betweenmodel = betweenbll.GetList(x =>x.UserID==Convert.ToInt32(Session["UserID"])).Distinct(new DistinctHelper<View_Between>((x, y) => x.ModuleID == y.ModuleID)).ToList();
+                            foreach (var item in betweenmodel)
+                            {
+                                <li data-name="home" class="layui-nav-item">
+                                    <a href="javascript:;" lay-tips="@item.ModuleName" lay-direction="@item.ModuleID">
+                                        <i class="layui-icon layui-icon-home"></i>
+                                        <cite>@item.ModuleName</cite>
+                                    </a>
+                                    <dl class="layui-nav-child">
+                                        @{
+                                            var pagemodel = betweenbll.GetList(x => x.ModuleID == item.ModuleID&&x.UserID== Convert.ToInt32(Session["UserID"]));
+                                            foreach (var pageitem in pagemodel)
+                                            {
+                                                <dd data-name="console">
+                                                    <a lay-href="@pageitem.Url">@pageitem.PageName</a>
+                                                </dd>
+                                            }
+                                        }
+                                    </dl>
+                                </li>
+                            }
+                        }
+
                     </ul>
                 </div>
             </div>
@@ -170,15 +148,15 @@
     </div>
     <script src="~/layuiadmin/layui/layui.js"></script>
     <script>
-        
+
     </script>
     <script>
-            layui.config({
-                base: '../layuiadmin/' //静态资源所在路径
-            }).extend({
-                index: 'lib/index' //主入口模块
-            }).use('index');
-        </script>
+        layui.config({
+            base: '../layuiadmin/' //静态资源所在路径
+        }).extend({
+            index: 'lib/index' //主入口模块
+        }).use('index');
+    </script>
 </body>
 </html>
 
