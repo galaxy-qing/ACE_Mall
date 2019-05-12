@@ -112,7 +112,6 @@ layui.define(['table', 'form'], function(exports){
       }, function(value, index){
         layer.close(index);
         layer.confirm('确定删除此管理员？', function(index){
-          console.log(obj)
           obj.del();
           layer.close(index);
         });

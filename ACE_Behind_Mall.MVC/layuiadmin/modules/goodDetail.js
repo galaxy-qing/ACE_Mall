@@ -63,7 +63,6 @@ layui.define(['table', 'form', 'vue', 'element', 'jquery', 'upload', 'layer'], f
                 return layer.msg('上传失败');
             }
             //上传成功
-            console.log(res);
             //$('#CoverImage').val(res.message);
             vm.$set('_data.CoverImage', res.message )
         }
@@ -72,7 +71,6 @@ layui.define(['table', 'form', 'vue', 'element', 'jquery', 'upload', 'layer'], f
         elem: '#imageUpload2',
         url: "/Good/UploadImage2",
         choose: function (obj) {
-            console.log(obj)
             //将每次选择的文件追加到文件队列
            // var files = obj.pushFile();
             //obj.preview(function (index, file, result) {
@@ -86,7 +84,6 @@ layui.define(['table', 'form', 'vue', 'element', 'jquery', 'upload', 'layer'], f
         , done: function (res, index, upload) { //每个文件提交一次触发一次。详见“请求成功的回调”
             //vm.$set('_data.DetailImage', res.message)
             vm._data.DetailImage.push(res.message);
-            console.log(res)
         }
     });   
     upload.render({
@@ -154,7 +151,6 @@ layui.define(['table', 'form', 'vue', 'element', 'jquery', 'upload', 'layer'], f
     }); 
     form.on('submit(formSubmit)',
         function (data) {
-            console.log(vm._data)
             $.ajax({
                 url: '/Good/SubmitGoodInfo',
                 method: 'POST',

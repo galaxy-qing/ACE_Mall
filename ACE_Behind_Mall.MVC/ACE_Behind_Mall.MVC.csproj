@@ -611,6 +611,7 @@
     <Content Include="layuiadmin\lib\index.js" />
     <Content Include="layuiadmin\lib\view.js" />
     <Content Include="layuiadmin\modules\adminuser.js" />
+    <Content Include="layuiadmin\layui\lay\modules\layui-xtree.js" />
     <Content Include="layuiadmin\modules\malluser.js" />
     <Content Include="layuiadmin\modules\role.js" />
     <Content Include="layuiadmin\modules\common.js" />
@@ -757,6 +758,7 @@
     <Content Include="Views\AdminUser\SetPassword.cshtml" />
     <Content Include="Views\AdminUser\SetUserInfo.cshtml" />
     <Content Include="Views\Statistics\SaleMoneyList.cshtml" />
+    <Content Include="Views\Role\AssignPower.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

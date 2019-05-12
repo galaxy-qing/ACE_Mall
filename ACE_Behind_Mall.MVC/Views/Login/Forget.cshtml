@@ -112,8 +112,6 @@
             //找回密码下一步
             form.on('submit(LAY-user-forget-submit)', function (obj) {
                 var field = obj.field;
-                console.log(field)
-                debugger
                 //请求接口
                 $.ajax({
                     url: '/Login/VerifyCode',

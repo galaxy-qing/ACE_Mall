@@ -51,7 +51,6 @@ layui.use(['laypage', 'layer', 'form', 'jquery', 'vue', 'element'], function () 
             $.post(url,
                 { goodName: $("#inputReload").val() },
                 function (data) {
-                    console.log('-----');
                     layer.close(index); //如果设定了yes回调，需进行手工关闭
                     window.location.reload();//刷新当前页面.
                 }, "json");

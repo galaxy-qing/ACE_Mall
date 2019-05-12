@@ -90,7 +90,11 @@ layui.config({
             $('.loginbox').css({ 'position': 'absolute', 'left': ($(window).width() - 692) / 2 });
         })
     });
-
+    $('input').on('keydown', function (event) {
+        if (event.keyCode == 13) {
+            $("#login").click();
+        }
+    });
     //登录按钮事件
     form.on("submit(login)", function (data) {
         $.getJSON("/Login/LoginIndex"

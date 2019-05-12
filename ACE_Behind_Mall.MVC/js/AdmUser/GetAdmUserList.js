@@ -23,7 +23,6 @@
     var $ = layui.$, active = {
         reload: function () {
             var inputReload = $('#inputReload');
-            console.log(inputReload.val());
             //执行重载
             tableIns.reload({
                 page: {
@@ -55,7 +54,6 @@
                 btn: ['取消'],
                 content: $('#divDetail'),
                 success: function () {
-                    //alert(JSON.stringify(data));
                     vm.$set('$data', data);
                     $.ajax({
                         url: '/AdminUser/GetRoleList',
@@ -85,8 +83,6 @@
             if (update) {
                 url = "/AdminUser/Update";
             }
-            //var url = "/AdminUser/Update";
-            //alert(url);
             //提交数据
             form.on('submit(formSubmit)',
                 function (data) {
@@ -140,7 +136,6 @@
         }
     });
     form.on('select(RoleID)', function (data) {
-        console.log(data.value); //得到被选中的值
         $.post("AdminUser/GetRoleList" + data.value, function (res) {
             if (res.success) {
                 layer.msg(res.message);
@@ -159,7 +154,6 @@
             if (data.length >1) {
                 return layer.msg('一次只能删除一条数据');
             }
-            alert(JSON.stringify(checkData));
             layer.confirm('确定离职该员工吗？', function (index) {
                 var url = "/AdminUser/Delete";
                 $.post(url,data[0], function (data) {
