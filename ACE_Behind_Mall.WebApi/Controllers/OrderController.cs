@@ -389,7 +389,7 @@ namespace ACE_Behind_Mall.WebApi.Controllers
                 try
                 {
                     var ordermodel = orderbll.GetList(x => x.IsDelete == 0 && x.OrderNo == model.orderNo).FirstOrDefault();
-                    if (ordermodel.OrderState == 6)
+                    if (ordermodel.OrderState >=5)
                     {
                         ordermodel.IsDelete = 1;
                         My_Order m = orderbll.GetUpdateModel<My_Order>(ordermodel, "ID");
