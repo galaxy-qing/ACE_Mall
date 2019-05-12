@@ -67,6 +67,7 @@
     <Compile Include="App_Code\aliPayConfig.cs" />
     <Compile Include="CacheHelper.cs" />
     <Compile Include="ConvertHelper.cs" />
+    <Compile Include="DistinctHelper.cs" />
     <Compile Include="FileHelper.cs" />
     <Compile Include="GetEnum.cs" />
     <Compile Include="GetModelHelper.cs" />
