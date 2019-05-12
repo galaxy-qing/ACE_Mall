@@ -30,18 +30,20 @@ namespace ACE_Mall.Model
         public virtual DbSet<Adm_Log> Adm_Log { get; set; }
         public virtual DbSet<Adm_User> Adm_User { get; set; }
         public virtual DbSet<Adm_User_Role> Adm_User_Role { get; set; }
-        public virtual DbSet<Mall_Answer> Mall_Answer { get; set; }
         public virtual DbSet<Mall_Category> Mall_Category { get; set; }
         public virtual DbSet<Mall_Good> Mall_Good { get; set; }
         public virtual DbSet<Mall_Good_Evaluation> Mall_Good_Evaluation { get; set; }
         public virtual DbSet<Mall_Good_Specification> Mall_Good_Specification { get; set; }
-        public virtual DbSet<Mall_Question> Mall_Question { get; set; }
         public virtual DbSet<Mall_Rotation> Mall_Rotation { get; set; }
         public virtual DbSet<My_Data> My_Data { get; set; }
         public virtual DbSet<My_Order> My_Order { get; set; }
         public virtual DbSet<My_Order_Good> My_Order_Good { get; set; }
         public virtual DbSet<My_Shopcart> My_Shopcart { get; set; }
         public virtual DbSet<View_Category_Good_Order> View_Category_Good_Order { get; set; }
+        public virtual DbSet<Adm_Between> Adm_Between { get; set; }
+        public virtual DbSet<Adm_Module> Adm_Module { get; set; }
+        public virtual DbSet<Adm_Page> Adm_Page { get; set; }
+        public virtual DbSet<View_Between> View_Between { get; set; }
     
         public virtual int AutoCancelOrder()
         {

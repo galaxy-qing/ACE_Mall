@@ -12,13 +12,14 @@ namespace ACE_Mall.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class Mall_Answer
+    public partial class Adm_Page
     {
         public int ID { get; set; }
-        public Nullable<int> UserID { get; set; }
-        public Nullable<int> QuestionID { get; set; }
-        public string Answer { get; set; }
-        public System.DateTime CreateTime { get; set; }
+        public int ModuleID { get; set; }
+        public string Name { get; set; }
+        public string Url { get; set; }
+        public string Icon { get; set; }
+        public Nullable<System.DateTime> CreateTime { get; set; }
         public int IsDelete { get; set; }
     }
 }

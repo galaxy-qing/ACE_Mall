@@ -5,6 +5,16 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Adm_Between">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RoleID" Type="int" />
+          <Property Name="PageID" Type="int" />
+          <Property Name="Createtime" Type="datetime" />
+          <Property Name="IsDelete" Type="int" Nullable="false" />
+        </EntityType>
         <EntityType Name="Adm_Log">
           <Key>
             <PropertyRef Name="ID" />
@@ -16,6 +26,28 @@
           <Property Name="OpType" Type="varchar" MaxLength="50" />
           <Property Name="OpContent" Type="varchar" MaxLength="50" />
           <Property Name="CreateTime" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Adm_Module">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" />
+          <Property Name="Icon" Type="varchar" MaxLength="50" />
+          <Property Name="CreateTime" Type="datetime" />
+          <Property Name="IsDelete" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Adm_Page">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ModuleID" Type="int" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" />
+          <Property Name="Url" Type="varchar" MaxLength="500" />
+          <Property Name="Icon" Type="varchar" MaxLength="50" />
+          <Property Name="CreateTime" Type="datetime" />
+          <Property Name="IsDelete" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Adm_User">
           <Key>
@@ -42,17 +74,6 @@
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="varchar" MaxLength="50" />
           <Property Name="Describe" Type="varchar" MaxLength="200" />
-          <Property Name="CreateTime" Type="datetime" Nullable="false" />
-          <Property Name="IsDelete" Type="int" Nullable="false" />
-        </EntityType>
-        <EntityType Name="Mall_Answer">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="UserID" Type="int" />
-          <Property Name="QuestionID" Type="int" />
-          <Property Name="Answer" Type="varchar" MaxLength="500" />
           <Property Name="CreateTime" Type="datetime" Nullable="false" />
           <Property Name="IsDelete" Type="int" Nullable="false" />
         </EntityType>
@@ -103,16 +124,6 @@
           <Property Name="GoodID" Type="int" Nullable="false" />
           <Property Name="Name" Type="varchar" MaxLength="50" />
           <Property Name="Price" Type="decimal" Precision="18" Scale="2" />
-          <Property Name="CreateTime" Type="datetime" Nullable="false" />
-          <Property Name="IsDelete" Type="int" Nullable="false" />
-        </EntityType>
-        <EntityType Name="Mall_Question">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="UserID" Type="int" />
-          <Property Name="Question" Type="varchar" MaxLength="500" />
           <Property Name="CreateTime" Type="datetime" Nullable="false" />
           <Property Name="IsDelete" Type="int" Nullable="false" />
         </EntityType>
@@ -189,6 +200,28 @@
           <Property Name="IsDelete" Type="int" Nullable="false" />
         </EntityType>
         <!--生成过程中发现错误:
+警告 6002: 表/视图“ACE_Mall.dbo.View_Between”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
+        <EntityType Name="View_Between">
+          <Key>
+            <PropertyRef Name="IsDelete" />
+            <PropertyRef Name="ModuleID" />
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="Name" Type="varchar" MaxLength="50" />
+          <Property Name="IsDelete" Type="int" Nullable="false" />
+          <Property Name="RoleID" Type="int" />
+          <Property Name="PageID" Type="int" />
+          <Property Name="ModuleID" Type="int" Nullable="false" />
+          <Property Name="PageName" Type="varchar" MaxLength="50" />
+          <Property Name="Url" Type="varchar" MaxLength="500" />
+          <Property Name="PageIcon" Type="varchar" MaxLength="50" />
+          <Property Name="ModuleName" Type="varchar" MaxLength="50" />
+          <Property Name="ModuleIcon" Type="varchar" MaxLength="50" />
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="UserID" Type="int" Nullable="false" />
+        </EntityType>
+        <!--生成过程中发现错误:
 警告 6002: 表/视图“ACE_Mall.dbo.View_Category_Good_Order”未定义主键。已推断出该键，并将定义创建为只读的表/视图。-->
         <EntityType Name="View_Category_Good_Order">
           <Key>
@@ -212,20 +245,37 @@
         </EntityType>
         <Function Name="AutoCancelOrder" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <EntityContainer Name="StoreContainer">
+          <EntitySet Name="Adm_Between" EntityType="Self.Adm_Between" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Adm_Log" EntityType="Self.Adm_Log" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Adm_Module" EntityType="Self.Adm_Module" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Adm_Page" EntityType="Self.Adm_Page" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Adm_User" EntityType="Self.Adm_User" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Adm_User_Role" EntityType="Self.Adm_User_Role" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Mall_Answer" EntityType="Self.Mall_Answer" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Mall_Category" EntityType="Self.Mall_Category" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Mall_Good" EntityType="Self.Mall_Good" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Mall_Good_Evaluation" EntityType="Self.Mall_Good_Evaluation" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Mall_Good_Specification" EntityType="Self.Mall_Good_Specification" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Mall_Question" EntityType="Self.Mall_Question" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Mall_Rotation" EntityType="Self.Mall_Rotation" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="My_Data" EntityType="Self.My_Data" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="My_Order" EntityType="Self.My_Order" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="My_Order_Good" EntityType="Self.My_Order_Good" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="My_Shopcart" EntityType="Self.My_Shopcart" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="View_Between" EntityType="Self.View_Between" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [View_Between].[Name] AS [Name], 
+    [View_Between].[IsDelete] AS [IsDelete], 
+    [View_Between].[RoleID] AS [RoleID], 
+    [View_Between].[PageID] AS [PageID], 
+    [View_Between].[ModuleID] AS [ModuleID], 
+    [View_Between].[PageName] AS [PageName], 
+    [View_Between].[Url] AS [Url], 
+    [View_Between].[PageIcon] AS [PageIcon], 
+    [View_Between].[ModuleName] AS [ModuleName], 
+    [View_Between].[ModuleIcon] AS [ModuleIcon], 
+    [View_Between].[ID] AS [ID], 
+    [View_Between].[UserID] AS [UserID]
+    FROM [dbo].[View_Between] AS [View_Between]</DefiningQuery>
+          </EntitySet>
           <EntitySet Name="View_Category_Good_Order" EntityType="Self.View_Category_Good_Order" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [View_Category_Good_Order].[Name] AS [Name], 
@@ -249,18 +299,20 @@
           <EntitySet Name="Adm_Log" EntityType="ACE_MallModel.Adm_Log" />
           <EntitySet Name="Adm_User" EntityType="ACE_MallModel.Adm_User" />
           <EntitySet Name="Adm_User_Role" EntityType="ACE_MallModel.Adm_User_Role" />
-          <EntitySet Name="Mall_Answer" EntityType="ACE_MallModel.Mall_Answer" />
           <EntitySet Name="Mall_Category" EntityType="ACE_MallModel.Mall_Category" />
           <EntitySet Name="Mall_Good" EntityType="ACE_MallModel.Mall_Good" />
           <EntitySet Name="Mall_Good_Evaluation" EntityType="ACE_MallModel.Mall_Good_Evaluation" />
           <EntitySet Name="Mall_Good_Specification" EntityType="ACE_MallModel.Mall_Good_Specification" />
-          <EntitySet Name="Mall_Question" EntityType="ACE_MallModel.Mall_Question" />
           <EntitySet Name="Mall_Rotation" EntityType="ACE_MallModel.Mall_Rotation" />
           <EntitySet Name="My_Data" EntityType="ACE_MallModel.My_Data" />
           <EntitySet Name="My_Order" EntityType="ACE_MallModel.My_Order" />
           <EntitySet Name="My_Order_Good" EntityType="ACE_MallModel.My_Order_Good" />
           <EntitySet Name="My_Shopcart" EntityType="ACE_MallModel.My_Shopcart" />
           <EntitySet Name="View_Category_Good_Order" EntityType="ACE_MallModel.View_Category_Good_Order" />
+          <EntitySet Name="Adm_Between" EntityType="ACE_MallModel.Adm_Between" />
+          <EntitySet Name="Adm_Module" EntityType="ACE_MallModel.Adm_Module" />
+          <EntitySet Name="Adm_Page" EntityType="ACE_MallModel.Adm_Page" />
+          <EntitySet Name="View_Between" EntityType="ACE_MallModel.View_Between" />
           </EntityContainer>
         <EntityType Name="Adm_Log">
           <Key>
@@ -299,17 +351,6 @@
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Describe" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
-          <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="IsDelete" Type="Int32" Nullable="false" />
-        </EntityType>
-        <EntityType Name="Mall_Answer">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="UserID" Type="Int32" />
-          <Property Name="QuestionID" Type="Int32" />
-          <Property Name="Answer" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="IsDelete" Type="Int32" Nullable="false" />
         </EntityType>
@@ -360,16 +401,6 @@
           <Property Name="GoodID" Type="Int32" Nullable="false" />
           <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Price" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="IsDelete" Type="Int32" Nullable="false" />
-        </EntityType>
-        <EntityType Name="Mall_Question">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="UserID" Type="Int32" />
-          <Property Name="Question" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="IsDelete" Type="Int32" Nullable="false" />
         </EntityType>
@@ -465,6 +496,58 @@
           <Property Name="GoodDelete" Type="Int32" Nullable="false" />
           <Property Name="PresentPrice" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
         </EntityType>
+        <EntityType Name="Adm_Between">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RoleID" Type="Int32" />
+          <Property Name="PageID" Type="Int32" />
+          <Property Name="Createtime" Type="DateTime" Precision="3" />
+          <Property Name="IsDelete" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Adm_Module">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Icon" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CreateTime" Type="DateTime" Precision="3" />
+          <Property Name="IsDelete" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Adm_Page">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ModuleID" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Url" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="Icon" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CreateTime" Type="DateTime" Precision="3" />
+          <Property Name="IsDelete" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="View_Between">
+          <Key>
+            <PropertyRef Name="IsDelete" />
+            <PropertyRef Name="ModuleID" />
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="IsDelete" Type="Int32" Nullable="false" />
+          <Property Name="RoleID" Type="Int32" />
+          <Property Name="PageID" Type="Int32" />
+          <Property Name="ModuleID" Type="Int32" Nullable="false" />
+          <Property Name="PageName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Url" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="PageIcon" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ModuleName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ModuleIcon" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -511,18 +594,6 @@
                 <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
                 <ScalarProperty Name="Describe" ColumnName="Describe" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Mall_Answer">
-            <EntityTypeMapping TypeName="ACE_MallModel.Mall_Answer">
-              <MappingFragment StoreEntitySet="Mall_Answer">
-                <ScalarProperty Name="IsDelete" ColumnName="IsDelete" />
-                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
-                <ScalarProperty Name="Answer" ColumnName="Answer" />
-                <ScalarProperty Name="QuestionID" ColumnName="QuestionID" />
-                <ScalarProperty Name="UserID" ColumnName="UserID" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -577,17 +648,6 @@
                 <ScalarProperty Name="Price" ColumnName="Price" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="GoodID" ColumnName="GoodID" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Mall_Question">
-            <EntityTypeMapping TypeName="ACE_MallModel.Mall_Question">
-              <MappingFragment StoreEntitySet="Mall_Question">
-                <ScalarProperty Name="IsDelete" ColumnName="IsDelete" />
-                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
-                <ScalarProperty Name="Question" ColumnName="Question" />
-                <ScalarProperty Name="UserID" ColumnName="UserID" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -680,6 +740,59 @@
                 <ScalarProperty Name="GoodID" ColumnName="GoodID" />
                 <ScalarProperty Name="CategoryID" ColumnName="CategoryID" />
                 <ScalarProperty Name="CategoryDelete" ColumnName="CategoryDelete" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Adm_Between">
+            <EntityTypeMapping TypeName="ACE_MallModel.Adm_Between">
+              <MappingFragment StoreEntitySet="Adm_Between">
+                <ScalarProperty Name="IsDelete" ColumnName="IsDelete" />
+                <ScalarProperty Name="Createtime" ColumnName="Createtime" />
+                <ScalarProperty Name="PageID" ColumnName="PageID" />
+                <ScalarProperty Name="RoleID" ColumnName="RoleID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Adm_Module">
+            <EntityTypeMapping TypeName="ACE_MallModel.Adm_Module">
+              <MappingFragment StoreEntitySet="Adm_Module">
+                <ScalarProperty Name="IsDelete" ColumnName="IsDelete" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="Icon" ColumnName="Icon" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Adm_Page">
+            <EntityTypeMapping TypeName="ACE_MallModel.Adm_Page">
+              <MappingFragment StoreEntitySet="Adm_Page">
+                <ScalarProperty Name="IsDelete" ColumnName="IsDelete" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="Icon" ColumnName="Icon" />
+                <ScalarProperty Name="Url" ColumnName="Url" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ModuleID" ColumnName="ModuleID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="View_Between">
+            <EntityTypeMapping TypeName="ACE_MallModel.View_Between">
+              <MappingFragment StoreEntitySet="View_Between">
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="ModuleIcon" ColumnName="ModuleIcon" />
+                <ScalarProperty Name="ModuleName" ColumnName="ModuleName" />
+                <ScalarProperty Name="PageIcon" ColumnName="PageIcon" />
+                <ScalarProperty Name="Url" ColumnName="Url" />
+                <ScalarProperty Name="PageName" ColumnName="PageName" />
+                <ScalarProperty Name="ModuleID" ColumnName="ModuleID" />
+                <ScalarProperty Name="PageID" ColumnName="PageID" />
+                <ScalarProperty Name="RoleID" ColumnName="RoleID" />
+                <ScalarProperty Name="IsDelete" ColumnName="IsDelete" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
               </MappingFragment>
             </EntityTypeMapping>
