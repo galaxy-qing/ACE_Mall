@@ -76,41 +76,46 @@ namespace ACE_Behind_Mall.WebApi.Controllers
                 }
                 mr.message = "提交订单成功";
 
-                //DefaultAopClient client = new DefaultAopClient(config.gatewayUrl, config.app_id, config.private_key, "json", "1.0", config.sign_type, config.alipay_public_key, config.charset, false);
-                //IAopClient client = new DefaultAopClient(config.gatewayUrl, config.app_id, config.private_key, "json", "1.0", config.sign_type, config.alipay_public_key, config.charset, false);
+                DefaultAopClient client = new DefaultAopClient(config.gatewayUrl, config.app_id, config.private_key, "json", "1.0", config.sign_type, config.alipay_public_key, config.charset, false);
 
-                //外部订单号，商户网站订单系统中唯一的订单号
-                //string out_trade_no = "2019581723241";
+                // 外部订单号，商户网站订单系统中唯一的订单号
+                string out_trade_no = myorder.OrderNo;
 
-                //订单名称
-                //string subject = "测试";
+                // 订单名称
+                string subject = "ACE货物购买";
 
-                //付款金额
-                //string total_amount = "0.01";
+                // 付款金额
+                string total_amout = model.payMoney.ToString();
 
-                //商品描述
-                //string body = "111";
-                //string store_id = "";
-                //string timeout_express = "";
-                //实例化具体API对应的request类,类名称和接口名称对应,当前调用接口名称如：
-                //AlipayTradePrecreateRequest request = new AlipayTradePrecreateRequest();//创建API对应的request类
+                // 商品描述
+                string body = model.note;
 
+                // 组装业务参数model
+                AlipayTradePagePayModel paymodel = new AlipayTradePagePayModel();
+                paymodel.Body = body;
+                paymodel.Subject = subject;
+                paymodel.TotalAmount = total_amout;
+                paymodel.OutTradeNo = out_trade_no;
+                paymodel.ProductCode = "FAST_INSTANT_TRADE_PAY";
 
-                //SDK已经封装掉了公共参数，这里只需要传入业务参数
+                AlipayTradePagePayRequest request = new AlipayTradePagePayRequest();
+                // 设置同步回调地址
+                request.SetReturnUrl("http://192.168.0.198:8088/dist/view/order.html?type=2");
+                // 设置异步通知接收地址
+                request.SetNotifyUrl("http://192.168.0.144:60391/Notify_url.aspx");
+                // 将业务model载入到request
+                request.SetBizModel(paymodel);
 
-
-                //request.BizContent = AliPayInfo(out_trade_no, total_amount, subject);
-                //AlipayTradePrecreateResponse response = client.Execute(request);
-                //if (response.IsError == true)
-                //{
-
-                //    mr.message = "失败";
-                //}
-                //if (response.IsError == false)
-                //{
-                //    mr.message = "成功";
-                //}
-                 mr.data = new { orderNo = myorder, payMoney = myorder.PayMoney };
+                AlipayTradePagePayResponse response = null;
+                try
+                {
+                    response = client.pageExecute(request, null, "post");
+                    mr.data = response.Body;
+                }
+                catch (Exception exp)
+                {
+                    throw exp;
+                }
             }
             catch (Exception e)
             {
@@ -411,7 +416,6 @@ namespace ACE_Behind_Mall.WebApi.Controllers
             }
             return mr;
         }
-        
         public class config
         {
             public config()
@@ -421,17 +425,17 @@ namespace ACE_Behind_Mall.WebApi.Controllers
                 //
             }
             // 应用ID,您的APPID
-            public static string app_id = "2019033163690973";
+            public static string app_id = "2016092700604341";
 
             // 支付宝网关
-            public static string gatewayUrl = "https://openapi.alipaydev.com/gateway.do ";
-            //
+            public static string gatewayUrl = "https://openapi.alipaydev.com/gateway.do";
+
             // 商户私钥，您的原始格式RSA私钥
-            public static string private_key = "MIIEpAIBAAKCAQEAokUan80Z5Cdixf0IH3fAfC5SAk6PwNl5qRXFYoZvjGFQRNdINeit7hjntpbnHDZiPdvQ8aCdVFi5zr6j6Yb7dmo5nRmwU58gxG4B/hBsQvfLuvssb5DkVFFR0qCtWFaxKbn3ZiaGMvYdAE3LibhihpsSZfWdRn9N5yll2ZQYNK7MXYAq4/syeJyw0yixjFYmgtee56BvVB7FdYUKyPLmVHdnarmoVMx0TehDQIklpY6HvK/FRsO353jmywodz3fVI0mbplTtkPSHhKheyLmqrh/eUsh6t9LHML7gSJQJ8GxhIpTuZkSRyzu2AjN/MrHqoAAlTqWfuYXkAHAG4p6b7wIDAQABAoIBAFVbmHe7AgWcGj8frSgwbBZmn0kLXl8Jhw/EngIHyaHEht7Ph/KjpOp8O1c25fdXPDJh8PVJkbkOux7f9YUgNiLCGfBj1PcH28q4O2AT738Cri57dZJyW0lnRW1QjB7N63+RjWw0k583C2ZfhdO6JEm+RN1RaBvvV2Fjy2m6l0kOW5AFEdH0uhzpFbv8HqXJ0WBTr4Dfyu98LZdCV/9928dJXmNBXJeGUHXOLhYnuYLk7uE1QO5lFu44yFys3YoPXnKL/Orv/m/Mca0zsJkZUz9U4Dm7u4scpXvhyYOgg6C1lgXKzfOmrLpUdL8VtsLIolYPE8AGVOyvY85uSxRp09ECgYEAzOuI403XLB/2tx0BNTkU8LJp5KC14XDKNAcPcPY7OpZ68BziD5IleRPkXRIbp1VBWRSPYkVjoU4iYvNEJiFaDPkm9oWLcufSM/1eGn/vGf2a5JLGhHR+vdXwLX8DIoUMfim7FtEQODjq+3K+dkmHAbHwlOwj+ZIM3wbmpmPkR4MCgYEAyrf1KDJzmZ6AjxzH9FA4tNNRHArFkyLUCGnIFAohZ/M8cyuvWXw3639prdxnHBCKHumuZfp0SqyluuM3BIFU3QRg/yrhJIWd8QTw2H/Jt1BpptAuemSYRqiuQHKrCKYLfk+2e2EwXeaa72Bu24y/4TOs57R81HvygNcBaZ+lwiUCgYA3UBSBFo/QL0iPINsknKXUWrROrDqsAZ/y7zzxxuUx6VCB46n5ff9zcTUhEjQ4tMCQ5QXXBtffwJFzmCp7CGGgQtiLjnyXpY+NzQRLruDBaT0YGa5QLonPgCH2heQ4uyUmIOmJPSFdq69x9AUJNMumX3uLFzqWsR+cS+aSX0BNNQKBgQC9jpq9xb927FHGgOEwwTrlS5xSnnf1h+HBJDklE/v82eOyxiynfpJDsda97pS0F3swQM8FKNdJZHtscD7oBY+3Q/r3X787iX4Q+8/Cgmu68IR6qbxsUlhZ6i1WsmLgKXQh3qQCZvT1OUezgvbmcYyTJuENoSYBAw3WEDaP7+rtyQKBgQDJMS64/AHVvD8oi9DXVFXHQ3m4oYeYGFF4qW0UIBQ3ol6y+XgSlfybWzpScCF1QHu/Bp0NWdhJhvDTQx5XNDladNfo0tShptCwsLQL2WLFl2EGUuGfLSiWRFcENXFYHAqhWfzokEyMbaUj17MTgjQRIcm43JLgdArUhp7V+IxHdg==";
+            public static string private_key = "MIIEpAIBAAKCAQEAtaWn9+3hgjIJLisH6W6fXk0PLuzFOffFdTZCfNFzwRMPu0ngXN7bNaXSOP55nPizsDvnjOTQPgGlEQj5q2G/6hfvHcSukLWR4Gp8wTgHzZAa8Us7w+sr49XK2PyursU8vwC3zc2JOLytH9mVGg8ky5b5uZYJpiZAM93NEFn0qKQObDrPuKi6S4roee7DrD4TglU20y2QbDJV9QUO/h2khz40N1ivkb/Ssz2/6gegCO1B+qbDqtfn/yMpqIpGLh3ex5TiRUi0o7bE65aI8cy403CXB088T47d/ivemj719+PMDoz4j4DyrZuytJAcKyalejFy/dTf7xfzE3nBrCubLwIDAQABAoIBAErjR/OcPAucK1LAZNulQsjzBh53ePxkHSEsxI6HH6zq+eJiG8DOFBvzCE99ApBnrFUs7VKWBxB5Rx9VzvEMNL4DLg7cxodchA68eECEpBronWL7fGFSdF7TBnUc/7uID3pDhoOviDI+/zURVDpRIf9ZeA0+QS4huPhpKiDipU5c2lN80VQb4Mx/CPzILHgVlUA9Haw7cVQdaMS4g9EDapvSe840awtqI0623tLzWlVVRFO1kf0OcYaqrZXnNPrUwz7c4wbqP88s//+Vlj4rt5yXq31iIpNOAtnpx8Hf5GLf3oY1ixSSentK2/tI9FCYMseDsfMYvrYls1jtSmazBckCgYEA6FmYe6Efrf0HBPIOA/u9+mgtMBCqohGFqPkXrocz6B0Es1XgyJGpjNR1t41YItFaGBKeBMF28Sq238Ga+TwN3c6JUgS++ltpqsjAassG3h82fIKNnOBdywFFfinWOrI4xIB8JL/dFqdXPTjB8XYHsEnasOq43G5vWHxEh+3ow7sCgYEAyCLhzVA7DWIewm/eAhiSPTjLX39kCbF3Xxv/LzMvUpamsdl6nodxRYyrw6Ipor/zG9/ZUVRYZySnXwjur5GLhragHsFTl1hCMechSuc+n1KJ+bnKWXfYmzoZ6dFUjqN08/XVUDbc5bgpzb1502ks6R7hvWCKXmBkmTOOJMGv3R0CgYEAln7Z7lHZpCd88W4bN+dKETSC+FwDOcBhs6XL+gamz1RkZAhe9WqryIUgzkgl6z9wvKDqaygoc2L4WowbZg3I6X9KoK5kSOMG2VD4mPNyOlM7RoCFWzRUbBYhves5UIF5lYWnY2JGwNKZBhWKQWzy4/OiS+9s15JMWqL6/JRTrNsCgYBRC2cbCFFRgxlnrXtep+qYZiZdHq45CqeHWUQGLhkMvbr1LFduWPSysFtiFon7wPVGpWhQefJumjY40totOKgivlOrAKjEEdaEdM9TkL8YL4l2GhlqD5Ekkuupdr5iIKkcncFrATyEvgYXrZHm3aF1Ka9KTAzcWPaD34/BLLn1tQKBgQCkr4B6z5vwbA2NVSL6uQp3fM2m6EJb5YFPIOnL6Zx/25g9pxdISDD2SK+f4UhCXPJchrr2Cq4lRnOQ7u0Bnw4ZFGdSb0hD/DTuhaTFxNgQQWbOcQbOyIkEQuZTSfMkcoFvpWEcqNAhEN6PSVklu9tAWfwEi/kM3EXc5nhq+4MiwQ==";
 
 
             // 支付宝公钥,查看地址：https://openhome.alipay.com/platform/keyManage.htm 对应APPID下的支付宝公钥。
-            public static string alipay_public_key = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAnpFMTlDXODnOPbgTXWGBxzNXc7DrW2U26I5xNOsWAFq3jvJKjxMUx+4zUIPmBQdhLlF0OIt17OE6yYuz5BKROh0UdXf0ENR0MA398pI2GS8rq5dyLJuJBmUFmApJI5y/utC3bI+CY1/LlguPW+CSRyMr3QhWIfB9iK2AzVSclW9TflP7dsRhpHN3P/OrkWEKN3ebivtEV8jLJezFDi8dBM9wU4q5QFmeunFf4nFjx7ToAOEwuoWywupYtdz4bfxKd4RXVDKcQnGpjoOGMRw5T+JIt0pQoEv5d2y3Ri5ycsDG5mqEc4F6ApwUrEFlsHpqArmCejbmvt1ceqVM8s3j2QIDAQAB";
+            public static string alipay_public_key = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAu3wgGzFzl6gNeCdastRmI5nL/9pno2ENN13quRjpviAYzmG6CnIIIC0JhnlkwR3bU7Yj4FX6az3TD5P8UPp+MSxW8XC9vaPX2zUKxs35ZaBSuRePusdv3rqQ6HbtroLt5jVZ5fI1qqyn9HqoI/oFaOzi+DXmFntlKszMrwKBIbUE90ooHdAmQA2Pv1e1mJRi/4q0svU0mrNigQUgcu/PHsOt9PWmUKyl2EBGCLx2HHGLgKPY8ttfUYqzEFZGW7ZjP45982rwSIZH64WYul86ClVutrOmlZkHo6cDkugGURx5SEqzTvngvMRsPpzvk20OWOSZ7CQuUmeDtqmWz4Y0IQIDAQAB";
 
 
             // 签名方式
