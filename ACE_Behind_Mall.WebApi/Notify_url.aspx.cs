@@ -38,13 +38,13 @@ public partial class Notify_url : System.Web.UI.Page
                 //退款日期超过可退款期限后（如三个月可退款），支付宝系统发送该交易状态通知
                 string trade_status = Request.Form["trade_status"];
                 string out_trade_no = Request.Form["out_trade_no"];
-                decimal total_fee = Convert.ToDecimal(Request.Form["total_fee"]);
+                decimal total_amount = Convert.ToDecimal(Request.Form["total_amount"]);
                 DateTime gmt_payment = Convert.ToDateTime(Request.Form["gmt_payment"]);
                 var ordermodel = orderbll.GetList(x => x.IsDelete == 0 && x.OrderNo == out_trade_no).FirstOrDefault();
                 if (trade_status == "TRADE_SUCCESS"||trade_status== "TRADE_FINISHED")
                 {
                     ordermodel.OrderState = 2;
-                    ordermodel.PayMoney = total_fee;
+                    ordermodel.PayMoney = total_amount;
                     ordermodel.PayTime = gmt_payment;
                     My_Order m = orderbll.GetUpdateModel<My_Order>(ordermodel, "ID");
                     orderbll.Update(m);

@@ -86,10 +86,10 @@ namespace ACE_Behind_Mall.WebApi.Controllers
                 AlipayTradePagePayRequest request = new AlipayTradePagePayRequest();
                 // 设置同步回调地址
                 // request.SetReturnUrl("http://192.168.0.198:8088/dist/view/order.html?type=2");
-                request.SetReturnUrl("http://192.168.0.198:8088/dist/view/order.html?type=2");
+                request.SetReturnUrl("http://47.101.45.222:8088/dist/view/order.html?type=2");
                 // 设置异步通知接收地址
                 //request.SetNotifyUrl("http://192.168.0.144:60391/Notify_url.aspx");
-                request.SetNotifyUrl("http://192.168.0.144:60391/Notify_url.aspx");
+                request.SetNotifyUrl("http://47.101.45.222:2333/Notify_url.aspx");
                 // 将业务model载入到request
                 request.SetBizModel(paymodel);
 
