@@ -212,6 +212,7 @@
     </None>
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <EmbeddedResource Include="Scripts\swaggerui\swagger_lang.js" />
+    <Content Include="Notify_url.aspx" />
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
     <Content Include="Scripts\bootstrap.js" />
@@ -252,6 +253,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Code\config.cs" />
     <Compile Include="App_Start\BasicController.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
@@ -268,6 +270,10 @@
     </Compile>
     <Compile Include="Models\StatisticsModel.cs" />
     <Compile Include="Models\UserBindingModels.cs" />
+    <Compile Include="Notify_url.aspx.cs">
+      <DependentUpon>Notify_url.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

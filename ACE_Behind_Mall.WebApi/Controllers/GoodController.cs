@@ -271,5 +271,38 @@ namespace ACE_Behind_Mall.WebApi.Controllers
             return mr;
 
         }
+        /// <summary>
+        /// 商品搜索
+        /// </summary>
+        /// <param name="goodName">商品名称</param>
+        /// <returns></returns>
+        [HttpGet]
+        public ModelResponse<dynamic> SearchGood(string goodName)
+        {
+            try
+            {
+                var model = goodsbll.GetList(x => x.IsDelete == 0).Select(x => new
+                {
+                    name = x.Name,
+                    img = x.CoverImage,
+                    presentPrice = x.PresentPrice,
+                    originalPrice = x.OriginalPrice,
+                    saleNamber = x.SaleNumber,
+                    id = x.ID,
+                });
+                if (!string.IsNullOrEmpty(goodName))
+                {
+                    model = model.Where(x => x.name.Contains(goodName)).ToList();
+                }
+                mr.data = new { goodsList = model };
+                mr.total = model.Count();
+            }
+            catch (Exception e)
+            {
+                mr.status = 1;
+                Log.Error(e.Message);
+            }
+            return mr;
+        }
     }
 }

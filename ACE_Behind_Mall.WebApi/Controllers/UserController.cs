@@ -45,15 +45,6 @@ namespace ACE_Behind_Mall.WebApi.Controllers
             {
                 HttpContext.Current.Response.AddHeader("Access-Control-Allow-Credentials", "true");
                 var userList = userbll.GetList(x => (x.Account == model.account || x.Email == model.account) & x.Password == model.password & x.IsDelete == 0);
-                // HttpCookie cookie = new HttpCookie("userid", userList.FirstOrDefault().ID.ToString());
-                //System.Web.HttpContext.Current.Response.Cookies.Add(cookie);
-                //HttpCookie cookie = new HttpCookie("userid");
-                //cookie.Value = userList.FirstOrDefault().ID.ToString();
-                //cookie.Domain = "www.shit.com";
-                ////cookie.Domain = ".192.168.0.143";
-                //cookie.Domain = Request.RequestUri.Host;
-                //cookie.Path = "/";
-                //System.Web.HttpContext.Current.Response.Cookies.Add(cookie);
                 if (userList.Count > 0)
                 {
                     FormsAuthenticationTicket ticket = new FormsAuthenticationTicket(0, model.account, DateTime.Now,
@@ -211,6 +202,42 @@ namespace ACE_Behind_Mall.WebApi.Controllers
                 My_Data m = userbll.GetUpdateModel<My_Data>(usermodel, "ID");
                 bool flag = userbll.Update(m);
                 mr.message = "修改成功";
+            }
+            catch (Exception e)
+            {
+                mr.status = 1;
+                Log.Error(e.Message);
+            }
+            return mr;
+        }
+        /// <summary>
+        /// 修改用户密码
+        /// </summary>
+        /// <param name="oldPassword"></param>
+        /// <param name="password"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [AllowAnonymous]
+        [RequestAuthorize]
+        public ModelResponse<dynamic> UpdatePassword(string oldPassword, string password)
+        {
+            int userId = GetTicket();
+            try
+            {
+                var usermodel = userbll.GetList(x => x.ID == userId).FirstOrDefault();
+                string pwd = oldPassword;
+                if (pwd != usermodel.Password)
+                {
+                    mr.status = 1;
+                    mr.message = "您输入的旧密码不正确";
+                }
+                else
+                {
+                    usermodel.Password = pwd;
+                    My_Data r = userbll.GetUpdateModel<My_Data>(usermodel, "ID");
+                    userbll.Update(r);
+                    mr.message = "您已成功修改密码";
+                }
             }
             catch (Exception e)
             {

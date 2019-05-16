@@ -65,6 +65,7 @@
   <ItemGroup>
     <Content Include="App_Code\config.cs" />
     <Compile Include="App_Code\aliPayConfig.cs" />
+    <Compile Include="App_Code\AliPayHelper.cs" />
     <Compile Include="CacheHelper.cs" />
     <Compile Include="ConvertHelper.cs" />
     <Compile Include="DistinctHelper.cs" />
