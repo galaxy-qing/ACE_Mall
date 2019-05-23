@@ -213,19 +213,17 @@ namespace ACE_Behind_Mall.WebApi.Controllers
         /// <summary>
         /// 修改用户密码
         /// </summary>
-        /// <param name="oldPassword"></param>
-        /// <param name="password"></param>
         /// <returns></returns>
         [HttpPost]
         [AllowAnonymous]
         [RequestAuthorize]
-        public ModelResponse<dynamic> UpdatePassword(string oldPassword, string password)
+        public ModelResponse<dynamic> UpdatePassword(UpdatePassword model)
         {
             int userId = GetTicket();
             try
             {
                 var usermodel = userbll.GetList(x => x.ID == userId).FirstOrDefault();
-                string pwd = oldPassword;
+                string pwd = model.oldPassword;
                 if (pwd != usermodel.Password)
                 {
                     mr.status = 1;
@@ -233,7 +231,7 @@ namespace ACE_Behind_Mall.WebApi.Controllers
                 }
                 else
                 {
-                    usermodel.Password = pwd;
+                    usermodel.Password = model.password;
                     My_Data r = userbll.GetUpdateModel<My_Data>(usermodel, "ID");
                     userbll.Update(r);
                     mr.message = "您已成功修改密码";

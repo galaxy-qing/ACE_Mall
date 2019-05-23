@@ -75,6 +75,18 @@ namespace ACE_Behind_Mall.WebApi.Models
             public string receivePhone { get; set; }
         }
         /// <summary>
+        /// 修改密码
+        /// </summary>
+        public class UpdatePassword
+        {
+            [Required]
+            [Display(Name = "旧密码")]
+            public string oldPassword { get; set; }
+            [Required]
+            [Display(Name = "新密码")]
+            public string password { get; set; }
+        }
+        /// <summary>
         /// 加入购物车model
         /// </summary>
         public class MyShopCartModel
