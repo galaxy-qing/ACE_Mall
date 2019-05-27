@@ -49,8 +49,7 @@
     <Reference Include="ACE_Mall.BLL">
       <HintPath>..\ACE_Mall.BLL\bin\Debug\ACE_Mall.BLL.dll</HintPath>
     </Reference>
-    <Reference Include="ACE_Mall.Common, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="ACE_Mall.Common">
       <HintPath>..\ACE_Mall.Common\bin\Debug\ACE_Mall.Common.dll</HintPath>
     </Reference>
     <Reference Include="ACE_Mall.Model, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">

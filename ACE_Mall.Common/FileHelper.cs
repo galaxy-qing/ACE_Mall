@@ -40,8 +40,8 @@ namespace ACE_Mall.Common
                 bmp.Save(Pfpath + picturename + ".jpg", System.Drawing.Imaging.ImageFormat.Jpeg);   //保存为.jpg格式
                 ms.Close();
 
-                return "http://192.168.0.143:60391" + fpath + picturename + ".jpg";
-
+                // return "http://192.168.0.143:60391" + fpath + picturename + ".jpg";
+                return "http://47.101.45.222:2333" + fpath + picturename + ".jpg";
             }
             catch (Exception err)
             {

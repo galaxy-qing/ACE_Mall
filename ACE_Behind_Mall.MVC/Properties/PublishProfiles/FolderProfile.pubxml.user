@@ -6,7 +6,7 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <TimeStampOfAssociatedLegacyPublishXmlFile />
-    <_PublishTargetUrl>E:\毕业设计\商城发布</_PublishTargetUrl>
+    <_PublishTargetUrl>C:\毕业设计\发布\后台</_PublishTargetUrl>
   </PropertyGroup>
   <ItemGroup>
     <File Include="bin/ACE_Behind_Mall.MVC.dll">
