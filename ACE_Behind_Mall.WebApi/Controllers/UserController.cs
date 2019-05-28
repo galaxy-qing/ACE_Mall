@@ -100,7 +100,7 @@ namespace ACE_Behind_Mall.WebApi.Controllers
                 mymodel.Email = model.email;
                 mymodel.Account = model.account;
                 mymodel.Password = model.password;
-                mymodel.Image = "/images/users/userphoto.jpg";
+                mymodel.Image = "http://47.101.45.222:2333/images/users/userphoto.jpg";
                 mymodel.ReceiveName = model.receiveName;
                 mymodel.ReceivePhone = model.receivePhone;
                 mymodel.ReceiveAddress = model.receiveAddress;
@@ -195,7 +195,6 @@ namespace ACE_Behind_Mall.WebApi.Controllers
                 var usermodel = userbll.GetList(x => x.IsDelete == 0 && x.ID == userId).FirstOrDefault();
                 usermodel.Email = model.email;
                 usermodel.Image = model.image;
-                usermodel.Password = model.password;
                 usermodel.ReceiveAddress = model.receiveAddress;
                 usermodel.ReceiveName = model.receiveName;
                 usermodel.ReceivePhone = model.receivePhone;

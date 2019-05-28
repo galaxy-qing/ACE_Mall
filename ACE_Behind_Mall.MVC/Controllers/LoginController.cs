@@ -104,7 +104,7 @@ namespace ACE_Behind_Mall.MVC.Controllers
         /// <returns>视图</returns>
         public ActionResult Index()
         {
-            // var model = admuserbll.GetList(x => x.Account == Session["account"].ToString()).FirstOrDefault();
+            //var model = admuserbll.GetList(x => x.ID == Convert.ToInt32(Session["userID"])).FirstOrDefault();
             //NLogHelper.Logs.LogWriter("登录成功",model.ID, model.ReallyName,model.Account,"登录");
             int userid = Convert.ToInt32(Session["userID"]);
             if (userid != 0)

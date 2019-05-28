@@ -16,7 +16,7 @@
         var othis = $(this);
         carousel.render({
             elem: this
-            , width: '800px'
+            , width: '100%'
             , arrow: 'none'
             , interval: othis.data('interval')
             , autoplay: othis.data('autoplay') === true

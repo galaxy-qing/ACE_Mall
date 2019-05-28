@@ -358,7 +358,6 @@
     <Content Include="js\ueditor\formdesign\qrcode.html" />
     <Content Include="js\ueditor\formdesign\radio.html" />
     <Content Include="js\ueditor\formdesign\radios.html" />
-    <Content Include="js\ueditor\formdesign\Readme.txt" />
     <Content Include="js\ueditor\formdesign\select.html" />
     <Content Include="js\ueditor\formdesign\template.html" />
     <Content Include="js\ueditor\formdesign\text.html" />
@@ -481,7 +480,6 @@
     <Content Include="layuiadmin\json\user\session.js" />
     <Content Include="layuiadmin\json\user\sms.js" />
     <Content Include="layuiadmin\json\workorder\demo.js" />
-    <Content Include="layuiadmin\json\说明.txt" />
     <Content Include="layuiadmin\layui\css\layer.css" />
     <Content Include="layuiadmin\layui\css\layui.css" />
     <Content Include="layuiadmin\layui\css\layui.mobile.css" />
@@ -652,8 +650,6 @@
     <Content Include="layuiadmin\tpl\system\get.html" />
     <Content Include="layuiadmin\tpl\system\more.html" />
     <Content Include="layuiadmin\tpl\system\theme.html" />
-    <Content Include="layuiadmin\tpl\system\说明.txt" />
-    <Content Include="layuiadmin\tpl\说明.txt" />
     <Content Include="layuiadmin\vue.js" />
     <Content Include="NLog.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -666,12 +662,6 @@
     <Content Include="layuiadmin\layui\font\iconfont.eot" />
     <Content Include="layuiadmin\layui\font\iconfont.ttf" />
     <Content Include="layuiadmin\layui\font\iconfont.woff" />
-    <Content Include="Content\bootstrap.min.css.map" />
-    <Content Include="Content\bootstrap.css.map" />
-    <Content Include="Content\bootstrap-reboot.min.css.map" />
-    <Content Include="Content\bootstrap-reboot.css.map" />
-    <Content Include="Content\bootstrap-grid.min.css.map" />
-    <Content Include="Content\bootstrap-grid.css.map" />
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -680,18 +670,10 @@
     <Content Include="Scripts\bootstrap.bundle.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
-    <Content Include="Scripts\bootstrap.min.js.map" />
-    <Content Include="Scripts\bootstrap.js.map" />
-    <Content Include="Scripts\bootstrap.bundle.min.js.map" />
-    <Content Include="Scripts\bootstrap.bundle.js.map" />
     <Content Include="Scripts\esm\popper-utils.js" />
     <Content Include="Scripts\esm\popper-utils.min.js" />
     <Content Include="Scripts\esm\popper.js" />
     <Content Include="Scripts\esm\popper.min.js" />
-    <Content Include="Scripts\esm\popper.min.js.map" />
-    <Content Include="Scripts\esm\popper.js.map" />
-    <Content Include="Scripts\esm\popper-utils.min.js.map" />
-    <Content Include="Scripts\esm\popper-utils.js.map" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
     <Content Include="Scripts\jquery-3.3.1.min.js" />
@@ -748,17 +730,7 @@
     <Content Include="Views\Good\GoodDetail.cshtml" />
     <Content Include="Views\Evaluation\EvaluationList.cshtml" />
     <Content Include="Views\Login\Forget.cshtml" />
-    <Content Include="Scripts\jquery-3.3.1.slim.min.map" />
-    <Content Include="Scripts\jquery-3.3.1.min.map" />
-    <Content Include="Scripts\umd\popper.min.js.map" />
-    <Content Include="Scripts\umd\popper.js.map" />
-    <Content Include="Scripts\umd\popper-utils.min.js.map" />
-    <Content Include="Scripts\umd\popper-utils.js.map" />
     <Content Include="Scripts\README.md" />
-    <Content Include="Scripts\popper.min.js.map" />
-    <Content Include="Scripts\popper.js.map" />
-    <Content Include="Scripts\popper-utils.min.js.map" />
-    <Content Include="Scripts\popper-utils.js.map" />
     <Content Include="Views\AdminUser\SetPassword.cshtml" />
     <Content Include="Views\AdminUser\SetUserInfo.cshtml" />
     <Content Include="Views\Statistics\SaleMoneyList.cshtml" />
