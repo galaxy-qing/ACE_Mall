@@ -10,10 +10,10 @@
   </PropertyGroup>
   <ItemGroup>
     <File Include="bin/ACE_Behind_Mall.MVC.dll">
-      <publishTime>05/28/2019 23:06:12</publishTime>
+      <publishTime>05/30/2019 18:19:23</publishTime>
     </File>
     <File Include="bin/ACE_Behind_Mall.MVC.pdb">
-      <publishTime>05/28/2019 23:06:12</publishTime>
+      <publishTime>05/30/2019 18:19:23</publishTime>
     </File>
     <File Include="bin/ACE_Mall.BLL.dll">
       <publishTime>05/27/2019 17:02:01</publishTime>
@@ -43,10 +43,10 @@
       <publishTime>05/27/2019 17:01:59</publishTime>
     </File>
     <File Include="bin/App_global.asax.compiled">
-      <publishTime>05/28/2019 23:06:36</publishTime>
+      <publishTime>05/30/2019 18:19:46</publishTime>
     </File>
     <File Include="bin/App_global.asax.dll">
-      <publishTime>05/28/2019 23:06:36</publishTime>
+      <publishTime>05/30/2019 18:19:46</publishTime>
     </File>
     <File Include="bin/EntityFramework.dll">
       <publishTime>10/23/2017 13:15:18</publishTime>
@@ -2152,7 +2152,7 @@
       <publishTime>05/11/2019 14:31:07</publishTime>
     </File>
     <File Include="layuiadmin/modules/adminuser.js">
-      <publishTime>05/11/2019 14:31:07</publishTime>
+      <publishTime>05/30/2019 14:38:19</publishTime>
     </File>
     <File Include="layuiadmin/modules/common.js">
       <publishTime>05/11/2019 14:31:07</publishTime>
@@ -2170,7 +2170,7 @@
       <publishTime>05/11/2019 14:31:07</publishTime>
     </File>
     <File Include="layuiadmin/modules/goodDetail.js">
-      <publishTime>05/13/2019 17:45:16</publishTime>
+      <publishTime>05/30/2019 18:18:59</publishTime>
     </File>
     <File Include="layuiadmin/modules/goodsenior.js">
       <publishTime>05/28/2019 21:54:28</publishTime>
@@ -2275,7 +2275,7 @@
       <publishTime>05/11/2019 14:31:06</publishTime>
     </File>
     <File Include="PrecompiledApp.config">
-      <publishTime>05/28/2019 23:06:28</publishTime>
+      <publishTime>05/30/2019 18:19:38</publishTime>
     </File>
     <File Include="Scripts/bootstrap.bundle.js">
       <publishTime>05/11/2019 14:31:06</publishTime>
@@ -2425,10 +2425,10 @@
       <publishTime>05/11/2019 14:31:06</publishTime>
     </File>
     <File Include="Views/Good/GoodDetail.cshtml">
-      <publishTime>05/11/2019 14:31:06</publishTime>
+      <publishTime>05/30/2019 18:18:05</publishTime>
     </File>
     <File Include="Views/Good/GoodList.cshtml">
-      <publishTime>05/11/2019 14:31:06</publishTime>
+      <publishTime>05/28/2019 23:11:36</publishTime>
     </File>
     <File Include="Views/Login/Forget.cshtml">
       <publishTime>05/28/2019 21:57:37</publishTime>
@@ -2455,7 +2455,7 @@
       <publishTime>05/11/2019 14:31:06</publishTime>
     </File>
     <File Include="Views/Shared/_Layout.cshtml">
-      <publishTime>05/28/2019 22:08:25</publishTime>
+      <publishTime>05/28/2019 23:13:35</publishTime>
     </File>
     <File Include="Views/Statistics/GoodSaleList.cshtml">
       <publishTime>05/28/2019 21:55:15</publishTime>
@@ -2473,7 +2473,7 @@
       <publishTime>05/11/2019 14:31:06</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>05/28/2019 23:06:25</publishTime>
+      <publishTime>05/30/2019 18:19:35</publishTime>
     </File>
   </ItemGroup>
 </Project>

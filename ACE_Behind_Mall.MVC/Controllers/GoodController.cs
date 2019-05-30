@@ -115,22 +115,15 @@ namespace ACE_Behind_Mall.MVC.Controllers
         {
             HttpFileCollectionBase files = Request.Files;
             HttpPostedFileBase file = Request.Files["file"];
-            //string extName = Path.GetExtension(file.FileName).ToLower();
+            string extName = Path.GetExtension(file.FileName).ToLower();
             string path = Server.MapPath("/images/goods/");
             //生成新文件的名称，guid保证某一时刻内唯一的（保证了文件不会被覆盖）
-            //string fileNewName = Utils.GetRamIdcode();
-            //file.SaveAs(path + fileNewName + extName);
-            //var  imagePath = "/Content/images/" + fileNewName + extName;
+            string fileNewName = Utils.GetRamIdcode();
+            var  imagePath = "/images/goods/" + fileNewName + extName;
             try
             {
-                file.SaveAs(path + file.FileName);
-                var imagePath = "/images/goods/" + file.FileName;
+                file.SaveAs(path + fileNewName + extName);
                 mr.message = imagePath;
-                //var model = goodbll.GetList(x => x.ID == id).FirstOrDefault();
-                //model.CoverImage = imagePath;
-                //Mall_Good m = goodbll.GetUpdateModel<Mall_Good>(model, "ID");
-                //bool flag = goodbll.Update(m);
-
                 // NLogHelper.Logs.LogWriter("保存用户头像：【" + file.FileName + "】成功", _userData.User.Id, _userData.User.Account, _userData.User.Name, OpType.Edit);
             }
             catch (Exception ex)
@@ -146,17 +139,11 @@ namespace ACE_Behind_Mall.MVC.Controllers
             HttpPostedFileBase file = Request.Files["file"];
             string extName = Path.GetExtension(file.FileName).ToLower();
             string path = Server.MapPath("/images/goods/");
-            // file.SaveAs(path + file.FileName);
-            //var imagePath = "/images/goods/" + file.FileName;
             //生成新文件的名称，guid保证某一时刻内唯一的（保证了文件不会被覆盖）
             string fileNewName = Utils.GetRamIdcode();
             var imagePath = "/images/goods/" + fileNewName + extName;
             try
             {
-               // var model = goodbll.GetList(x => x.ID == id).FirstOrDefault();
-               // model.DetailImage = (model.DetailImage + "," + imagePath).Substring(1);
-               // Mall_Good m = goodbll.GetUpdateModel<Mall_Good>(model, "ID");
-               // goodbll.Update(m);
                 file.SaveAs(path + fileNewName + extName);
                 mr.message = imagePath;
             }
@@ -165,9 +152,6 @@ namespace ACE_Behind_Mall.MVC.Controllers
             {
                 NLogHelper.Logs.Error(ex.Message);
             }
-
-
-
             return JsonHelper.Instance.Serialize(mr);
         }
         public string UploadImage3()
@@ -176,17 +160,11 @@ namespace ACE_Behind_Mall.MVC.Controllers
             HttpPostedFileBase file = Request.Files["file"];
             string extName = Path.GetExtension(file.FileName).ToLower();
             string path = Server.MapPath("/images/goods/");
-            // file.SaveAs(path + file.FileName);
-            //var imagePath = "/images/goods/" + file.FileName;
             //生成新文件的名称，guid保证某一时刻内唯一的（保证了文件不会被覆盖）
             string fileNewName = Utils.GetRamIdcode();
             var imagePath = "/images/goods/" + fileNewName + extName;
             try
             {
-               // var model = goodbll.GetList(x => x.ID == id).FirstOrDefault();
-               // model.InfoImage = (model.InfoImage + "," + imagePath);
-              //  Mall_Good m = goodbll.GetUpdateModel<Mall_Good>(model, "ID");
-                //goodbll.Update(m);
                 file.SaveAs(path + fileNewName + extName);
                 mr.message = imagePath;
             }
@@ -205,6 +183,7 @@ namespace ACE_Behind_Mall.MVC.Controllers
         public string SubmitGoodInfo(Mall_Good model,string[] DetailImage,string[] InfoImage)
         {
             bool flag = false;
+            string ip = "http://47.101.45.222";
             try
             {
                 if (model.ID != 0) //修改
@@ -215,12 +194,20 @@ namespace ACE_Behind_Mall.MVC.Controllers
                     model.CoverImage = model.CoverImage;
                     foreach (var item in DetailImage)
                     {
-                        model.DetailImage += item+",";
+                        model.DetailImage += item + ",";
+                        if (!item.Contains(ip))
+                        {
+                            model.DetailImage += ip + item + ",";
+                        }   
                     }
                     model.DetailImage = model.DetailImage.TrimEnd(',');
                     foreach (var item in InfoImage)
                     {
                         model.InfoImage += item + ",";
+                        if (!item.Contains(ip))
+                        {
+                            model.InfoImage += ip + item + ",";
+                        }
                     }
                     model.InfoImage = model.InfoImage.TrimEnd(',');
                     Mall_Good m = goodbll.GetUpdateModel<Mall_Good>(model, "ID");
@@ -230,6 +217,19 @@ namespace ACE_Behind_Mall.MVC.Controllers
                 {
                     model.CreateTime = DateTime.Now;
                     model.IsDelete = 0;
+                    model.DetailImage = "";
+                    model.InfoImage = "";
+                    model.CoverImage = ip + model.CoverImage;
+                    foreach (var item in DetailImage)
+                    {
+                        model.DetailImage += ip + item +",";
+                    }
+                    model.DetailImage = model.DetailImage.TrimEnd(',');
+                    foreach (var item in InfoImage)
+                    {
+                        model.InfoImage += ip + item + ",";
+                    }
+                    model.InfoImage = model.InfoImage.TrimEnd(',');
                     goodbll.Add(model);
                 }
             }

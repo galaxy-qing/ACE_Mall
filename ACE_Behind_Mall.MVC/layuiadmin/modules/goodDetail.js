@@ -30,7 +30,7 @@ layui.define(['table', 'form', 'vue', 'element', 'jquery', 'upload', 'layer'], f
                 SaleNumber: '',
                 Stock: '',
                 CreateTime: new Date().toLocaleString(),
-                IsDelete:'',
+                //IsDelete:'',
             }
         },
         methods: {

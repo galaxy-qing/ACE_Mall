@@ -88,6 +88,7 @@ layui.define(['table', 'form', 'laydate', 'vue', 'jquery'], function (exports) {
                         $("#CreateTime").show();
                         vm.$set('$data', data);
                         vm._data.Birthday = data.Birthday.substr(0, 10);
+                        //$("input[value=" + data.Sex + "").attr('checked', true)
                     }
                     if ((update == false && look == false)) { //添加
                         vm.$set('$data', {
@@ -112,7 +113,10 @@ layui.define(['table', 'form', 'laydate', 'vue', 'jquery'], function (exports) {
                                 html += "<option  value='" + item.ID + "'>" + item.Name + "</option>"
                             })
                             $("#RoleID").html(html);
-                            $("#RoleID")[0].selectedIndex = data.RoleID;
+                            if (data) {
+                                $("#RoleID ").val(data.RoleID);
+                            }  
+                           // $("#RoleID")[0].selectedIndex = data.RoleID;
                             form.render('select')
                         }
                     });
