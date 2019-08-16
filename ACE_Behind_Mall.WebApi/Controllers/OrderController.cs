@@ -61,10 +61,13 @@ namespace ACE_Behind_Mall.WebApi.Controllers
                     myordergood.GoodID = item.GoodID;
                     myordergood.CreateTime = DateTime.Now;
                     myordergood.IsDelete = 0;
-                    ordergoodbll.Add(myordergood);
-                    item.IsDelete = 1;
-                    My_Shopcart m = shopcartbll.GetUpdateModel<My_Shopcart>(item, "ID");
-                    shopcartbll.Update(m);
+                    bool flag=ordergoodbll.Add(myordergood);
+                    if (flag == true)
+                    {
+                        item.IsDelete = 1;
+                        My_Shopcart m = shopcartbll.GetUpdateModel<My_Shopcart>(item, "ID");
+                        shopcartbll.Update(m);
+                    }   
                 }
                 mr.message = "提交订单成功";
                 DefaultAopClient client = new DefaultAopClient(config.gatewayUrl, config.app_id, config.private_key, "json", "1.0", config.sign_type, config.alipay_public_key, config.charset, false);
@@ -86,7 +89,7 @@ namespace ACE_Behind_Mall.WebApi.Controllers
                 AlipayTradePagePayRequest request = new AlipayTradePagePayRequest();
                 // 设置同步回调地址
                 // request.SetReturnUrl("http://192.168.0.198:8088/dist/view/order.html?type=2");
-                request.SetReturnUrl("http://47.101.45.222:8088/dist/view/order.html?type=2");
+                request.SetReturnUrl("http://meigeni.cn:8088/dist/view/order.html");
                 // 设置异步通知接收地址
                 //request.SetNotifyUrl("http://192.168.0.144:60391/Notify_url.aspx");
                 request.SetNotifyUrl("http://47.101.45.222:2333/Notify_url.aspx");
