@@ -171,7 +171,7 @@ namespace ACE_Behind_Mall.MVC.Controllers
         /// <returns></returns>
         public ActionResult Add(Adm_User model)
         {
-            model.Password = "123456";
+            model.Password = "e10adc3949ba59abbe56e057f20f883e";
             model.Image = "/images/users/userphoto.jpg";
             model.CreateTime = DateTime.Now;
             bool flag = admuserbll.Add(model);
