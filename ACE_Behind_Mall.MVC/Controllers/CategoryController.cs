@@ -47,7 +47,7 @@ namespace ACE_Behind_Mall.MVC.Controllers
         {
             try
             {
-                var item = categorybll.GetList(x =>x.IsDelete==0);
+                var item = categorybll.GetList(x =>true);
                 mr.status = 0;
                 mr.total = item.Count;
                 mr.data = item.OrderByDescending(x => x.CreateTime).Skip(request.limit * (request.page - 1)).Take(request.limit);
