@@ -32,16 +32,16 @@
                 <button type="reset" class="layui-btn layui-btn-primary">重置</button>
             </div>
         </div>
-        @*<input type="button" value="获取全部选中的checkbox" id="btn_getCk" />*@
-        @*<button class="layui-btn layuiadmin-btn-admin" id="save" data-type="save" style="margin:10px auto;">保存</button>*@
+        @*<input type="button" value="获取全部选中的checkbox" id="btn_getCk" />
+        <button class="layui-btn layuiadmin-btn-admin" id="save" data-type="save" style="margin:10px auto;">保存</button>*@
     </form>
 
     <script src="~/layuiadmin/layui/layui.js"></script>
     <script src="~/layuiadmin/layui/lay/modules/layui-xtree.js"></script>
     <script type="text/javascript">
-      
+
         var json = [];
-        layui.use(['form','jquery'], function () {
+        layui.use(['form', 'jquery'], function () {
             var form = layui.form,
                 $ = layui.jquery;
             $.ajax({
@@ -62,20 +62,21 @@
                 type: 'get',
                 success: function (res) {
                     var xtreeNode = $('#layui-xtree-demo1').children().find('.layui-xtree-checkbox')
-                    res.data.forEach(function (item) {
-                        $("input[value=p"+item+"]").checked = true;
-                        $("input[value=p" + item + "").next().addClass('layui-form-checked');
-                        // console.log($("input[value=p" + item + "").parent().prev());
-                        console.log($("input[value=p" + item + "").parent().parent().children('input:eq(0)'))
-                        $("input[value=p" + item + "").parent().parent().children('input:eq(0)').checked = true;
-                        $("input[value=p" + item + "").parent().parent().children('input:eq(0)').next().addClass('layui-form-checked');
-                    });
-                    
+                    if (res.data != null) {
+                        res.data.forEach(function (item) {
+                            $("input[value=p" + item + "]").checked = true;
+                            $("input[value=p" + item + "").next().addClass('layui-form-checked');
+                            // console.log($("input[value=p" + item + "").parent().prev());
+                            //console.log($("input[value=p" + item + "").parent().parent().children('input:eq(0)'))
+                            $("input[value=p" + item + "").parent().parent().children('input:eq(0)').checked = true;
+                            $("input[value=p" + item + "").parent().parent().children('input:eq(0)').next().addClass('layui-form-checked');
+                        });
+                    }
                     //console.log($(" input[ type='checkbox' ]").attr("value"))
                 }
             })
             //创建tree
-            var xtree
+            var xtree;
             function ctree() {
                 xtree = new layuiXtree({
                     elem: 'layui-xtree-demo1' //放xtree的容器（必填）
@@ -104,6 +105,7 @@
             }
             document.getElementById('save').onclick = function () {
                 var oCks = xtree.GetChecked(); //获取全部选中的末级节点checkbox对象
+                alert(($(".layui-form-checked").prev().html()));
                 var checkPage = [];
                 for (var i = 0; i < oCks.length; i++) {
                     checkPage.push(oCks[i].value);
@@ -119,17 +121,17 @@
                     success: function (res) {
                         if (res.status == 0) {
                             var index = parent.layer.getFrameIndex(window.name);
-                            parent.layer.close(index);//关闭当前页 
+                            parent.layer.close(index);//关闭当前页
                         }
                         else {
                             layer.msg(res.message);
                         }
                     }
                 });
-              
+
             }
         });
     </script>
 
-</body >
+</body>
 </html >
